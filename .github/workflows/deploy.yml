@@ -5,6 +5,42 @@ on:
     branches: [main]
 
 jobs:
+  server:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: maven
+
+      - name: 测试与打包
+        working-directory: server
+        run: mvn -B verify
+
+      - name: 上传 jar 到临时文件
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          source: "server/target/server.jar"
+          target: /opt/vie/app/deploy
+          strip_components: 2
+
+      - name: 重建并滚动更新 app
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          script: |
+            set -e
+            cd /opt/vie/app/deploy
+            docker compose up -d --build app
+
   site:
     runs-on: ubuntu-latest
     steps:

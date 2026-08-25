@@ -13,6 +13,39 @@ services:
       - caddy-data:/data
       - caddy-config:/config
 
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.app
+    restart: unless-stopped
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_DATABASE: vie
+      MYSQL_USER: vie
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      STATS_KEY: ${STATS_KEY}
+      IP_SECRET: ${IP_SECRET}
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  mysql:
+    image: mysql:8
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: vie
+      MYSQL_USER: vie
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_RANDOM_ROOT_PASSWORD: "1"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u vie -p$${MYSQL_PASSWORD} --silent"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+
 volumes:
   caddy-data:
   caddy-config:
+  mysql-data:

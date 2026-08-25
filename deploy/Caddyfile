@@ -2,6 +2,10 @@
 	root * /srv/site
 	encode zstd gzip
 
+	handle /api/* {
+		reverse_proxy app:8080
+	}
+
 	try_files {path} {path}.html {path}/index.html
 	file_server
 
