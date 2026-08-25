@@ -5,6 +5,7 @@ import LatestArticles from './components/LatestArticles.vue'
 import Projects from './components/Projects.vue'
 import SeriesIndex from './components/SeriesIndex.vue'
 import SeriesPage from './components/SeriesPage.vue'
+import StatsView from './components/StatsView.vue'
 import './custom.css'
 
 export default {
@@ -16,5 +17,6 @@ export default {
     app.component('Projects', Projects)
     app.component('SeriesIndex', SeriesIndex)
     app.component('SeriesPage', SeriesPage)
+    app.component('StatsView', StatsView)
   },
 }
