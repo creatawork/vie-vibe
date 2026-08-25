@@ -1,0 +1,14 @@
+node_modules/
+dist/
+target/
+*.log
+*.class
+.DS_Store
+.idea/
+*.iml
+site/.vitepress/cache/
+site/.vitepress/dist/
+site/*.timestamp-*.mjs
+deploy/.env
+deploy/gh-deploy
+deploy/gh-deploy.pub

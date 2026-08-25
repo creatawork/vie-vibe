@@ -1,0 +1,37 @@
+:root {
+  --vp-c-brand-1: #3a6ea5;
+  --vp-c-brand-2: #4d82bd;
+  --vp-c-brand-3: #6b9bd1;
+}
+
+.post-meta {
+  color: var(--vp-c-text-2);
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.post-list {
+  list-style: none;
+  padding: 0;
+}
+
+.post-list li {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--vp-c-divider);
+}
+
+.post-list a {
+  font-weight: 600;
+  color: var(--vp-c-text-1);
+  text-decoration: none;
+}
+
+.post-list a:hover {
+  color: var(--vp-c-brand-1);
+}
+
+.post-list .meta {
+  color: var(--vp-c-text-2);
+  font-size: 0.85rem;
+  margin-left: 0.5rem;
+}

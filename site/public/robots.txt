@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /stats-view
+
+Sitemap: https://vie-vibe.cn/sitemap.xml
