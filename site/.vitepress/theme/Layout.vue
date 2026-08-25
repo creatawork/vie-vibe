@@ -1,16 +1,21 @@
 <script setup lang="ts">
 import DefaultTheme from 'vitepress/theme'
-import { useData } from 'vitepress'
-import { onMounted, ref } from 'vue'
+import { useData, useRoute } from 'vitepress'
+import { onMounted, ref, watch } from 'vue'
 import SeriesNav from './components/SeriesNav.vue'
+import { sendTrack } from './track'
 
 const { Layout } = DefaultTheme
 const { frontmatter } = useData()
+const route = useRoute()
 
 const wordCount = ref(0)
 const readingTime = ref(0)
 
 onMounted(() => {
+  sendTrack()
+  watch(() => route.path, () => sendTrack())
+
   const el = document.querySelector('.vp-doc')
   if (!el) return
   const n = (el.textContent ?? '').replace(/\s/g, '').length
