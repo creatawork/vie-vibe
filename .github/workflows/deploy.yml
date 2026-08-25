@@ -80,3 +80,5 @@ jobs:
             rm -rf site-dist-old
             [ -d site-dist ] && mv site-dist site-dist-old || true
             mv site-dist-new site-dist
+            # bind mount 钉在旧 inode，必须 recreate 才能看到新目录
+            docker compose up -d --force-recreate caddy
