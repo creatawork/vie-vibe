@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "vitepress dev",
     "build": "vitepress build",
-    "preview": "vitepress preview"
+    "preview": "vitepress preview",
+    "test:theme": "node --test --experimental-strip-types .vitepress/theme/mastheadDensity.test.ts"
   },
   "devDependencies": {
     "@types/node": "^26.3.0",
