@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import DefaultTheme from 'vitepress/theme'
 import { useData, useRoute } from 'vitepress'
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch, nextTick } from 'vue'
 import Masthead from './components/Masthead.vue'
 import SeriesNav from './components/SeriesNav.vue'
 import VieWordmark from './components/VieWordmark.vue'
@@ -19,15 +19,27 @@ const density = computed(() =>
 const wordCount = ref(0)
 const readingTime = ref(0)
 
+function recount() {
+  nextTick(() => {
+    const el = document.querySelector('.vp-doc')
+    if (!el) {
+      wordCount.value = 0
+      readingTime.value = 0
+      return
+    }
+    const n = (el.textContent ?? '').replace(/\s/g, '').length
+    wordCount.value = n
+    readingTime.value = Math.max(1, Math.ceil(n / 400))
+  })
+}
+
 onMounted(() => {
   sendTrack()
-  watch(() => route.path, () => sendTrack())
-
-  const el = document.querySelector('.vp-doc')
-  if (!el) return
-  const n = (el.textContent ?? '').replace(/\s/g, '').length
-  wordCount.value = n
-  readingTime.value = Math.max(1, Math.ceil(n / 400))
+  recount()
+  watch(() => route.path, () => {
+    sendTrack()
+    recount()
+  })
 })
 </script>
 
@@ -52,8 +64,13 @@ onMounted(() => {
 
     <template #doc-before>
       <div v-if="frontmatter.date" class="post-meta">
-        <time>{{ frontmatter.date }}</time>
-        <span v-if="readingTime"> · 约 {{ readingTime }} 分钟（{{ wordCount }} 字）</span>
+        <p>
+          <time>{{ frontmatter.date }}</time>
+          <span v-if="readingTime"> · 约 {{ readingTime }} 分钟 · {{ wordCount }} 字</span>
+        </p>
+        <p v-if="frontmatter.series" class="post-meta__series">
+          <a :href="'/series/' + encodeURIComponent(frontmatter.series)">{{ frontmatter.series }}</a>
+        </p>
       </div>
       <SeriesNav v-if="frontmatter.series" />
     </template>
