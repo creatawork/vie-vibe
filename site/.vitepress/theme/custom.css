@@ -231,11 +231,16 @@ body {
   display: block;
 }
 
+.vie-vibe:not(.vie-page-home) .VPDoc {
+  padding-top: 0.35rem;
+}
+
 .vie-page-home .VPContent {
   padding-top: 0;
   padding-left: 0;
   padding-right: 0;
 }
+
 .vie-page-home .vp-doc {
   padding-top: 0;
   max-width: none;
@@ -250,6 +255,9 @@ body {
   max-width: min(52rem, var(--vie-canvas));
   padding: 1.5rem 1.75rem 2rem;
   color: var(--vie-ink);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--vie-border) 40%, transparent),
+    0 24px 48px -32px rgba(0, 0, 0, 0.55);
 }
 
 .vie-vibe:not(.vie-page-home) .vp-doc {
@@ -279,13 +287,96 @@ body {
 .vie-vibe:not(.vie-page-home) .vp-doc p,
 .vie-vibe:not(.vie-page-home) .vp-doc li {
   color: var(--vie-ink-soft);
-  line-height: 1.7;
+  line-height: 1.75;
+}
+
+.vie-vibe:not(.vie-page-home) .vp-doc strong {
+  color: var(--vie-ink);
+  font-weight: 600;
+}
+
+.vie-vibe:not(.vie-page-home) .vp-doc code {
+  font-family: var(--vie-font-mono);
+  font-size: 0.88em;
+  padding: 0.15em 0.4em;
+  border-radius: 5px;
+  background: color-mix(in srgb, var(--vie-tab) 85%, white);
+  border: 1px solid var(--vie-border);
+  color: var(--vie-str);
+}
+
+.vie-vibe:not(.vie-page-home) .vp-doc pre {
+  margin: 1.25rem 0;
+  border-radius: 10px;
+  border: 1px solid var(--vie-border);
+  background: var(--vie-tab);
+  overflow-x: auto;
+}
+
+.vie-vibe:not(.vie-page-home) .vp-doc pre code {
+  display: block;
+  padding: 1rem 1.15rem;
+  background: transparent;
+  border: none;
+  color: var(--vie-ink-soft);
+  font-size: 0.82rem;
+  line-height: 1.65;
+}
+
+.vie-vibe:not(.vie-page-home) .vp-doc blockquote {
+  margin: 1.25rem 0;
+  padding: 0.75rem 1rem;
+  border-left: 3px solid var(--vie-kw);
+  border-radius: 0 8px 8px 0;
+  background: color-mix(in srgb, var(--vie-kw) 6%, transparent);
+  color: var(--vie-ink-soft);
+}
+
+.vie-vibe:not(.vie-page-home) .vp-doc blockquote p {
+  margin: 0;
+}
+
+.vie-vibe:not(.vie-page-home) .vp-doc hr {
+  border: none;
+  height: 1px;
+  margin: 2rem 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--vie-border) 20%,
+    var(--vie-border) 80%,
+    transparent
+  );
+}
+
+.vie-vibe:not(.vie-page-home) .vp-doc table {
+  width: 100%;
+  margin: 1.25rem 0;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+.vie-vibe:not(.vie-page-home) .vp-doc th {
+  text-align: left;
+  padding: 0.55rem 0.75rem;
+  color: var(--vie-comment);
+  border-bottom: 1px solid var(--vie-border);
+  font-weight: 500;
+  font-family: var(--vie-font-mono);
+  font-size: 0.78rem;
+}
+
+.vie-vibe:not(.vie-page-home) .vp-doc td {
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  color: var(--vie-ink-soft);
 }
 
 .vie-vibe:not(.vie-page-home) .post-meta {
   color: var(--vie-comment);
   font-family: var(--vie-font-mono);
   font-size: 0.82rem;
+  margin-bottom: 0.5rem;
 }
 
 .vie-vibe:not(.vie-page-home) .post-meta__series a {
@@ -325,9 +416,50 @@ body {
 /* 閳ユ柡鈧柡鈧?Nav 閳ユ柡鈧柡鈧?*/
 .VPNavBar .content,
 .VPNavBar {
-  background-color: rgba(9, 9, 11, 0.92) !important;
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--vie-mist);
+  background-color: rgba(9, 9, 11, 0.88) !important;
+  backdrop-filter: blur(14px) saturate(1.2);
+  border-bottom: 1px solid color-mix(in srgb, var(--vie-mist) 80%, transparent);
+}
+
+.VPNavBar:not(.top) .divider-line {
+  background: var(--vie-mist);
+}
+
+.VPNavBarSearch .DocSearch-Button {
+  border-radius: 8px;
+  border: 1px solid var(--vie-mist);
+  background: color-mix(in srgb, var(--vie-paper-deep) 70%, transparent);
+  transition:
+    border-color 160ms ease,
+    background-color 160ms ease;
+}
+
+.VPNavBarSearch .DocSearch-Button:hover {
+  border-color: color-mix(in srgb, var(--vie-signal) 45%, var(--vie-mist));
+  background: color-mix(in srgb, var(--vie-signal) 6%, var(--vie-paper-deep));
+}
+
+.VPDocAside .content-container {
+  font-family: var(--vie-font-mono);
+  font-size: 0.78rem;
+}
+
+.VPDocAside .outline-link {
+  color: var(--vie-ink-soft);
+  transition: color 160ms ease;
+}
+
+.VPDocAside .outline-link:hover,
+.VPDocAside .outline-link.active {
+  color: var(--vie-fn);
+}
+
+.VPDocAside .outline-title {
+  font-family: var(--vie-font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--vie-mute);
 }
 
 .VPNavBarMenuLink.active .link,
@@ -627,6 +759,15 @@ body {
 @media (prefers-reduced-motion: no-preference) {
   .VPContent {
     animation: vie-rise 600ms cubic-bezier(0.22, 1, 0.36, 1) 80ms both;
+  }
+  .vie-home-hero {
+    animation: vie-rise 520ms cubic-bezier(0.22, 1, 0.36, 1) 60ms both;
+  }
+  .vie-home-grid > * {
+    animation: vie-rise 500ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  .vie-home-grid > *:nth-child(2) {
+    animation-delay: 80ms;
   }
   .vie-tile {
     animation: vie-rise 500ms cubic-bezier(0.22, 1, 0.36, 1) both;
