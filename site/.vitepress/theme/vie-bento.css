@@ -446,6 +446,25 @@
   min-height: 200px;
 }
 
+a.vie-tile--ship-sm {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+a.vie-tile--ship-sm:hover {
+  border-color: color-mix(in srgb, var(--vie-str) 45%, var(--vie-border));
+  transform: translateY(-2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  a.vie-tile--ship-sm:hover {
+    transform: none;
+  }
+}
+
 .vie-feed-label {
   position: relative;
   margin: 0 0 0.75rem;

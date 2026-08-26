@@ -3,9 +3,13 @@ import { data as posts } from '../../../articles.data'
 import { data as projects } from '../../../projects.data'
 import { data as seriesGroups } from '../../../series.data'
 
+const SERIES_NAME = '个人网站开发实录'
+const POSITIONING = '应届 · 全栈 · 文章是决策日志，成果是上线证明'
+
 const latest = posts.slice(0, 6)
 const lead = projects.find((p) => p.featured) ?? projects[0]
-const secondaryProjects = projects.filter((p) => p !== lead).slice(0, 2)
+const series = seriesGroups.find((g) => g.name === SERIES_NAME)
+const overview = posts.find((p) => p.url.includes('how-this-site-works'))
 const heroPost = latest[0]
 const morePosts = latest.slice(1, 6)
 
@@ -36,6 +40,7 @@ const stack = ['VitePress', 'Vue 3', 'SpringBoot', 'Docker', 'GitHub Actions', '
           <span class="vie-syntax-str">"写清楚每一个技术决策"</span>
           <span class="vie-cursor" aria-hidden="true" />
         </h1>
+        <p class="vie-code-comment vie-mono">// {{ POSITIONING }}</p>
         <div class="vie-stack-chips" aria-label="技术栈">
           <span v-for="s in stack" :key="s" class="vie-chip">{{ s }}</span>
         </div>
@@ -63,8 +68,8 @@ const stack = ['VitePress', 'Vue 3', 'SpringBoot', 'Docker', 'GitHub Actions', '
         </div>
       </article>
 
-      <section class="vie-tile vie-tile--metrics" aria-label="站点样本指标">
-        <div class="vie-tile-tab vie-mono">metrics/sample</div>
+      <section class="vie-tile vie-tile--metrics" aria-label="站点规模">
+        <div class="vie-tile-tab vie-mono">metrics/</div>
         <div class="vie-metrics-grid">
           <div class="vie-metric">
             <b>{{ posts.length }}</b>
@@ -83,7 +88,6 @@ const stack = ['VitePress', 'Vue 3', 'SpringBoot', 'Docker', 'GitHub Actions', '
             <span class="vie-mono">status</span>
           </div>
         </div>
-        <p class="vie-code-comment vie-mono">// 静态样本数据，上线后替换</p>
       </section>
 
       <a
@@ -113,19 +117,27 @@ const stack = ['VitePress', 'Vue 3', 'SpringBoot', 'Docker', 'GitHub Actions', '
         <a class="vie-more vie-mono" href="/articles/">ls articles/ →</a>
       </section>
 
-      <article
-        v-for="p in secondaryProjects"
-        :key="p.name"
+      <a
+        v-if="series"
         class="vie-tile vie-tile--ship vie-tile--ship-sm"
+        :href="'/series/' + encodeURIComponent(series.name)"
       >
-        <div class="vie-tile-tab vie-mono">projects/{{ p.name.slice(0, 12) }}</div>
-        <span class="vie-badge vie-mono">build</span>
-        <h2>{{ p.name }}</h2>
-        <p>{{ p.description }}</p>
-        <div class="vie-chip-row">
-          <span v-for="t in p.tags.slice(0, 3)" :key="t" class="vie-chip">{{ t }}</span>
-        </div>
-      </article>
+        <div class="vie-tile-tab vie-mono">series/log</div>
+        <span class="vie-badge vie-mono">series</span>
+        <h2>{{ series.name }}</h2>
+        <p class="vie-mono vie-tile-meta">{{ series.posts.length }} posts</p>
+      </a>
+
+      <a
+        v-if="overview"
+        class="vie-tile vie-tile--ship vie-tile--ship-sm"
+        :href="overview.url"
+      >
+        <div class="vie-tile-tab vie-mono">articles/meta</div>
+        <span class="vie-badge vie-mono">read</span>
+        <h2>{{ overview.title }}</h2>
+        <p class="vie-mono vie-tile-meta">{{ overview.description }}</p>
+      </a>
 
       <section class="vie-tile vie-tile--terminal" aria-label="站点说明">
         <div class="vie-tile-tab vie-mono">~</div>
