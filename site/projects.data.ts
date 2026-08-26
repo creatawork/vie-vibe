@@ -19,6 +19,7 @@ const projectsSource: Project[] = [
     name: 'Vie',
     description:
       'VitePress 静态站 + 同域 SpringBoot 统计 + Caddy / GitHub Actions 发布。',
+    image: '/images/vie-home.png',
     tags: ['VitePress', 'Vue 3', 'SpringBoot', 'Docker', 'GitHub Actions'],
     github: 'https://github.com/creatawork/vie-vibe',
     demo: 'https://vie-vibe.cn',
