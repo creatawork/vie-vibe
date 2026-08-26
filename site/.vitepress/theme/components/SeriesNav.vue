@@ -36,11 +36,17 @@ const nav = computed(() => {
 
 <style scoped>
 .series-nav {
-  border: 1px solid var(--vp-c-divider);
-  border-radius: 8px;
-  padding: 0.75rem 1rem;
-  margin-bottom: 1.5rem;
+  border: none;
+  border-top: 1px solid var(--vie-mist);
+  border-radius: 0;
+  padding: 0.75rem 0 0;
+  margin: 0 0 1.5rem;
   font-size: 0.9rem;
+  color: var(--vie-ink-soft);
+}
+.series-nav a {
+  color: var(--vie-signal);
+  text-decoration: none;
 }
 .series-nav .next {
   float: right;

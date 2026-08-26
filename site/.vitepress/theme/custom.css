@@ -1,11 +1,11 @@
-/*
+﻿/*
   VIE visual contract (code-led)
   THESIS: A real personal tech website first; personality from Vie wordmark
-    (V heavy / ie quiet), cool paper, ink navy 鈥?not costume themes.
+    (V heavy / ie quiet), cool paper, ink navy 閳?not costume themes.
   OWN-WORLD: cool paper #F3F5F7, ink #12161C, signal navy #1F4E79, ember #C45C26,
     mist rules; Sora + Noto Sans SC; list rhythm over card walls.
   STORY: Interviewer lands, reads Vie + one line, opens articles or projects.
-  FIRST VIEWPORT: nav 路 oversized Vie 路 thesis 路 two CTAs 路 latest list below fold.
+  FIRST VIEWPORT: nav 璺?oversized Vie 璺?thesis 璺?two CTAs 璺?latest list below fold.
   FORM: web-native cold journal (safer steer after costume rejection); seed e10150f3.
   FINISH: unreviewed and undocumented is unfinished; this build ends with the
     finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance.
@@ -37,7 +37,7 @@
   --vp-c-text-3: var(--vie-mute);
   --vp-c-divider: var(--vie-mist);
   --vp-c-gutter: var(--vie-paper-deep);
-  /* solid brand color 鈥?no gradient text */
+  /* solid brand color 閳?no gradient text */
   --vp-home-hero-name-color: var(--vie-ink);
   --vp-button-brand-bg: var(--vie-signal);
   --vp-button-brand-hover-bg: var(--vie-signal-soft);
@@ -92,7 +92,7 @@ body {
   outline-offset: 3px;
 }
 
-/* 鈥斺€斺€?Wordmark: V capital 路 ie lowercase 鈥斺€斺€?*/
+/* 閳ユ柡鈧柡鈧?Wordmark: V capital 璺?ie lowercase 閳ユ柡鈧柡鈧?*/
 .vie-wordmark {
   display: inline-flex;
   align-items: baseline;
@@ -133,7 +133,7 @@ body {
   font-size: 0.92em;
   font-weight: 600;
 }
-/* 鈥斺€?Masthead + two-column shell 鈥斺€?*/
+/* 閳ユ柡鈧?Masthead + two-column shell 閳ユ柡鈧?*/
 .vie-masthead {
   padding: 1.5rem 1.25rem 2rem 1.4rem;
   position: relative;
@@ -260,7 +260,7 @@ body {
   display: none;
 }
 
-/* 鈥斺€斺€?Nav 鈥斺€斺€?*/
+/* 閳ユ柡鈧柡鈧?Nav 閳ユ柡鈧柡鈧?*/
 .VPNavBar .content,
 .VPNavBar {
   background-color: color-mix(in srgb, var(--vie-paper) 88%, transparent) !important;
@@ -277,7 +277,7 @@ body {
   font-weight: 500;
 }
 
-/* 鈥斺€斺€?Home hero (real website, brand-first) 鈥斺€斺€?*/
+/* 閳ユ柡鈧柡鈧?Home hero (real website, brand-first) 閳ユ柡鈧柡鈧?*/
 .VPHome {
   margin-bottom: 0 !important;
 }
@@ -395,7 +395,7 @@ body {
   }
 }
 
-/* 鈥斺€斺€?Content sections 鈥斺€斺€?*/
+/* 閳ユ柡鈧柡鈧?Content sections 閳ユ柡鈧柡鈧?*/
 .home-section,
 .home-projects {
   max-width: 1152px;
@@ -509,7 +509,7 @@ body {
   }
 }
 
-/* 鈥斺€斺€?Projects (interaction containers, not hero cards) 鈥斺€斺€?*/
+/* 閳ユ柡鈧柡鈧?Projects (interaction containers, not hero cards) 閳ユ柡鈧柡鈧?*/
 .project-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -576,7 +576,7 @@ body {
   border-bottom-color: var(--vie-signal);
 }
 
-/* 鈥斺€斺€?Docs reading 鈥斺€斺€?*/
+/* 閳ユ柡鈧柡鈧?Docs reading 閳ユ柡鈧柡鈧?*/
 .vp-doc h1,
 .vp-doc h2,
 .vp-doc h3 {
@@ -592,7 +592,7 @@ body {
   border-radius: 10px;
 }
 
-/* 鈥斺€斺€?Stats (operate surface, quiet) 鈥斺€斺€?*/
+/* 閳ユ柡鈧柡鈧?Stats (operate surface, quiet) 閳ユ柡鈧柡鈧?*/
 .stats-gate input {
   border: 1px solid var(--vie-mist);
   border-radius: 8px;
@@ -619,4 +619,8 @@ body {
     transition: none !important;
     scroll-behavior: auto !important;
   }
+}
+
+.vie-empty {
+  color: var(--vie-mute);
 }
