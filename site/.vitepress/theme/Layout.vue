@@ -2,19 +2,16 @@
 import DefaultTheme from 'vitepress/theme'
 import { useData, useRoute } from 'vitepress'
 import { computed, onMounted, ref, watch, nextTick } from 'vue'
-import Masthead from './components/Masthead.vue'
 import SeriesNav from './components/SeriesNav.vue'
 import VieWordmark from './components/VieWordmark.vue'
-import { mastheadDensity } from './mastheadDensity'
+import VieAmbient from './components/VieAmbient.vue'
 import { sendTrack } from './track'
 
 const { Layout } = DefaultTheme
 const { frontmatter } = useData()
 const route = useRoute()
 
-const density = computed(() =>
-  mastheadDensity(route.path, Boolean(frontmatter.value.date)),
-)
+const isHome = computed(() => route.path === '/' || route.path === '/index.html')
 
 const wordCount = ref(0)
 const readingTime = ref(0)
@@ -44,20 +41,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <!--
-    Vie visual contract
-    THESIS: Real website first; personality from Vie wordmark (V / ie) and cool paper.
-    OWN-WORLD: paper #F3F5F7 · ink #12161C · signal #1F4E79 · ember #C45C26 · Sora + Noto Sans SC
-    STORY: Land → read Vie thesis → open articles or projects.
-    FIRST VIEWPORT: nav · oversized Vie · line · two CTAs · lists below.
-    FORM: web-native cold journal; seed e10150f3
-    FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance
-  -->
-  <Layout :class="'vie-density-' + density">
-    <template #layout-top>
-      <Masthead />
-    </template>
-
+  <div class="vie-app">
+    <VieAmbient />
+    <Layout :class="['vie-vibe', isHome && 'vie-page-home']">
     <template #nav-bar-title-before>
       <VieWordmark to="/" size="nav" />
     </template>
@@ -75,4 +61,5 @@ onMounted(() => {
       <SeriesNav v-if="frontmatter.series" />
     </template>
   </Layout>
+  </div>
 </template>

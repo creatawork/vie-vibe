@@ -15,6 +15,8 @@ const nav = computed(() => {
   if (idx === -1) return null
   return {
     name,
+    index: idx + 1,
+    total: group.posts.length,
     prev: idx > 0 ? group.posts[idx - 1] : null,
     next: idx < group.posts.length - 1 ? group.posts[idx + 1] : null,
   }
@@ -22,33 +24,32 @@ const nav = computed(() => {
 </script>
 
 <template>
-  <div v-if="nav" class="series-nav">
-    <p>
-      本文属于系列
-      <a :href="`/series/${encodeURIComponent(nav.name)}`">《{{ nav.name }}》</a>
+  <nav v-if="nav" class="vie-series-nav" aria-label="系列导航">
+    <div class="vie-tile-tab vie-mono">series/{{ nav.name }}</div>
+    <p class="vie-series-nav__meta vie-mono">
+      <span class="vie-syntax-comment">//</span>
+      part {{ nav.index }} of {{ nav.total }} ·
+      <a :href="`/series/${encodeURIComponent(nav.name)}`">{{ nav.name }}</a>
     </p>
-    <p>
-      <a v-if="nav.prev" :href="nav.prev.url">← {{ nav.prev.title }}</a>
-      <a v-if="nav.next" :href="nav.next.url" class="next">{{ nav.next.title }} →</a>
-    </p>
-  </div>
+    <div class="vie-series-nav__links">
+      <a
+        v-if="nav.prev"
+        class="vie-series-nav__link"
+        :href="nav.prev.url"
+      >
+        <span class="vie-mono vie-syntax-fn">←</span>
+        {{ nav.prev.title }}
+      </a>
+      <span v-else class="vie-series-nav__ghost vie-mono">← start</span>
+      <a
+        v-if="nav.next"
+        class="vie-series-nav__link vie-series-nav__link--next"
+        :href="nav.next.url"
+      >
+        {{ nav.next.title }}
+        <span class="vie-mono vie-syntax-fn">→</span>
+      </a>
+      <span v-else class="vie-series-nav__ghost vie-mono">end →</span>
+    </div>
+  </nav>
 </template>
-
-<style scoped>
-.series-nav {
-  border: none;
-  border-top: 1px solid var(--vie-mist);
-  border-radius: 0;
-  padding: 0.75rem 0 0;
-  margin: 0 0 1.5rem;
-  font-size: 0.9rem;
-  color: var(--vie-ink-soft);
-}
-.series-nav a {
-  color: var(--vie-signal);
-  text-decoration: none;
-}
-.series-nav .next {
-  float: right;
-}
-</style>

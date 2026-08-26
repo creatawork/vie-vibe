@@ -1,7 +1,7 @@
 <script setup lang="ts">
 defineProps<{
   to?: string
-  size: 'nav' | 'mast'
+  size: 'nav' | 'mast' | 'display'
 }>()
 </script>
 

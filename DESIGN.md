@@ -4,53 +4,51 @@
 
 ## Direction
 
-**Asymmetric masthead** personal tech site: left column carries Vie wordmark and context; right column is reading surface. Personality from the HTML wordmark (`<span class="vie-v">V</span><span class="vie-ie">ie</span>`), cool paper, ink navy, and Sora — not VitePress default hero or costume themes.
+**Vibe Bento** personal tech site: dark dot-grid canvas, Bento home tiles with file-tab chrome and syntax-colored thesis. Personality from Vie wordmark, JetBrains Mono meta, and IDE-adjacent rhythm — not a full terminal costume.
 
-Four masthead densities (`full`, `mid`, `narrow`, `minimal`) driven by route and front matter via `mastheadDensity()`.
+Articles render on a dark **reading panel** (`vie-surface`) over the dot-grid chrome.
 
 ## Palette
 
 | Token | Hex | Role |
 |---|---|---|
-| paper | `#F3F5F7` | Page ground (cool, not cream) |
-| paper-deep | `#E8ECF1` | Soft surfaces / scrollbar track |
-| mist | `#D5DCE5` | Dividers |
-| ink | `#12161C` | Primary text |
-| ink-soft | `#3A4250` | Secondary text |
-| mute | `#5C6672` | Meta / captions |
-| signal | `#1F4E79` | Brand / links / primary CTA / scrollbar thumb |
-| ember | `#C45C26` | Sparse accent (masthead bar, focus reserve) |
-
-Dark mode mirrors the same roles on near-black paper.
+| paper | `#09090B` | Site ground (dot grid) |
+| paper-deep | `#14141A` | Tile surfaces |
+| mist | `#2E2E3A` | Borders |
+| ink | `#ECECF1` | Primary text on dark |
+| ink-soft | `#9CA3AF` | Secondary on dark |
+| mute | `#6B7280` | Meta / comments |
+| signal | `#7DD3FC` | Strings / links |
+| fn | `#4ADE80` | Functions / primary CTA / Vie V |
+| kw | `#C084FC` | Keywords / tags |
+| ember | `#F472B6` | Operators / accents |
+| read-panel | `#F4F4F6` | Article body surface |
 
 ## Typography
 
-- **Display:** Sora (masthead wordmark, section heads, doc headings)
+- **Display:** Syne (tile titles, section heads)
 - **Body:** Noto Sans SC + system UI
-- Loaded via Google Fonts with `display=swap` and preconnect
+- **Mono:** JetBrains Mono (nav, meta, tabs, terminal block, wordmark)
+- Loaded via Google Fonts with `display=swap`
 
 ## Layout
 
-- **Shell:** CSS Grid on `.Layout` from **960px** — sticky left `aside.vie-masthead`, main content in `.VPContent` column; nav spans full width. Below 960px masthead stacks above content.
-- **Densities:**
-  - `full` — home: large Vie, tagline「写清楚每一个技术决策」, CTAs「阅读文章」「查看成果」
-  - `mid` — list hubs (`/articles/`, `/series/`, `/projects`): wordmark + tagline, no hero buttons
-  - `narrow` — dated articles: compact wordmark + in-masthead TOC; default doc aside hidden
-  - `minimal` — `/stats-view`: wordmark only
-- **Home:** document page with `<LatestArticles />` and `<HomeProjects />` (no `layout: home`).
-- Lists use hairline rules; project tiles only where links need a container.
+- **Shell:** single column; no asymmetric masthead. Top nav + `VieShell` page chrome on list/hub pages.
+- **Home:** `<HomeBento />` — status bar, thesis tile, ship tile, latest post, feed, terminal snippet.
+- **Hub pages:** `ArticleList`, `Projects`, `SeriesIndex`, `SeriesPage`, `StatsView` use `VieShell` + `vie-panel` / `vie-tile` / `vie-feed`.
+- **Articles:** dark `vie-surface` reading panel; `SeriesNav` as vibe tile footer; VP right aside TOC restored.
 
 ## Motion
 
-- One entry **`vie-rise`** (600ms) on `.vie-masthead` and `.VPContent` (80ms delay on content) when `prefers-reduced-motion: no-preference`.
-- No per-list-item rise; no hero stagger.
-- `prefers-reduced-motion: reduce` disables all animation, transition, and smooth scroll.
+- `vie-rise` on content and staggered tiles when `prefers-reduced-motion: no-preference`.
+- Blinking cursor on home thesis only; disabled under reduced motion.
+- `prefers-reduced-motion: reduce` disables animation, transition, smooth scroll.
 
 ## Browser chrome
 
-- Scrollbars use `scrollbar-color: signal / paper-deep` (Firefox).
+- Scrollbar thumb: signal on paper-deep.
+- `::selection`: signal tint.
 
 ## Provenance
 
-- Direction comps (rejected costumes): `.impeccable/mocks/decision/safer-*.png`, assets `vie-safer-*.png`
-- Web-native north star: `C:\Users\V\.cursor\projects\e-VIE\assets\vie-web-cold-journal.png` (reference only; build uses CSS atmosphere, not stock hero photo)
+- Vibe Bento + vibe-coding theme, 2026-08-26.

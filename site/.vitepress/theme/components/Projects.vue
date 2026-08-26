@@ -1,20 +1,36 @@
 <script setup lang="ts">
 import { data as projects } from '../../../projects.data'
+import VieShell from './VieShell.vue'
 </script>
 
 <template>
-  <div class="project-grid">
-    <article v-for="p in projects" :key="p.name" class="project-card">
-      <img v-if="p.image" :src="p.image" :alt="p.name" loading="lazy" decoding="async" />
-      <h3>{{ p.name }}</h3>
-      <p>{{ p.description }}</p>
-      <p class="tags">
-        <span v-for="t in p.tags" :key="t" class="tag">{{ t }}</span>
-      </p>
-      <p class="links">
-        <a v-if="p.github" :href="p.github" target="_blank" rel="noopener">GitHub</a>
-        <a v-if="p.demo" :href="p.demo" target="_blank" rel="noopener">在线 Demo</a>
-      </p>
-    </article>
-  </div>
+  <VieShell path="projects/" hint="ship">
+    <div class="vie-project-grid">
+      <article
+        v-for="(p, i) in projects"
+        :key="p.name"
+        class="vie-tile vie-tile--ship vie-project-tile"
+      >
+        <div class="vie-tile-tab vie-mono">projects/{{ p.name.toLowerCase().replace(/\s+/g, '-') }}</div>
+        <span class="vie-badge vie-mono">{{ p.featured ? 'featured' : `p${i + 1}` }}</span>
+        <img
+          v-if="p.image"
+          :src="p.image"
+          :alt="p.name"
+          class="vie-project-img"
+          loading="lazy"
+          decoding="async"
+        />
+        <h2>{{ p.name }}</h2>
+        <p>{{ p.description }}</p>
+        <div class="vie-chip-row">
+          <span v-for="t in p.tags" :key="t" class="vie-chip vie-chip--accent">{{ t }}</span>
+        </div>
+        <div class="vie-link-row vie-mono">
+          <a v-if="p.github" :href="p.github" target="_blank" rel="noopener">gh</a>
+          <a v-if="p.demo" :href="p.demo" target="_blank" rel="noopener">demo</a>
+        </div>
+      </article>
+    </div>
+  </VieShell>
 </template>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { data as posts } from '../../../articles.data'
+import VieShell from './VieShell.vue'
 
 const grouped = computed(() => {
   const map = new Map<string, typeof posts>()
@@ -12,31 +13,24 @@ const grouped = computed(() => {
 </script>
 
 <template>
-  <p v-if="grouped.length === 0" class="vie-empty">还没有文章</p>
-  <template v-else>
-    <section v-for="[category, list] in grouped" :key="category" class="article-group">
-      <h2>{{ category }}</h2>
-      <ul class="post-list">
-        <li v-for="post in list" :key="post.url">
+  <VieShell path="articles/" hint="read">
+    <p v-if="grouped.length === 0" class="vie-empty vie-mono">// no posts yet</p>
+    <section
+      v-for="[category, list] in grouped"
+      :key="category"
+      class="vie-panel"
+    >
+      <div class="vie-tile-tab vie-mono">articles/{{ category }}/</div>
+      <ul class="vie-feed">
+        <li v-for="(post, i) in list" :key="post.url">
+          <span class="vie-ln vie-mono">{{ String(i + 1).padStart(2, '0') }}</span>
           <a :href="post.url">{{ post.title }}</a>
-          <span class="meta">{{ post.date }} · 约 {{ post.readingTime }} 分钟</span>
-          <p v-if="post.description">{{ post.description }}</p>
+          <span v-if="post.description" class="vie-feed-desc">{{ post.description }}</span>
+          <span class="vie-feed-meta vie-mono">
+            {{ post.date.slice(0, 10) }} · ~{{ post.readingTime }}min
+          </span>
         </li>
       </ul>
     </section>
-  </template>
+  </VieShell>
 </template>
-
-<style scoped>
-.article-group {
-  margin-bottom: 2.5rem;
-}
-.article-group h2 {
-  font-family: var(--vie-font-display, inherit);
-  font-size: 1.25rem;
-  letter-spacing: -0.02em;
-  margin: 0 0 0.75rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid var(--vie-mist, var(--vp-c-divider));
-}
-</style>

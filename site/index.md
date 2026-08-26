@@ -4,6 +4,4 @@ titleTemplate: false
 aside: false
 ---
 
-<LatestArticles />
-
-<HomeProjects />
+<HomeBento />

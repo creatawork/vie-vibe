@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import VieShell from './VieShell.vue'
 
 interface DayPoint { date: string; pv: number; uv: number }
 interface PathCount { path: string; pv: number }
@@ -29,61 +30,100 @@ async function load() {
 }
 
 const maxPv = computed(() =>
-  Math.max(1, ...(data.value?.trend.map(d => d.pv) ?? [1])))
+  Math.max(1, ...(data.value?.trend.map((d) => d.pv) ?? [1])))
 </script>
 
 <template>
-  <div v-if="!data" class="stats-gate">
-    <p>输入口令查看统计数据：</p>
-    <input v-model="key" type="password" placeholder="口令" @keyup.enter="load" />
-    <button type="button" :disabled="loading" @click="load">查看</button>
-    <p v-if="error" class="error">{{ error }}</p>
-  </div>
+  <VieShell path="stats-view" hint="private">
+    <section v-if="!data" class="vie-panel vie-panel--gate">
+      <div class="vie-tile-tab vie-mono">auth/required</div>
+      <p class="vie-code-comment vie-mono">// 输入口令查看统计数据</p>
+      <div class="vie-gate-form">
+        <input
+          v-model="key"
+          type="password"
+          class="vie-gate-input vie-mono"
+          placeholder="key"
+          @keyup.enter="load"
+        />
+        <button type="button" class="vie-run-btn" :disabled="loading" @click="load">
+          <span class="vie-mono">→</span>
+          {{ loading ? 'loading…' : 'unlock' }}
+        </button>
+      </div>
+      <p v-if="error" class="vie-gate-error vie-mono">{{ error }}</p>
+    </section>
 
-  <div v-else>
-    <div class="cards">
-      <div class="card"><b>{{ data.totalPv }}</b><span>总 PV</span></div>
-      <div class="card"><b>{{ data.totalUv }}</b><span>累计 UV（人次）</span></div>
-      <div class="card"><b>{{ data.todayPv }}</b><span>今日 PV</span></div>
-      <div class="card"><b>{{ data.todayUv }}</b><span>今日 UV</span></div>
-    </div>
+    <template v-else>
+      <div class="vie-stats-cards">
+        <div class="vie-tile vie-stats-card">
+          <span class="vie-badge vie-mono">total</span>
+          <b class="vie-stats-num">{{ data.totalPv }}</b>
+          <span class="vie-mono vie-stats-label">PV</span>
+        </div>
+        <div class="vie-tile vie-stats-card">
+          <span class="vie-badge vie-mono">users</span>
+          <b class="vie-stats-num">{{ data.totalUv }}</b>
+          <span class="vie-mono vie-stats-label">累计 UV</span>
+        </div>
+        <div class="vie-tile vie-stats-card">
+          <span class="vie-badge vie-mono">today</span>
+          <b class="vie-stats-num">{{ data.todayPv }}</b>
+          <span class="vie-mono vie-stats-label">今日 PV</span>
+        </div>
+        <div class="vie-tile vie-stats-card">
+          <span class="vie-badge vie-mono">today</span>
+          <b class="vie-stats-num">{{ data.todayUv }}</b>
+          <span class="vie-mono vie-stats-label">今日 UV</span>
+        </div>
+      </div>
 
-    <h3>近 30 天趋势</h3>
-    <div class="trend">
-      <div v-for="d in data.trend" :key="d.date" class="bar"
-           :title="`${d.date}：PV ${d.pv} / UV ${d.uv}`"
-           :style="{ height: (d.pv / maxPv * 120) + 'px' }"></div>
-    </div>
+      <section class="vie-panel">
+        <div class="vie-tile-tab vie-mono">metrics/trend_30d</div>
+        <div class="vie-trend" role="img" aria-label="近 30 天 PV 趋势">
+          <div
+            v-for="d in data.trend"
+            :key="d.date"
+            class="vie-trend-bar"
+            :title="`${d.date}：PV ${d.pv} / UV ${d.uv}`"
+            :style="{ height: (d.pv / maxPv * 100) + '%' }"
+          />
+        </div>
+      </section>
 
-    <h3>页面排行</h3>
-    <table>
-      <tr v-for="p in data.topPages" :key="p.path">
-        <td>{{ p.path }}</td><td>{{ p.pv }}</td>
-      </tr>
-    </table>
+      <section class="vie-panel">
+        <div class="vie-tile-tab vie-mono">metrics/top_pages</div>
+        <div class="vie-table-wrap">
+          <table class="vie-table vie-mono">
+            <thead>
+              <tr><th>path</th><th>pv</th></tr>
+            </thead>
+            <tbody>
+              <tr v-for="p in data.topPages" :key="p.path">
+                <td>{{ p.path }}</td>
+                <td>{{ p.pv }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
 
-    <h3>来源分布</h3>
-    <table>
-      <tr v-for="s in data.sources" :key="s.source">
-        <td>{{ s.source }}</td><td>{{ s.pv }}</td>
-      </tr>
-    </table>
-  </div>
+      <section class="vie-panel">
+        <div class="vie-tile-tab vie-mono">metrics/sources</div>
+        <div class="vie-table-wrap">
+          <table class="vie-table vie-mono">
+            <thead>
+              <tr><th>source</th><th>pv</th></tr>
+            </thead>
+            <tbody>
+              <tr v-for="s in data.sources" :key="s.source">
+                <td>{{ s.source }}</td>
+                <td>{{ s.pv }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </template>
+  </VieShell>
 </template>
-
-<style scoped>
-.cards { display: flex; gap: 1rem; flex-wrap: wrap; margin: 1rem 0; }
-.card {
-  border: 1px solid var(--vp-c-divider); border-radius: 8px;
-  padding: 1rem 1.5rem; text-align: center;
-}
-.card b { display: block; font-size: 1.6rem; }
-.card span { color: var(--vp-c-text-2); font-size: 0.85rem; }
-.trend { display: flex; align-items: flex-end; gap: 2px; height: 120px; margin: 1rem 0; }
-.bar { flex: 1; background: var(--vp-c-brand-1); min-height: 2px; border-radius: 2px 2px 0 0; }
-table { width: 100%; border-collapse: collapse; }
-td { padding: 0.4rem 0.6rem; border-bottom: 1px solid var(--vp-c-divider); }
-.error { color: var(--vp-c-danger-1); }
-input { padding: 0.4rem 0.6rem; margin-right: 0.5rem; }
-button { padding: 0.4rem 1rem; }
-</style>

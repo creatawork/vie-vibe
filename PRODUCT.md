@@ -11,7 +11,7 @@ web
 - **Primary:** 求职场景中的面试官 / HR，通过简历链接快速判断技术深度与项目落地能力。
 - **Secondary:** 搜索引擎与技术读者，通过文章获得实现细节与思路。
 
-（推断自已确认设计文档 `docs/superpowers/specs/2026-08-25-personal-site-design.md`，未做二次访谈。）
+（推断自站点定位与 `DESIGN.md`，未做二次访谈。）
 
 ## Product Purpose
 
@@ -36,7 +36,7 @@ web
 - 定位句：写清楚每一个技术决策
 - 副文案：全栈开发 · 技术实现细节与思路
 - 社交：GitHub `creatawork`
-- 视觉：正规网页骨架 + **不对称刊头**（左 Vie 刊头、右内容）。个性来自字标 **Vie**、冷纸、海军蓝与栏结构；不做蓝图 / 原理图 / 终端等主题皮肤。详见 `docs/superpowers/specs/2026-08-26-asymmetric-masthead-design.md`。
+- 视觉：Bento 首页 + **vibe-coding** 语法色与 IDE 节奏（非整站终端皮肤）。字标 Vie、JetBrains Mono + Syne、深色点阵底。详见 `DESIGN.md`。
 
 ## Capabilities
 
