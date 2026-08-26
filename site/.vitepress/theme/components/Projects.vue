@@ -23,6 +23,13 @@ import VieShell from './VieShell.vue'
         />
         <h2>{{ p.name }}</h2>
         <p>{{ p.description }}</p>
+        <ul v-if="p.decisions?.length" class="vie-feed vie-decisions">
+          <li v-for="(d, j) in p.decisions" :key="j">
+            <span class="vie-ln vie-mono">{{ String(j + 1).padStart(2, '0') }}</span>
+            <a v-if="d.href" :href="d.href">{{ d.text }}</a>
+            <span v-else>{{ d.text }}</span>
+          </li>
+        </ul>
         <div class="vie-chip-row">
           <span v-for="t in p.tags" :key="t" class="vie-chip vie-chip--accent">{{ t }}</span>
         </div>
