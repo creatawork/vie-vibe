@@ -277,124 +277,6 @@ body {
   font-weight: 500;
 }
 
-/* 閳ユ柡鈧柡鈧?Home hero (real website, brand-first) 閳ユ柡鈧柡鈧?*/
-.VPHome {
-  margin-bottom: 0 !important;
-}
-
-.VPHero {
-  padding-top: clamp(2.75rem, 9vh, 5.5rem) !important;
-  padding-bottom: clamp(2.25rem, 6vh, 4rem) !important;
-}
-
-.VPHero .main {
-  position: relative;
-  padding-left: 1.1rem;
-}
-
-.VPHero .main::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0.35em;
-  bottom: 0.35em;
-  width: 3px;
-  border-radius: 2px;
-  background: linear-gradient(
-    180deg,
-    var(--vie-signal) 0%,
-    color-mix(in srgb, var(--vie-ember) 55%, var(--vie-signal)) 100%
-  );
-}
-
-.VPHero .name.clip {
-  background: none !important;
-  -webkit-text-fill-color: unset !important;
-  color: inherit !important;
-}
-
-.VPHero .text {
-  font-family: var(--vie-font-display) !important;
-  font-weight: 600 !important;
-  letter-spacing: -0.025em !important;
-  line-height: 1.3 !important;
-  font-size: clamp(1.4rem, 3.4vw, 2.05rem) !important;
-  color: var(--vie-ink) !important;
-  max-width: 16em !important;
-  margin-top: 0.35rem !important;
-}
-
-.VPHero .tagline {
-  color: var(--vie-ink-soft) !important;
-  font-size: 1.02rem !important;
-  line-height: 1.65 !important;
-  max-width: 28em !important;
-  margin-top: 0.85rem !important;
-}
-
-.VPHero .actions {
-  padding-top: 1.85rem !important;
-  gap: 0.75rem !important;
-}
-
-.VPHero .VPButton.brand {
-  border-radius: 8px !important;
-  font-weight: 600 !important;
-  padding: 0.7rem 1.4rem !important;
-  box-shadow: 0 8px 20px -12px color-mix(in srgb, var(--vie-signal) 70%, transparent);
-  transition:
-    transform 180ms cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 180ms ease,
-    background-color 180ms ease;
-}
-
-.VPHero .VPButton.brand:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 12px 24px -12px color-mix(in srgb, var(--vie-signal) 80%, transparent);
-}
-
-.VPHero .VPButton.alt {
-  border-radius: 8px !important;
-  font-weight: 600 !important;
-  padding: 0.7rem 1.4rem !important;
-  background: color-mix(in srgb, var(--vie-paper) 70%, white) !important;
-  transition:
-    border-color 180ms ease,
-    color 180ms ease,
-    background-color 180ms ease;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .VPHero .name,
-.VPHero .text,
-  .VPHero .tagline,
-  .VPHero .actions {
-    animation: vie-rise 700ms cubic-bezier(0.22, 1, 0.36, 1) both;
-  }
-  .VPHero .text {
-    animation-delay: 60ms;
-  }
-  .VPHero .tagline {
-    animation-delay: 110ms;
-  }
-  .VPHero .actions {
-    animation-delay: 160ms;
-  }
-}
-
-@keyframes vie-rise {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-    filter: blur(4px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-    filter: none;
-  }
-}
-
 /* 閳ユ柡鈧柡鈧?Content sections 閳ユ柡鈧柡鈧?*/
 .home-section,
 .home-projects {
@@ -498,9 +380,6 @@ body {
 }
 
 @media (max-width: 640px) {
-  .VPHero .main {
-    padding-left: 0.85rem;
-  }
   .post-list li {
     grid-template-columns: 1fr;
   }
@@ -609,6 +488,32 @@ body {
   padding: 0.5rem 1rem;
   font-weight: 600;
   cursor: pointer;
+}
+
+
+/* Entry motion (masthead + content) */
+@media (prefers-reduced-motion: no-preference) {
+  .vie-masthead {
+    animation: vie-rise 600ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  .VPContent {
+    animation: vie-rise 600ms cubic-bezier(0.22, 1, 0.36, 1) 80ms both;
+  }
+}
+
+@keyframes vie-rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+* {
+  scrollbar-color: var(--vie-signal) var(--vie-paper-deep);
 }
 
 @media (prefers-reduced-motion: reduce) {
