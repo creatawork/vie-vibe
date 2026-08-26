@@ -2,7 +2,57 @@ import fs from 'node:fs'
 import path from 'node:path'
 import matter from 'gray-matter'
 import { Feed } from 'feed'
+import type { HeadConfig } from 'vitepress'
 import { SITE_URL } from './config.mts'
+
+interface HeadPageData {
+  relativePath: string
+  title: string
+  description: string
+  frontmatter: Record<string, unknown>
+}
+
+export function pageUrl(relativePath: string, siteUrl: string): string {
+  const path = relativePath
+    .replace(/\\/g, '/')
+    .replace(/(^|\/)index\.md$/, '$1')
+    .replace(/\.md$/, '')
+    .replace(/\/$/, '')
+  return path ? `${siteUrl}/${path}` : siteUrl
+}
+
+export function headTagsForPage(pageData: HeadPageData, siteUrl: string): HeadConfig[] {
+  const fmDesc = pageData.frontmatter.description
+  const description =
+    (typeof fmDesc === 'string' && fmDesc) ||
+    pageData.description ||
+    '技术实现细节与思路'
+  const url = pageUrl(pageData.relativePath, siteUrl)
+  const rel = pageData.relativePath.replace(/\\/g, '/')
+  const isArticle = rel.startsWith('articles/') && !rel.endsWith('index.md')
+  const image = `${siteUrl}/images/vie-home.png`
+  return [
+    [
+      'link',
+      {
+        rel: 'alternate',
+        type: 'application/rss+xml',
+        href: `${siteUrl}/feed.xml`,
+        title: 'Vie RSS',
+      },
+    ],
+    ['meta', { property: 'og:site_name', content: 'Vie' }],
+    ['meta', { property: 'og:title', content: pageData.title }],
+    ['meta', { property: 'og:description', content: description }],
+    ['meta', { property: 'og:url', content: url }],
+    ['meta', { property: 'og:type', content: isArticle ? 'article' : 'website' }],
+    ['meta', { property: 'og:image', content: image }],
+    ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
+    ['meta', { name: 'twitter:title', content: pageData.title }],
+    ['meta', { name: 'twitter:description', content: description }],
+    ['meta', { name: 'twitter:image', content: image }],
+  ]
+}
 
 interface SiteConfig {
   outDir: string
@@ -30,7 +80,7 @@ export async function generateFeed(siteConfig: SiteConfig) {
   ).filter((f): f is string => typeof f === 'string' && f.endsWith('.md'))
 
   const feed = new Feed({
-    title: 'VIE',
+    title: 'Vie',
     description: '技术实现细节与思路',
     id: SITE_URL,
     link: SITE_URL,

@@ -37,6 +37,23 @@ export default withMermaid(
   },
   themeConfig: {
     siteTitle: false,
+    search: {
+      provider: 'local',
+      options: {
+        translations: {
+          button: { buttonText: '搜索', buttonAriaLabel: '搜索文章' },
+          modal: {
+            noResultsText: '没有找到',
+            resetButtonTitle: '清除',
+            footer: {
+              selectText: '选择',
+              navigateText: '切换',
+              closeText: '关闭',
+            },
+          },
+        },
+      },
+    },
     nav: [
       { text: '首页', link: '/' },
       { text: '文章', link: '/articles/' },
@@ -49,6 +66,10 @@ export default withMermaid(
     docFooter: { prev: '上一篇', next: '下一篇' },
   },
   mermaid: {},
+  async transformHead({ pageData }) {
+    const { headTagsForPage } = await import('./seo')
+    return headTagsForPage(pageData, SITE_URL)
+  },
   async buildEnd(siteConfig) {
     const { generateSitemap, generateFeed } = await import('./seo')
     await generateSitemap(siteConfig)
