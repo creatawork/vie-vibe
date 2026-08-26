@@ -33,10 +33,10 @@ const maxPv = computed(() =>
 </script>
 
 <template>
-  <div v-if="!data">
+  <div v-if="!data" class="stats-gate">
     <p>输入口令查看统计数据：</p>
     <input v-model="key" type="password" placeholder="口令" @keyup.enter="load" />
-    <button :disabled="loading" @click="load">查看</button>
+    <button type="button" :disabled="loading" @click="load">查看</button>
     <p v-if="error" class="error">{{ error }}</p>
   </div>
 

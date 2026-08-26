@@ -5,12 +5,26 @@ export const SITE_URL = 'https://vie-vibe.cn'
 
 export default withMermaid(
   defineConfig({
-  title: 'VIE',
-  titleTemplate: ':title | VIE',
+  title: 'Vie',
+  titleTemplate: ':title | Vie',
   description: '技术实现细节与思路',
   lang: 'zh-CN',
   cleanUrls: true,
   lastUpdated: true,
+  head: [
+    ['link', { rel: 'preconnect', href: 'https://fonts.googleapis.com' }],
+    [
+      'link',
+      { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
+    ],
+    [
+      'link',
+      {
+        rel: 'stylesheet',
+        href: 'https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&family=Sora:wght@500;600;700&display=swap',
+      },
+    ],
+  ],
   vite: {
     optimizeDeps: {
       include: ['@braintree/sanitize-url', 'dayjs'],
@@ -22,13 +36,13 @@ export default withMermaid(
     },
   },
   themeConfig: {
+    siteTitle: false,
     nav: [
       { text: '首页', link: '/' },
       { text: '文章', link: '/articles/' },
       { text: '系列', link: '/series/' },
       { text: '成果', link: '/projects' },
     ],
-    search: { provider: 'local' },
     socialLinks: [{ icon: 'github', link: 'https://github.com/creatawork' }],
     outline: { label: '本页目录' },
     lastUpdated: { text: '最后更新' },
