@@ -1,14 +1,20 @@
 <script setup lang="ts">
 import DefaultTheme from 'vitepress/theme'
 import { useData, useRoute } from 'vitepress'
-import { onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
+import Masthead from './components/Masthead.vue'
 import SeriesNav from './components/SeriesNav.vue'
 import VieWordmark from './components/VieWordmark.vue'
+import { mastheadDensity } from './mastheadDensity'
 import { sendTrack } from './track'
 
 const { Layout } = DefaultTheme
 const { frontmatter } = useData()
 const route = useRoute()
+
+const density = computed(() =>
+  mastheadDensity(route.path, Boolean(frontmatter.value.date)),
+)
 
 const wordCount = ref(0)
 const readingTime = ref(0)
@@ -35,8 +41,12 @@ onMounted(() => {
     FORM: web-native cold journal; seed e10150f3
     FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance
   -->
-  <Layout>
-        <template #nav-bar-title-before>
+  <Layout :class="'vie-density-' + density">
+    <template #layout-top>
+      <Masthead />
+    </template>
+
+    <template #nav-bar-title-before>
       <VieWordmark to="/" size="nav" />
     </template>
 

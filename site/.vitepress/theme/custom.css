@@ -133,6 +133,121 @@ body {
   font-size: 0.92em;
   font-weight: 600;
 }
+/* —— Masthead + two-column shell —— */
+.vie-masthead {
+  padding: 1.5rem 1.25rem 2rem 1.4rem;
+  position: relative;
+}
+.vie-masthead::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 1.5rem;
+  bottom: 1.5rem;
+  width: 3px;
+  border-radius: 2px;
+  background: linear-gradient(
+    180deg,
+    var(--vie-signal) 0%,
+    color-mix(in srgb, var(--vie-ember) 45%, var(--vie-signal)) 100%
+  );
+}
+.vie-masthead__tagline {
+  margin: 0.85rem 0 0;
+  color: var(--vie-ink-soft);
+  line-height: 1.55;
+  font-size: 0.98rem;
+  max-width: 14em;
+}
+.vie-masthead__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin: 1.25rem 0 0;
+}
+.vie-btn {
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 0.55rem 1rem;
+}
+.vie-btn--brand {
+  background: var(--vie-signal);
+  color: #fff;
+}
+.vie-btn--alt {
+  border: 1px solid var(--vie-mist);
+  color: var(--vie-ink);
+}
+.vie-toc {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-top: 1rem;
+}
+.vie-toc a {
+  color: var(--vie-ink-soft);
+  text-decoration: none;
+  font-size: 0.88rem;
+  line-height: 1.4;
+}
+.vie-toc a:hover {
+  color: var(--vie-signal);
+}
+.vie-toc__l3 {
+  padding-left: 0.75rem;
+}
+
+@media (min-width: 960px) {
+  .Layout {
+    display: grid;
+    grid-template-columns: minmax(15rem, 18rem) minmax(0, 1fr);
+    grid-template-rows: auto 1fr auto;
+  }
+  .Layout > .VPNav,
+  .Layout > .VPBackdrop,
+  .Layout > .VPSkipLink {
+    grid-column: 1 / -1;
+    grid-row: 1;
+  }
+  .vie-masthead {
+    grid-column: 1;
+    grid-row: 2;
+    position: sticky;
+    top: var(--vp-nav-height);
+    align-self: start;
+    min-height: calc(100vh - var(--vp-nav-height));
+    border-right: 1px solid var(--vie-mist);
+    max-width: 18rem;
+  }
+  .Layout > .VPContent,
+  .Layout > .VPFooter,
+  .Layout > .VPLocalNav {
+    grid-column: 2;
+  }
+  .Layout > .VPSidebar {
+    grid-column: 1 / -1;
+    grid-row: 1 / -1;
+  }
+}
+
+@media (max-width: 959.98px) {
+  .vie-masthead {
+    border-bottom: 1px solid var(--vie-mist);
+    min-height: 0;
+  }
+  .vie-masthead__actions {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}
+
+.vie-density-narrow .VPDoc .aside {
+  display: none !important;
+}
+
 
 /* Hide default empty siteTitle gap when using custom mark */
 .VPNavBarTitle .title {
