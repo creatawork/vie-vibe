@@ -1,11 +1,334 @@
+/*
+  VIE visual contract (code-led)
+  THESIS: A real personal tech website first; personality from Vie wordmark
+    (V heavy / ie quiet), cool paper, ink navy — not costume themes.
+  OWN-WORLD: cool paper #F3F5F7, ink #12161C, signal navy #1F4E79, ember #C45C26,
+    mist rules; Sora + Noto Sans SC; list rhythm over card walls.
+  STORY: Interviewer lands, reads Vie + one line, opens articles or projects.
+  FIRST VIEWPORT: nav · oversized Vie · thesis · two CTAs · latest list below fold.
+  FORM: web-native cold journal (safer steer after costume rejection); seed e10150f3.
+  FINISH: unreviewed and undocumented is unfinished; this build ends with the
+    finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance.
+*/
+
 :root {
-  --vp-c-brand-1: #3a6ea5;
-  --vp-c-brand-2: #4d82bd;
-  --vp-c-brand-3: #6b9bd1;
+  --vie-ink: #12161c;
+  --vie-ink-soft: #3a4250;
+  --vie-paper: #f3f5f7;
+  --vie-paper-deep: #e8ecf1;
+  --vie-mist: #d5dce5;
+  --vie-signal: #1f4e79;
+  --vie-signal-soft: #2f6aa0;
+  --vie-ember: #c45c26;
+  --vie-mute: #5c6672;
+
+  --vie-font-display: 'Sora', 'Noto Sans SC', system-ui, sans-serif;
+  --vie-font-body: 'Noto Sans SC', system-ui, -apple-system, sans-serif;
+
+  --vp-font-family-base: var(--vie-font-body);
+  --vp-c-brand-1: var(--vie-signal);
+  --vp-c-brand-2: var(--vie-signal-soft);
+  --vp-c-brand-3: #4d82bd;
+  --vp-c-bg: var(--vie-paper);
+  --vp-c-bg-alt: #eef1f5;
+  --vp-c-bg-soft: var(--vie-paper-deep);
+  --vp-c-text-1: var(--vie-ink);
+  --vp-c-text-2: var(--vie-ink-soft);
+  --vp-c-text-3: var(--vie-mute);
+  --vp-c-divider: var(--vie-mist);
+  --vp-c-gutter: var(--vie-paper-deep);
+  /* solid brand color — no gradient text */
+  --vp-home-hero-name-color: var(--vie-ink);
+  --vp-button-brand-bg: var(--vie-signal);
+  --vp-button-brand-hover-bg: var(--vie-signal-soft);
+  --vp-button-brand-active-bg: #183d5f;
+  --vp-button-alt-bg: transparent;
+  --vp-button-alt-text: var(--vie-ink);
+  --vp-button-alt-border: var(--vie-mist);
+  --vp-button-alt-hover-border: var(--vie-signal);
+  --vp-button-alt-hover-text: var(--vie-signal);
+}
+
+.dark {
+  --vie-ink: #e8edf4;
+  --vie-ink-soft: #b7c0cc;
+  --vie-paper: #0f141a;
+  --vie-paper-deep: #171d26;
+  --vie-mist: #2a3340;
+  --vie-signal: #6ba3d6;
+  --vie-signal-soft: #8bb8e0;
+  --vie-ember: #e08a4f;
+  --vie-mute: #8a93a0;
+  --vp-c-bg: var(--vie-paper);
+  --vp-c-bg-alt: #0c1015;
+  --vp-c-bg-soft: var(--vie-paper-deep);
+  --vp-c-text-1: var(--vie-ink);
+  --vp-c-text-2: var(--vie-ink-soft);
+  --vp-c-text-3: var(--vie-mute);
+  --vp-c-divider: var(--vie-mist);
+  --vp-home-hero-name-color: var(--vie-ink);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--vie-font-body);
+  background:
+    radial-gradient(1200px 500px at 12% -10%, rgba(31, 78, 121, 0.08), transparent 60%),
+    radial-gradient(900px 420px at 90% 0%, rgba(196, 92, 38, 0.05), transparent 55%),
+    var(--vie-paper);
+  color: var(--vie-ink);
+}
+
+::selection {
+  background: color-mix(in srgb, var(--vie-signal) 28%, transparent);
+  color: var(--vie-ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--vie-signal);
+  outline-offset: 3px;
+}
+
+/* ——— Wordmark: V capital · ie lowercase ——— */
+.vie-wordmark {
+  display: inline-flex;
+  align-items: baseline;
+  font-family: var(--vie-font-display);
+  text-decoration: none;
+  line-height: 1;
+  color: inherit;
+}
+
+.vie-wordmark .vie-v {
+  font-weight: 700;
+  color: var(--vie-signal);
+  letter-spacing: -0.06em;
+}
+
+.vie-wordmark .vie-ie {
+  font-weight: 600;
+  color: var(--vie-ink);
+  letter-spacing: -0.045em;
+}
+
+.vie-wordmark--nav {
+  font-size: 1.2rem;
+  margin-right: 0.15rem;
+}
+
+.vie-wordmark--nav .vie-v {
+  font-size: 1.12em;
+}
+
+.vie-wordmark--mast {
+  font-size: clamp(2rem, 4vw, 2.75rem);
+}
+.vie-wordmark--mast .vie-v {
+  font-size: 1.12em;
+}
+.vie-wordmark--mast .vie-ie {
+  font-size: 0.92em;
+  font-weight: 600;
+}
+
+/* Hide default empty siteTitle gap when using custom mark */
+.VPNavBarTitle .title {
+  display: flex;
+  align-items: center;
+}
+
+.VPNavBarTitle .title > span:empty,
+.VPNavBarTitle.has-sidebar .title span:not(.vie-v):not(.vie-ie) {
+  display: none;
+}
+
+/* ——— Nav ——— */
+.VPNavBar .content,
+.VPNavBar {
+  background-color: color-mix(in srgb, var(--vie-paper) 88%, transparent) !important;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid color-mix(in srgb, var(--vie-mist) 70%, transparent);
+}
+
+.VPNavBarMenuLink.active .link,
+.VPNavBarMenuLink.active {
+  color: var(--vie-signal) !important;
+}
+
+.VPLink span {
+  font-weight: 500;
+}
+
+/* ——— Home hero (real website, brand-first) ——— */
+.VPHome {
+  margin-bottom: 0 !important;
+}
+
+.VPHero {
+  padding-top: clamp(2.75rem, 9vh, 5.5rem) !important;
+  padding-bottom: clamp(2.25rem, 6vh, 4rem) !important;
+}
+
+.VPHero .main {
+  position: relative;
+  padding-left: 1.1rem;
+}
+
+.VPHero .main::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.35em;
+  bottom: 0.35em;
+  width: 3px;
+  border-radius: 2px;
+  background: linear-gradient(
+    180deg,
+    var(--vie-signal) 0%,
+    color-mix(in srgb, var(--vie-ember) 55%, var(--vie-signal)) 100%
+  );
+}
+
+.VPHero .name.clip {
+  background: none !important;
+  -webkit-text-fill-color: unset !important;
+  color: inherit !important;
+}
+
+.VPHero .text {
+  font-family: var(--vie-font-display) !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.025em !important;
+  line-height: 1.3 !important;
+  font-size: clamp(1.4rem, 3.4vw, 2.05rem) !important;
+  color: var(--vie-ink) !important;
+  max-width: 16em !important;
+  margin-top: 0.35rem !important;
+}
+
+.VPHero .tagline {
+  color: var(--vie-ink-soft) !important;
+  font-size: 1.02rem !important;
+  line-height: 1.65 !important;
+  max-width: 28em !important;
+  margin-top: 0.85rem !important;
+}
+
+.VPHero .actions {
+  padding-top: 1.85rem !important;
+  gap: 0.75rem !important;
+}
+
+.VPHero .VPButton.brand {
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+  padding: 0.7rem 1.4rem !important;
+  box-shadow: 0 8px 20px -12px color-mix(in srgb, var(--vie-signal) 70%, transparent);
+  transition:
+    transform 180ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 180ms ease,
+    background-color 180ms ease;
+}
+
+.VPHero .VPButton.brand:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 24px -12px color-mix(in srgb, var(--vie-signal) 80%, transparent);
+}
+
+.VPHero .VPButton.alt {
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+  padding: 0.7rem 1.4rem !important;
+  background: color-mix(in srgb, var(--vie-paper) 70%, white) !important;
+  transition:
+    border-color 180ms ease,
+    color 180ms ease,
+    background-color 180ms ease;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .VPHero .name,
+.VPHero .text,
+  .VPHero .tagline,
+  .VPHero .actions {
+    animation: vie-rise 700ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  .VPHero .text {
+    animation-delay: 60ms;
+  }
+  .VPHero .tagline {
+    animation-delay: 110ms;
+  }
+  .VPHero .actions {
+    animation-delay: 160ms;
+  }
+}
+
+@keyframes vie-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+/* ——— Content sections ——— */
+.home-section,
+.home-projects {
+  max-width: 1152px;
+  margin: 0 auto;
+  padding: 0 24px 3.25rem;
+}
+
+.home-section {
+  border-top: 1px solid var(--vie-mist);
+  padding-top: 2.75rem;
+}
+
+.section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.35rem;
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid var(--vie-mist);
+}
+
+.section-head h2 {
+  font-family: var(--vie-font-display);
+  font-size: 1.2rem;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  margin: 0;
+  color: var(--vie-ink);
+}
+
+.section-head a,
+.home-more {
+  color: var(--vie-signal);
+  font-size: 0.92rem;
+  font-weight: 500;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 160ms ease;
+}
+
+.section-head a:hover,
+.home-more:hover {
+  border-bottom-color: var(--vie-signal);
 }
 
 .post-meta {
-  color: var(--vp-c-text-2);
+  color: var(--vie-mute);
   font-size: 0.9rem;
   margin-bottom: 1rem;
 }
@@ -13,25 +336,169 @@
 .post-list {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
 .post-list li {
-  padding: 0.75rem 0;
-  border-bottom: 1px solid var(--vp-c-divider);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.35rem 1.25rem;
+  align-items: baseline;
+  padding: 1.05rem 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--vie-mist) 75%, transparent);
+  transition: background-color 160ms ease;
+}
+
+.post-list li:hover {
+  background: color-mix(in srgb, var(--vie-signal) 4%, transparent);
+}
+
+.post-list li > p {
+  grid-column: 1 / -1;
+  margin: 0.15rem 0 0;
+  color: var(--vie-ink-soft);
+  font-size: 0.92rem;
+  line-height: 1.55;
 }
 
 .post-list a {
   font-weight: 600;
-  color: var(--vp-c-text-1);
+  color: var(--vie-ink);
   text-decoration: none;
+  transition: color 160ms ease;
 }
 
 .post-list a:hover {
-  color: var(--vp-c-brand-1);
+  color: var(--vie-signal);
 }
 
 .post-list .meta {
-  color: var(--vp-c-text-2);
+  color: var(--vie-mute);
   font-size: 0.85rem;
-  margin-left: 0.5rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .VPHero .main {
+    padding-left: 0.85rem;
+  }
+  .post-list li {
+    grid-template-columns: 1fr;
+  }
+  .post-list .meta {
+    white-space: normal;
+  }
+}
+
+/* ——— Projects (interaction containers, not hero cards) ——— */
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.25rem;
+  margin-top: 0.5rem;
+}
+
+.project-card {
+  border: 1px solid var(--vie-mist);
+  border-radius: 12px;
+  padding: 1.25rem;
+  background: color-mix(in srgb, var(--vie-paper) 80%, white);
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.project-card:hover {
+  border-color: color-mix(in srgb, var(--vie-signal) 35%, var(--vie-mist));
+  box-shadow: 0 14px 28px -22px rgba(18, 22, 28, 0.45);
+  transform: translateY(-2px);
+}
+
+.project-card h3 {
+  font-family: var(--vie-font-display);
+  font-size: 1.15rem;
+  margin: 0.35rem 0 0.5rem;
+  letter-spacing: -0.02em;
+}
+
+.project-card p {
+  color: var(--vie-ink-soft);
+  line-height: 1.55;
+  margin: 0 0 0.75rem;
+}
+
+.project-card img {
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+}
+
+.tag {
+  display: inline-block;
+  background: var(--vie-paper-deep);
+  color: var(--vie-ink-soft);
+  border-radius: 6px;
+  padding: 0.15rem 0.55rem;
+  margin: 0 0.35rem 0.35rem 0;
+  font-size: 0.78rem;
+  font-weight: 500;
+}
+
+.links a {
+  margin-right: 1rem;
+  color: var(--vie-signal);
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--vie-signal) 35%, transparent);
+}
+
+.links a:hover {
+  border-bottom-color: var(--vie-signal);
+}
+
+/* ——— Docs reading ——— */
+.vp-doc h1,
+.vp-doc h2,
+.vp-doc h3 {
+  font-family: var(--vie-font-display);
+  letter-spacing: -0.02em;
+}
+
+.vp-doc a {
+  color: var(--vie-signal);
+}
+
+.VPDocFooter .pager-link {
+  border-radius: 10px;
+}
+
+/* ——— Stats (operate surface, quiet) ——— */
+.stats-gate input {
+  border: 1px solid var(--vie-mist);
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+  background: var(--vie-paper);
+  margin-right: 0.5rem;
+}
+
+.stats-gate button {
+  border-radius: 8px;
+  border: none;
+  background: var(--vie-signal);
+  color: #fff;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
 }
