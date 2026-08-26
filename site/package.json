@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "vitepress dev",
+    "check:content": "node scripts/check-content.mjs",
     "build": "vitepress build",
     "preview": "vitepress preview"
   },
