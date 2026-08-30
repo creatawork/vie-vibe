@@ -5,7 +5,7 @@ import matter from 'gray-matter'
 
 const siteRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const FORBIDDEN = ['正文占位', '样本', '静态模拟']
-const POSITIONING = '应届 · 全栈 · 文章是决策日志，成果是上线证明'
+const POSITIONING = '后端开发工程师 / 技术记录者 / 工具创造者'
 
 const errors = []
 

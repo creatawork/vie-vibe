@@ -68,7 +68,7 @@ onMounted(() => {
       <SeriesNav v-if="frontmatter.series" />
     </template>
     <template #layout-bottom>
-      <footer class="vie-site-footer">
+      <footer v-if="!isHome" class="vie-site-footer">
         <div class="vie-footer-inner">
           <div class="vie-footer-brand">
             <VieWordmark to="/" size="nav" />

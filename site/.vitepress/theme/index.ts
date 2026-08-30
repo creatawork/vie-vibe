@@ -11,6 +11,7 @@ import SeriesPage from './components/SeriesPage.vue'
 import StatsView from './components/StatsView.vue'
 import './custom.css'
 import './vie-bento.css'
+import './home-reference.css'
 
 export default {
   extends: DefaultTheme,
