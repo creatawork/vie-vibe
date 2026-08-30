@@ -59,6 +59,7 @@ export default withMermaid(
       { text: '文章', link: '/articles/' },
       { text: '系列', link: '/series/' },
       { text: '成果', link: '/projects' },
+      { text: '工具', link: '/tools' },
     ],
     socialLinks: [{ icon: 'github', link: 'https://github.com/creatawork' }],
     outline: { label: '本页目录' },

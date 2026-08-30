@@ -11,7 +11,7 @@ const { frontmatter } = useData()
 const route = useRoute()
 
 const isHome = computed(() => route.path === '/' || route.path === '/index.html')
-const isHub = computed(() => ['/articles/', '/projects', '/tools'].includes(route.path))
+const isHub = computed(() => route.path === '/articles/' || route.path === '/projects' || route.path === '/tools' || route.path.startsWith('/tools/'))
 
 const wordCount = ref(0)
 const readingTime = ref(0)

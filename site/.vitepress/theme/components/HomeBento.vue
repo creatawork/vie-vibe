@@ -23,7 +23,7 @@ import VieWordmark from './VieWordmark.vue'
 const metrics = [
   { label: '文章', value: '56', unit: '篇', icon: FileText, tone: 'blue' },
   { label: '项目', value: '12', unit: '个', icon: FolderKanban, tone: 'orange' },
-  { label: '工具', value: '8', unit: '个', icon: Wrench, tone: 'green' },
+  { label: '工具', value: '3', unit: '个', icon: Wrench, tone: 'green' },
   { label: '标签', value: '28', unit: '个', icon: Tag, tone: 'slate' },
 ]
 
@@ -86,10 +86,9 @@ const projects = [
 ]
 
 const utilities = [
-  { name: 'JSON格式化', description: '美化和格式化 JSON 数据', icon: Braces, tone: 'pink' },
-  { name: '时间戳转换', description: '时间戳与日期格式转换', icon: Timer, tone: 'cyan' },
-  { name: 'UUID生成器', description: '生成不同格式的 UUID', icon: Fingerprint, tone: 'blue' },
-  { name: '密码生成器', description: '生成安全的随机密码', icon: KeyRound, tone: 'orange' },
+  { name: 'JSON 工作台', description: '校验、格式化和压缩 JSON', href: '/tools/json', icon: Braces, tone: 'pink' },
+  { name: '时间戳转换', description: '时间戳与日期格式转换', href: '/tools/timestamp', icon: Timer, tone: 'cyan' },
+  { name: 'JWT 解析器', description: '解码 Token 并检查 Claims', href: '/tools/jwt', icon: KeyRound, tone: 'blue' },
 ]
 </script>
 
@@ -205,10 +204,10 @@ const utilities = [
       <section id="utilities" class="dn-section" aria-labelledby="tools-title">
         <div class="dn-section-head">
           <h2 id="tools-title">实用工具</h2>
-          <a href="/series/">查看全部 <ArrowRight :size="16" /></a>
+          <a href="/tools">查看全部 <ArrowRight :size="16" /></a>
         </div>
         <div class="dn-tool-grid">
-          <a v-for="item in utilities" :key="item.name" href="/articles/" :class="`dn-tool tone-${item.tone}`">
+          <a v-for="item in utilities" :key="item.name" :href="item.href" :class="`dn-tool tone-${item.tone}`">
             <span><component :is="item.icon" :size="23" /></span>
             <div><h3>{{ item.name }}</h3><p>{{ item.description }}</p></div>
             <strong>使用</strong>

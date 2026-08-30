@@ -27,7 +27,7 @@ web
 
 - 原则：内容质量 > 视觉呈现 > 功能复杂度。
 - 明确不做：评论、登录、后台、多语言、邮件订阅、个人简介页；搜索用 VitePress 本地搜索。
-- URL 结构冻结（`/`、`/articles/`、`/projects`、`/series/`、隐藏 `/stats-view`）。
+- URL 结构冻结（`/`、`/articles/`、`/projects`、`/series/`、`/tools`、`/tools/*`、隐藏 `/stats-view`）。
 - 统计仅后台；前台不展示访问数据。
 
 ## Brand Commitments
@@ -43,6 +43,7 @@ web
 - Markdown 文章（分类 / 标签 / 系列）、Mermaid、阅读时长
 - 成果展示（截图、描述、技术栈、GitHub/Demo）
 - RSS、sitemap、全站埋点 + 口令统计页
+- 浏览器端开发工具：JSON 工作台、时间戳转换、JWT 解析器
 
 ## Accessibility
 
