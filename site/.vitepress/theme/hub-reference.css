@@ -21,6 +21,20 @@
 .vie-page-hub .VPDoc .content-container { display: block; }
 .vie-page-hub { background: #f7f9fb; }
 
+/* Hub pages are full-width app surfaces, not VitePress reading columns. */
+.vie-page-hub .VPDoc .container,
+.vie-page-hub .VPDoc .content,
+.vie-page-hub .VPDoc .content-container,
+.vie-page-hub .VPDoc .main {
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+}
+
+.vie-page-hub .VPDoc .container {
+  display: block !important;
+}
+
 .dn-hub-page {
   --hub-green: #20a56f;
   --hub-ink: #151a1f;

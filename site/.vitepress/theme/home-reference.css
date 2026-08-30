@@ -18,6 +18,21 @@
   padding: 0;
 }
 
+/* VitePress keeps a narrow reading column for docs pages. The home surface owns
+   its full-width canvas, so remove that inherited flex/grid constraint here. */
+.vie-page-home .VPDoc .container,
+.vie-page-home .VPDoc .content,
+.vie-page-home .VPDoc .content-container,
+.vie-page-home .VPDoc .main {
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+}
+
+.vie-page-home .VPDoc .container {
+  display: block !important;
+}
+
 .vie-page-home .VPDoc .content-container {
   display: block;
 }
