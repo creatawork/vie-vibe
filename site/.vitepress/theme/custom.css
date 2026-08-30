@@ -102,7 +102,7 @@ body {
 }
 
 .VPNavBarTitle .title > span:empty,
-.VPNavBarTitle.has-sidebar .title span:not(.vie-v):not(.vie-ie):not(.vie-mark-bracket):not(.vie-mark-slash) {
+.VPNavBarTitle.has-sidebar .title span:not(.vie-wordmark-mark):not(.vie-wordmark-mark-letter):not(.vie-wordmark-name) {
   display: none;
 }
 
@@ -121,16 +121,16 @@ body {
 
 .vie-wordmark {
   display: inline-flex;
-  align-items: baseline;
-  gap: 0.06rem;
+  align-items: center;
+  gap: 0.5rem;
   color: inherit;
   text-decoration: none;
   line-height: 1;
-  font-family: var(--vie-font-mono);
+  font-family: var(--vie-font-sans);
 }
 
 .vie-wordmark--nav {
-  font-size: 1rem;
+  font-size: 1.2rem;
 }
 
 .vie-wordmark--mast {
@@ -141,22 +141,68 @@ body {
   font-size: clamp(2.8rem, 5vw, 4.4rem);
 }
 
-.vie-mark-bracket,
-.vie-mark-slash {
-  color: var(--vie-ink-soft);
-  font-weight: 500;
+.vie-wordmark-mark {
+  position: relative;
+  width: 1.62em;
+  height: 1.62em;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  background: var(--vie-green);
+  border: 1px solid #178c5e;
+  border-radius: 0.32em;
+  box-shadow: 0 7px 15px rgba(32, 165, 111, 0.24);
+  font-family: var(--vie-font-mono);
+  letter-spacing: 0;
 }
 
-.vie-v {
+.vie-wordmark-mark::before {
+  position: absolute;
+  top: 0.34em;
+  right: 0.18em;
+  width: 0.58em;
+  height: 1px;
+  content: '';
+  background: #b7f0d5;
+  transform: rotate(-36deg);
+  transform-origin: right center;
+}
+
+.vie-wordmark-mark::after {
+  position: absolute;
+  top: 0.2em;
+  right: 0.18em;
+  width: 0.28em;
+  height: 0.28em;
+  content: '';
+  background: #d5f8e5;
+  border-radius: 1px;
+  box-shadow: -0.62em 0.62em 0 -0.04em #8fe1bc;
+}
+
+.vie-wordmark-mark-letter {
+  position: relative;
+  z-index: 1;
+  font-size: 0.78em;
   font-weight: 800;
-  color: var(--vie-green);
+}
+
+.vie-wordmark-name {
+  color: var(--vie-ink);
+  font-size: 1.08em;
+  font-weight: 800;
   letter-spacing: 0;
 }
 
-.vie-ie {
-  font-weight: 700;
-  color: var(--vie-ink);
-  letter-spacing: 0;
+.vie-wordmark--mast .vie-wordmark-mark,
+.vie-wordmark--display .vie-wordmark-mark {
+  border-radius: 0.22em;
+  font-size: 0.58em;
+}
+
+.vie-wordmark--mast .vie-wordmark-name,
+.vie-wordmark--display .vie-wordmark-name {
+  font-weight: 800;
 }
 
 .vie-page {

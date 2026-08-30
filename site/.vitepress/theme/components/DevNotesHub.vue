@@ -21,6 +21,7 @@ import {
   Star,
   Timer,
 } from '@lucide/vue'
+import VieWordmark from './VieWordmark.vue'
 
 type HubKind = 'articles' | 'projects' | 'tools'
 
@@ -78,7 +79,7 @@ const isProjects = props.kind === 'projects'
 <template>
   <div class="dn-hub-page">
     <header class="dn-hub-nav">
-      <a href="/" class="dn-hub-logo" aria-label="DevNotes 首页"><span>&lt;/&gt;</span><strong>DevNotes</strong></a>
+      <VieWordmark to="/" size="nav" />
       <nav aria-label="主导航">
         <a v-for="item in navItems" :key="item.label" :href="item.href" :class="{ 'is-active': (isArticles && item.label === '文章') || (isProjects && item.label === '项目') || (!isArticles && !isProjects && item.label === '工具') }">{{ item.label }}</a>
       </nav>
@@ -143,6 +144,6 @@ const isProjects = props.kind === 'projects'
       </main>
     </div>
 
-    <footer class="dn-hub-footer"><div><a href="/" class="dn-hub-logo"><span>&lt;/&gt;</span><strong>DevNotes</strong></a><p>记录技术、分享经验、创造价值</p><small>© 2024 vie. All rights reserved.</small></div><nav><strong>导航</strong><a href="/">首页</a><a href="/articles/">文章</a><a href="/projects">项目</a><a href="/tools">工具</a><a href="/articles/#tags">标签</a></nav><nav><strong>资源</strong><a href="https://github.com/creatawork">GitHub</a><a href="/articles/">掘金</a><a href="/articles/">站点说明</a><a href="/articles/">知识库</a></nav><nav><strong>友情链接</strong><a href="/articles/">Spring 官网</a><a href="/articles/">Vue.js</a><a href="/articles/">Docker</a><a href="/articles/">更多...</a></nav><div class="dn-hub-footer-art"><Database :size="40" /><Box :size="34" /></div></footer>
+    <footer class="dn-hub-footer"><div><VieWordmark to="/" size="nav" /><p>记录技术、分享经验、创造价值</p><small>© 2024 vie. All rights reserved.</small></div><nav><strong>导航</strong><a href="/">首页</a><a href="/articles/">文章</a><a href="/projects">项目</a><a href="/tools">工具</a><a href="/articles/#tags">标签</a></nav><nav><strong>资源</strong><a href="https://github.com/creatawork">GitHub</a><a href="/articles/">掘金</a><a href="/articles/">站点说明</a><a href="/articles/">知识库</a></nav><nav><strong>友情链接</strong><a href="/articles/">Spring 官网</a><a href="/articles/">Vue.js</a><a href="/articles/">Docker</a><a href="/articles/">更多...</a></nav><div class="dn-hub-footer-art"><Database :size="40" /><Box :size="34" /></div></footer>
   </div>
 </template>

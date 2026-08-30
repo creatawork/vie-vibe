@@ -83,26 +83,6 @@
   border-bottom: 1px solid #edf1f4;
 }
 
-.dn-logo {
-  display: inline-flex;
-  align-items: center;
-  width: max-content;
-  gap: 2px;
-  font-size: 17px;
-  line-height: 1;
-}
-
-.dn-logo span {
-  color: #2db49a;
-  font-family: var(--vie-font-mono);
-  font-weight: 700;
-}
-
-.dn-logo strong {
-  color: #101317;
-  font-weight: 750;
-}
-
 .dn-nav > nav {
   display: flex;
   justify-content: center;

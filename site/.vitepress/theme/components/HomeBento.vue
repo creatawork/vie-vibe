@@ -18,6 +18,7 @@ import {
   Timer,
   Wrench,
 } from '@lucide/vue'
+import VieWordmark from './VieWordmark.vue'
 
 const metrics = [
   { label: '文章', value: '56', unit: '篇', icon: FileText, tone: 'blue' },
@@ -95,9 +96,7 @@ const utilities = [
 <template>
   <div class="dn-page">
     <header class="dn-nav">
-      <a href="/" class="dn-logo" aria-label="DevNotes 首页">
-        <span>&lt;</span><strong>DevNotes</strong><span>/&gt;</span>
-      </a>
+      <VieWordmark to="/" size="nav" />
       <nav aria-label="首页导航">
         <a class="is-active" href="/">首页</a>
         <a href="/articles/">文章</a>
@@ -226,7 +225,7 @@ const utilities = [
 
     <footer id="about" class="dn-footer">
       <div class="dn-footer-brand">
-        <a href="/" class="dn-logo"><span>&lt;</span><strong>DevNotes</strong><span>/&gt;</span></a>
+        <VieWordmark to="/" size="nav" />
         <p>记录技术、分享经验、创造价值</p>
         <small>© 2024 vie. All rights reserved.</small>
       </div>
