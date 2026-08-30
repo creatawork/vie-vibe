@@ -1,7 +1,7 @@
 ---
-title: 成果
+title: 项目
 aside: false
 titleTemplate: false
 ---
 
-<Projects />
+<DevNotesHub kind="projects" />

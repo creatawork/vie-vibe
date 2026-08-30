@@ -9,9 +9,11 @@ import Projects from './components/Projects.vue'
 import SeriesIndex from './components/SeriesIndex.vue'
 import SeriesPage from './components/SeriesPage.vue'
 import StatsView from './components/StatsView.vue'
+import DevNotesHub from './components/DevNotesHub.vue'
 import './custom.css'
 import './vie-bento.css'
 import './home-reference.css'
+import './hub-reference.css'
 
 export default {
   extends: DefaultTheme,
@@ -26,5 +28,6 @@ export default {
     app.component('SeriesIndex', SeriesIndex)
     app.component('SeriesPage', SeriesPage)
     app.component('StatsView', StatsView)
+    app.component('DevNotesHub', DevNotesHub)
   },
 }

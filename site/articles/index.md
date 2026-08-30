@@ -4,4 +4,4 @@ aside: false
 titleTemplate: false
 ---
 
-<ArticleList />
+<DevNotesHub kind="articles" />

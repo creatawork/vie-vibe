@@ -11,6 +11,7 @@ const { frontmatter } = useData()
 const route = useRoute()
 
 const isHome = computed(() => route.path === '/' || route.path === '/index.html')
+const isHub = computed(() => ['/articles/', '/projects', '/tools'].includes(route.path))
 
 const wordCount = ref(0)
 const readingTime = ref(0)
@@ -50,7 +51,7 @@ onMounted(() => {
       FORM: user-pinned reference image, rebuilt as a multi-surface portfolio notebook; seed image-reference-20260830.
       FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance.
     -->
-    <Layout :class="['vie-vibe', isHome && 'vie-page-home']">
+    <Layout :class="['vie-vibe', isHome && 'vie-page-home', isHub && 'vie-page-hub']">
     <template #nav-bar-title-before>
       <VieWordmark to="/" size="nav" />
     </template>
@@ -68,7 +69,7 @@ onMounted(() => {
       <SeriesNav v-if="frontmatter.series" />
     </template>
     <template #layout-bottom>
-      <footer v-if="!isHome" class="vie-site-footer">
+      <footer v-if="!isHome && !isHub" class="vie-site-footer">
         <div class="vie-footer-inner">
           <div class="vie-footer-brand">
             <VieWordmark to="/" size="nav" />
