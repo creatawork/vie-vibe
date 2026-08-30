@@ -36,50 +36,49 @@ const maxPv = computed(() =>
 <template>
   <VieShell path="stats-view" hint="private">
     <section v-if="!data" class="vie-panel vie-panel--gate">
-      <div class="vie-tile-tab vie-mono">auth/required</div>
-      <p class="vie-code-comment vie-mono">// 输入口令查看统计数据</p>
+      <h2 class="vie-feed-label">访问统计</h2>
+      <p class="vie-code-comment">输入口令查看后台汇总数据。</p>
       <div class="vie-gate-form">
         <input
           v-model="key"
           type="password"
-          class="vie-gate-input vie-mono"
+          class="vie-gate-input"
           placeholder="key"
           @keyup.enter="load"
         />
         <button type="button" class="vie-run-btn" :disabled="loading" @click="load">
-          <span class="vie-mono">→</span>
           {{ loading ? 'loading…' : 'unlock' }}
         </button>
       </div>
-      <p v-if="error" class="vie-gate-error vie-mono">{{ error }}</p>
+      <p v-if="error" class="vie-gate-error">{{ error }}</p>
     </section>
 
     <template v-else>
       <div class="vie-stats-cards">
         <div class="vie-tile vie-stats-card">
-          <span class="vie-badge vie-mono">total</span>
+          <span class="vie-badge">total</span>
           <b class="vie-stats-num">{{ data.totalPv }}</b>
-          <span class="vie-mono vie-stats-label">PV</span>
+          <span class="vie-stats-label">PV</span>
         </div>
         <div class="vie-tile vie-stats-card">
-          <span class="vie-badge vie-mono">users</span>
+          <span class="vie-badge">users</span>
           <b class="vie-stats-num">{{ data.totalUv }}</b>
-          <span class="vie-mono vie-stats-label">累计 UV</span>
+          <span class="vie-stats-label">累计 UV</span>
         </div>
         <div class="vie-tile vie-stats-card">
-          <span class="vie-badge vie-mono">today</span>
+          <span class="vie-badge">today</span>
           <b class="vie-stats-num">{{ data.todayPv }}</b>
-          <span class="vie-mono vie-stats-label">今日 PV</span>
+          <span class="vie-stats-label">今日 PV</span>
         </div>
         <div class="vie-tile vie-stats-card">
-          <span class="vie-badge vie-mono">today</span>
+          <span class="vie-badge">today</span>
           <b class="vie-stats-num">{{ data.todayUv }}</b>
-          <span class="vie-mono vie-stats-label">今日 UV</span>
+          <span class="vie-stats-label">今日 UV</span>
         </div>
       </div>
 
       <section class="vie-panel">
-        <div class="vie-tile-tab vie-mono">metrics/trend_30d</div>
+        <h2 class="vie-feed-label">近 30 天趋势</h2>
         <div class="vie-trend" role="img" aria-label="近 30 天 PV 趋势">
           <div
             v-for="d in data.trend"
@@ -92,9 +91,9 @@ const maxPv = computed(() =>
       </section>
 
       <section class="vie-panel">
-        <div class="vie-tile-tab vie-mono">metrics/top_pages</div>
+        <h2 class="vie-feed-label">Top Pages</h2>
         <div class="vie-table-wrap">
-          <table class="vie-table vie-mono">
+          <table class="vie-table">
             <thead>
               <tr><th>path</th><th>pv</th></tr>
             </thead>
@@ -109,9 +108,9 @@ const maxPv = computed(() =>
       </section>
 
       <section class="vie-panel">
-        <div class="vie-tile-tab vie-mono">metrics/sources</div>
+        <h2 class="vie-feed-label">Sources</h2>
         <div class="vie-table-wrap">
-          <table class="vie-table vie-mono">
+          <table class="vie-table">
             <thead>
               <tr><th>source</th><th>pv</th></tr>
             </thead>

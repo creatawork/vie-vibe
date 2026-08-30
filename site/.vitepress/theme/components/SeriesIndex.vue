@@ -7,8 +7,7 @@ import VieShell from './VieShell.vue'
   <VieShell path="series/" hint="collections">
     <p v-if="groups.length === 0" class="vie-empty vie-mono">// no series yet</p>
     <section v-else class="vie-panel">
-      <div class="vie-tile-tab vie-mono">series/index</div>
-      <h2 class="vie-feed-label vie-mono">collections[]</h2>
+      <h2 class="vie-feed-label">专题合集</h2>
       <ul class="vie-feed">
         <li v-for="(g, i) in groups" :key="g.name">
           <span class="vie-ln vie-mono">{{ String(i + 1).padStart(2, '0') }}</span>

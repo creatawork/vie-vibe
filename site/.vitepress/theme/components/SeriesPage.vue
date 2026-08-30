@@ -8,9 +8,8 @@ defineProps<{ name: string; posts: Post[] }>()
 <template>
   <VieShell :path="`series/${name}`" hint="ordered">
     <section class="vie-panel">
-      <div class="vie-tile-tab vie-mono">series/{{ name }}</div>
       <h1 class="vie-series-title">{{ name }}</h1>
-      <p class="vie-code-comment vie-mono">// {{ posts.length }} articles in sequence</p>
+      <p class="vie-code-comment">{{ posts.length }} 篇文章，按实现顺序串起完整上下文。</p>
       <ol class="vie-feed vie-feed--ordered">
         <li v-for="(post, i) in posts" :key="post.url">
           <span class="vie-ln vie-mono">{{ String(i + 1).padStart(2, '0') }}</span>

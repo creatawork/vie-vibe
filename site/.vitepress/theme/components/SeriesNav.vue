@@ -25,9 +25,7 @@ const nav = computed(() => {
 
 <template>
   <nav v-if="nav" class="vie-series-nav" aria-label="系列导航">
-    <div class="vie-tile-tab vie-mono">series/{{ nav.name }}</div>
     <p class="vie-series-nav__meta vie-mono">
-      <span class="vie-syntax-comment">//</span>
       part {{ nav.index }} of {{ nav.total }} ·
       <a :href="`/series/${encodeURIComponent(nav.name)}`">{{ nav.name }}</a>
     </p>

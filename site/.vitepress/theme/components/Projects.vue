@@ -9,10 +9,9 @@ import VieShell from './VieShell.vue'
       <article
         v-for="(p, i) in projects"
         :key="p.name"
-        class="vie-tile vie-tile--ship vie-project-tile"
+        class="vie-project-tile"
       >
-        <div class="vie-tile-tab vie-mono">projects/{{ p.name.toLowerCase().replace(/\s+/g, '-') }}</div>
-        <span class="vie-badge vie-mono">{{ p.featured ? 'featured' : `p${i + 1}` }}</span>
+        <span class="vie-badge">{{ p.featured ? 'featured' : `p${i + 1}` }}</span>
         <img
           v-if="p.image"
           :src="p.image"
