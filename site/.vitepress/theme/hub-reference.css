@@ -40,7 +40,12 @@
   --hub-ink: #151a1f;
   --hub-muted: #7e8891;
   --hub-line: #e8eef2;
-  width: min(1180px, calc(100vw - 32px));
+  --hub-page-max: 1440px;
+  --hub-page-gutter: 32px;
+  width: min(
+    var(--hub-page-max),
+    calc(100% - var(--hub-page-gutter) - var(--hub-page-gutter))
+  );
   margin: 16px auto 32px;
   overflow: hidden;
   color: var(--hub-ink);

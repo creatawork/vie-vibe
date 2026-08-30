@@ -47,7 +47,12 @@
   --dn-muted: #76808a;
   --dn-line: #e9eef2;
   --dn-shadow: 0 14px 36px rgba(42, 56, 67, 0.065);
-  width: min(1180px, calc(100vw - 32px));
+  --dn-page-max: 1440px;
+  --dn-page-gutter: 32px;
+  width: min(
+    var(--dn-page-max),
+    calc(100% - var(--dn-page-gutter) - var(--dn-page-gutter))
+  );
   margin: 16px auto 32px;
   color: var(--dn-ink);
   background: #fff;
