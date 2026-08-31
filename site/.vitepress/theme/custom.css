@@ -89,11 +89,132 @@ body {
   background: transparent;
 }
 
-.VPNavBar,
-.VPNavBar .content {
-  background: rgba(255, 255, 255, 0.78) !important;
+.VPNav,
+.VPLocalNav {
+  display: none !important;
+}
+
+.vie-global-nav {
+  position: sticky;
+  z-index: 30;
+  top: 0;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.9);
+  border-bottom: 1px solid rgba(223, 232, 241, 0.9);
+  box-shadow: 0 8px 24px rgba(27, 40, 56, 0.04);
   backdrop-filter: blur(18px) saturate(1.1);
-  border-bottom: 1px solid rgba(223, 232, 241, 0.85);
+}
+
+.vie-global-nav__inner {
+  width: min(1240px, calc(100% - 32px));
+  min-height: 76px;
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr) 220px;
+  align-items: center;
+  gap: 24px;
+  margin: 0 auto;
+}
+
+.vie-global-nav__links {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: 36px;
+  height: 100%;
+}
+
+.vie-global-nav__links a {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: 76px;
+  color: #53606b;
+  text-decoration: none;
+  font-size: 0.92rem;
+  transition: color 160ms ease;
+}
+
+.vie-global-nav__links a:hover,
+.vie-global-nav__links a.is-active {
+  color: var(--vie-green);
+}
+
+.vie-global-nav__links a.is-active {
+  font-weight: 700;
+}
+
+.vie-global-nav__links a.is-active::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  content: '';
+  background: var(--vie-green);
+}
+
+.vie-global-nav__actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 16px;
+}
+
+.vie-global-nav__search,
+.vie-global-nav__github,
+.vie-global-nav__menu {
+  border: 0;
+  font: inherit;
+}
+
+.vie-global-nav__search {
+  min-width: 150px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 0 15px;
+  color: #7c8791;
+  background: #f5f7f9;
+  border-radius: 999px;
+  cursor: pointer;
+  text-align: left;
+  transition: color 160ms ease, background-color 160ms ease;
+}
+
+.vie-global-nav__search:hover {
+  color: var(--vie-ink);
+  background: #eef3f1;
+}
+
+.vie-global-nav__github {
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  color: #fff;
+  background: #587e71;
+  border: 3px solid #d9efe7;
+  border-radius: 50%;
+  text-decoration: none;
+  font: 700 0.8rem var(--vie-font-mono);
+  transition: transform 160ms ease, background-color 160ms ease;
+}
+
+.vie-global-nav__github svg {
+  display: none;
+}
+
+.vie-global-nav__github:hover {
+  background: #416a5c;
+  transform: translateY(-1px);
+}
+
+.vie-global-nav__menu,
+.vie-global-nav__mobile {
+  display: none;
 }
 
 .VPNavBarTitle .title {
@@ -1132,6 +1253,13 @@ body {
 }
 
 @media (max-width: 1100px) {
+  .vie-global-nav__inner {
+    grid-template-columns: 180px minmax(0, 1fr) 180px;
+    gap: 16px;
+  }
+
+  .vie-global-nav__links { gap: 24px; }
+
   .vie-hero {
     grid-template-columns: 1fr;
   }
@@ -1152,6 +1280,77 @@ body {
 }
 
 @media (max-width: 720px) {
+  .vie-global-nav__inner {
+    width: calc(100% - 24px);
+    min-height: 64px;
+    grid-template-columns: 1fr auto;
+  }
+
+  .vie-global-nav__links { display: none; }
+
+  .vie-global-nav__actions { gap: 8px; }
+
+  .vie-global-nav__search {
+    min-width: 40px;
+    width: 40px;
+    justify-content: center;
+    padding: 0;
+  }
+
+  .vie-global-nav__search span { display: none; }
+
+  .vie-global-nav__github {
+    width: 36px;
+    height: 36px;
+  }
+
+  .vie-global-nav__menu {
+    width: 40px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    color: var(--vie-ink);
+    background: transparent;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  .vie-global-nav__menu:hover { background: #f0f5f3; }
+
+  .vie-global-nav__mobile {
+    width: calc(100% - 24px);
+    display: grid;
+    gap: 4px;
+    padding: 8px 0 12px;
+    margin: 0 auto;
+    border-top: 1px solid var(--vie-line);
+  }
+
+  .vie-global-nav__mobile a,
+  .vie-global-nav__mobile button {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 12px;
+    color: var(--vie-ink);
+    background: transparent;
+    border: 0;
+    border-radius: 8px;
+    font: 500 0.9rem/1 var(--vie-font-body);
+    text-decoration: none;
+    text-align: left;
+  }
+
+  .vie-global-nav__mobile a:hover,
+  .vie-global-nav__mobile a.is-active,
+  .vie-global-nav__mobile button:hover {
+    color: var(--vie-green);
+    background: #f0f7f4;
+  }
+
   .vie-page,
   .vie-bento-home {
     max-width: calc(100vw - 20px);

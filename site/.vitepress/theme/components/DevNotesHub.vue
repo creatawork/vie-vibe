@@ -14,7 +14,6 @@ import {
   KeyRound,
   LayoutGrid,
   List,
-  Search,
   Settings2,
   ShieldCheck,
   Sparkles,
@@ -26,15 +25,6 @@ import VieWordmark from './VieWordmark.vue'
 type HubKind = 'articles' | 'projects' | 'tools'
 
 const props = defineProps<{ kind: HubKind }>()
-
-const navItems = [
-  { label: '首页', href: '/' },
-  { label: '文章', href: '/articles/' },
-  { label: '项目', href: '/projects' },
-  { label: '工具', href: '/tools' },
-  { label: '标签', href: '/articles/#tags' },
-  { label: '关于', href: '/#about' },
-]
 
 const articleItems = [
   { title: 'Spring Boot 3.x 新特性实践指南', description: '深入探索 Spring Boot 3.x 带来的变化和新特性，包括性能提升、原生镜像支持等。', date: '2024-05-20', views: '1.2k', comments: '28', tags: ['Java', 'Spring Boot'], icon: Sparkles, tone: 'spring' },
@@ -66,9 +56,9 @@ const toolItems = [
 ]
 
 const pageData = {
-  articles: { title: '全部文章', count: '共 56 篇文章', search: '搜索文章...', sideTitle: '内容', sideItems: [['全部文章', '56'], ['后端开发', '23'], ['系统设计', '12'], ['数据库', '8'], ['AI/机器学习', '7'], ['工具分享', '6']] },
-  projects: { title: '全部项目', count: '共 12 个项目', search: '搜索项目...', sideTitle: '项目', sideItems: [['全部项目', '12'], ['个人项目', '8'], ['开源项目', '4']] },
-  tools: { title: '全部工具', count: '精选实用工具，提升开发效率', search: '搜索工具...', sideTitle: '工具分类', sideItems: [['全部工具', '8'], ['开发效率', '4'], ['格式化转换', '2'], ['生成工具', '2']] },
+  articles: { title: '全部文章', count: '共 56 篇文章', sideTitle: '内容', sideItems: [['全部文章', '56'], ['后端开发', '23'], ['系统设计', '12'], ['数据库', '8'], ['AI/机器学习', '7'], ['工具分享', '6']] },
+  projects: { title: '全部项目', count: '共 12 个项目', sideTitle: '项目', sideItems: [['全部项目', '12'], ['个人项目', '8'], ['开源项目', '4']] },
+  tools: { title: '全部工具', count: '精选实用工具，提升开发效率', sideTitle: '工具分类', sideItems: [['全部工具', '8'], ['开发效率', '4'], ['格式化转换', '2'], ['生成工具', '2']] },
 } as const
 
 const data = pageData[props.kind]
@@ -78,17 +68,6 @@ const isProjects = props.kind === 'projects'
 
 <template>
   <div class="dn-hub-page">
-    <header class="dn-hub-nav">
-      <VieWordmark to="/" size="nav" />
-      <nav aria-label="主导航">
-        <a v-for="item in navItems" :key="item.label" :href="item.href" :class="{ 'is-active': (isArticles && item.label === '文章') || (isProjects && item.label === '项目') || (!isArticles && !isProjects && item.label === '工具') }">{{ item.label }}</a>
-      </nav>
-      <div class="dn-hub-actions">
-        <a class="dn-hub-search" :href="'#' + props.kind + '-search'" :aria-label="data.search"><Search :size="15" /><span>{{ data.search }}</span></a>
-        <a class="dn-hub-avatar" href="https://github.com/creatawork" aria-label="GitHub 主页">V</a>
-      </div>
-    </header>
-
     <div class="dn-hub-body">
       <aside class="dn-hub-sidebar">
         <section>

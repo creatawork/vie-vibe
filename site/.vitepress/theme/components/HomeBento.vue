@@ -12,7 +12,6 @@ import {
   Fingerprint,
   FolderKanban,
   KeyRound,
-  Search,
   Sparkles,
   Tag,
   Timer,
@@ -94,24 +93,6 @@ const utilities = [
 
 <template>
   <div class="dn-page">
-    <header class="dn-nav">
-      <VieWordmark to="/" size="nav" />
-      <nav aria-label="首页导航">
-        <a class="is-active" href="/">首页</a>
-        <a href="/articles/">文章</a>
-        <a href="/projects">项目</a>
-        <a href="#utilities">工具</a>
-        <a href="#about">关于</a>
-      </nav>
-      <div class="dn-nav-actions">
-        <a class="dn-search" href="/articles/" aria-label="搜索文章">
-          <Search :size="17" />
-          <span>搜索</span>
-        </a>
-        <a class="dn-avatar" href="https://github.com/creatawork" aria-label="GitHub 主页">V</a>
-      </div>
-    </header>
-
     <main>
       <section class="dn-hero" aria-labelledby="dn-title">
         <div class="dn-hero-copy">

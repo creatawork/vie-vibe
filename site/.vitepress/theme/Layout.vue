@@ -4,6 +4,7 @@ import { useData, useRoute } from 'vitepress'
 import { computed, onMounted, ref, watch, nextTick } from 'vue'
 import SeriesNav from './components/SeriesNav.vue'
 import VieWordmark from './components/VieWordmark.vue'
+import VieGlobalNav from './components/VieGlobalNav.vue'
 import { sendTrack } from './track'
 
 const { Layout } = DefaultTheme
@@ -52,6 +53,9 @@ onMounted(() => {
       FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance.
     -->
     <Layout :class="['vie-vibe', isHome && 'vie-page-home', isHub && 'vie-page-hub']">
+    <template #layout-top>
+      <VieGlobalNav />
+    </template>
     <template #nav-bar-title-before>
       <VieWordmark to="/" size="nav" />
     </template>
