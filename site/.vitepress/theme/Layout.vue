@@ -13,6 +13,7 @@ const route = useRoute()
 
 const isHome = computed(() => route.path === '/' || route.path === '/index.html')
 const isHub = computed(() => route.path === '/articles/' || route.path === '/projects' || route.path === '/tools' || route.path.startsWith('/tools/'))
+const isTools = computed(() => route.path === '/tools' || route.path.startsWith('/tools/'))
 
 const wordCount = ref(0)
 const readingTime = ref(0)
@@ -52,7 +53,7 @@ onMounted(() => {
       FORM: user-pinned reference image, rebuilt as a multi-surface portfolio notebook; seed image-reference-20260830.
       FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance.
     -->
-    <Layout :class="['vie-vibe', isHome && 'vie-page-home', isHub && 'vie-page-hub']">
+    <Layout :class="['vie-vibe', isHome && 'vie-page-home', isHub && 'vie-page-hub', isTools && 'vie-page-tools']">
     <template #layout-top>
       <VieGlobalNav />
     </template>

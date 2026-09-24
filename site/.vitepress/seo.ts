@@ -32,7 +32,7 @@ export function headTagsForPage(pageData: HeadPageData, siteUrl: string): HeadCo
   const isArticle = rel.startsWith('articles/') && !rel.endsWith('index.md')
   const fmImage = pageData.frontmatter.image
   const image =
-    (typeof fmImage === 'string' && fmImage && `${siteUrl}${fmImage}`) ||
+    (typeof fmImage === 'string' && fmImage.startsWith('/') && `${siteUrl}${fmImage}`) ||
     `${siteUrl}/images/vie-home.png`
   return [
     [

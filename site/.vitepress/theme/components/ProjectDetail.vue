@@ -36,13 +36,13 @@ const entries = computed(() => project.value?.log ?? [])
       <div class="vie-chip-row">
         <span v-for="t in project.tags" :key="t" class="vie-chip vie-chip--accent">{{ t }}</span>
       </div>
-      <div class="vie-link-row vie-mono">
+      <div v-if="project.github || project.demo" class="vie-link-row vie-mono">
         <a v-if="project.github" :href="project.github" target="_blank" rel="noopener">gh</a>
         <a v-if="project.demo" :href="project.demo" target="_blank" rel="noopener">demo</a>
       </div>
 
       <section class="vie-timeline" aria-label="开发日志">
-        <ol v-if="entries.length" class="vie-timeline-list">
+        <ol v-if="entries.length" class="vie-timeline-list" role="list">
           <li
             v-for="(e, i) in entries"
             :key="e.date + '-' + i"
@@ -63,7 +63,7 @@ const entries = computed(() => project.value?.log ?? [])
               <img
                 v-if="e.image"
                 :src="e.image"
-                :alt="e.title"
+                alt=""
                 class="vie-timeline-img"
                 loading="lazy"
                 decoding="async"

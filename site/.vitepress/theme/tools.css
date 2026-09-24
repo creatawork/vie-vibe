@@ -1,3 +1,40 @@
+.vie-page-tools .VPNav,
+.vie-page-tools > .VPFooter,
+.vie-page-tools .VPLocalNav,
+.vie-page-tools .VPDocFooter,
+.vie-page-tools .aside {
+  display: none !important;
+}
+
+.vie-page-tools .VPContent,
+.vie-page-tools .VPDoc,
+.vie-page-tools .VPDoc .container,
+.vie-page-tools .VPDoc .content,
+.vie-page-tools .VPDoc .content-container,
+.vie-page-tools .vp-doc {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+.vie-page-tools .VPDoc .content-container { display: block; }
+.vie-page-tools { background: #f7f9fb; }
+
+/* Hub pages are full-width app surfaces, not VitePress reading columns. */
+.vie-page-tools .VPDoc .container,
+.vie-page-tools .VPDoc .content,
+.vie-page-tools .VPDoc .content-container,
+.vie-page-tools .VPDoc .main {
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+}
+
+.vie-page-tools .VPDoc .container {
+  display: block !important;
+}
+
 .vie-page-hub .VPContent,
 .vie-page-hub .VPDoc,
 .vie-page-hub .VPDoc .container,

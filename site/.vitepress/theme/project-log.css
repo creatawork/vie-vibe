@@ -45,11 +45,15 @@
   margin-top: 40px;
 }
 
-.vie-timeline-list {
+.vie-project-detail .vie-timeline-list {
   list-style: none;
   margin: 0;
   padding: 0 0 0 22px;
   border-left: 2px solid var(--vie-line);
+}
+
+.vie-project-detail .vie-timeline-item + .vie-timeline-item {
+  margin-top: 0;
 }
 
 .vie-timeline-item {

@@ -46,7 +46,7 @@ for (const file of walkMd(articlesDir)) {
 const projectsSrc = fs.readFileSync(path.join(siteRoot, 'projects.source.ts'), 'utf8')
 const vieNames = projectsSrc.match(/name: 'Vie'/g) || []
 if (vieNames.length !== 1) {
-  errors.push(`projects.data.ts: expected exactly one name: 'Vie', got ${vieNames.length}`)
+  errors.push(`projects.source.ts: expected exactly one name: 'Vie', got ${vieNames.length}`)
 }
 const galleryNames = projectsSrc.match(/name: 'VIE Gallery'/g) || []
 if (galleryNames.length !== 1) {
@@ -57,11 +57,11 @@ if (slugNames.length !== 1) {
   errors.push(`projects.source.ts: expected exactly one slug: 'vie-gallery', got ${slugNames.length}`)
 }
 if (!projectsSrc.includes('featured: true')) {
-  errors.push(`projects.data.ts: missing featured: true`)
+  errors.push(`projects.source.ts: missing featured: true`)
 }
 const hrefs = projectsSrc.match(/href: '\/articles\//g) || []
 if (hrefs.length < 3) {
-  errors.push(`projects.data.ts: expected >= 3 decision hrefs, got ${hrefs.length}`)
+  errors.push(`projects.source.ts: expected >= 3 decision hrefs, got ${hrefs.length}`)
 }
 
 const home = fs.readFileSync(
