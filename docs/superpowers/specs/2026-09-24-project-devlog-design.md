@@ -9,6 +9,7 @@
 - `/projects` 与 `/articles/` 渲染的是 `DevNotesHub.vue` 的一整套假数据：假项目（"Spring Boot 3.x 静态开发框架"等）、假浏览量、假侧边栏计数，以及与站点定位冲突的「登录 / 注册」假入口。
 - 对应的真组件 `Projects.vue`（读 `projects.data.ts`）与 `ArticleList.vue`（读 `articles.data.ts`）已实现并注册，但未被任何页面路由。
 - `vie-gallery` 已达 V1 Ready（2026-09-12 签收，`docs/v1-ready-signoff.md`），开发过程无处沉淀，项目地址无法挂在站点成果页。
+- 已知遗留（本单不动）：首页 `HomeBento.vue` 的 `metrics`（「文章 56 篇 / 项目 12 个」等假数字）与本地假文章卡也是写死的；首页真数据化按已定范围另单处理。`VieAmbient.vue` 读真数据（仅 `projects.length`），不受本单影响。
 
 成功标准：`/projects` 展示真实项目卡片；`vie-gallery` 有独立详情页，时间线记录开发里程碑并可持续追加；日志能点进站内真实文章；两页假数据组件下线；记录流程轻到"完成一个功能点加一个对象"。
 
@@ -16,7 +17,7 @@
 
 ### 做
 
-1. `projects.data.ts` 扩展 `Project` 类型（`slug` / `status` / `log`），录入 `VIE Gallery` 数据（含首条里程碑）。
+1. 新建 `projects.source.ts`（全部类型 + `projectsSource` 数据，纯 TS）并把 `projects.data.ts` 收成 loader 薄壳；录入 `VIE Gallery` 数据（含首条里程碑）。
 2. `projects.md` 路由切换到 `Projects`；`Projects.vue` 增加 status 徽章与「日志 →」入口。
 3. 新页面 `site/projects/vie-gallery.md` + 新组件 `ProjectDetail.vue`（纵向时间线）+ 新样式 `project-log.css`。
 4. `articles/index.md` 路由切换到 `ArticleList`（组件已实现，零新开发）。
@@ -28,19 +29,19 @@
 
 ### 不做
 
-评论、登录、后台、多语言；git API / CI 自动同步日志（手动录入数据文件）；VitePress 动态路由（`[slug].md` + `routes.ts`，项目数 ≤2 不值得）；日志进 RSS feed；标签页；`HomeBento` 改版（`ships` 计数随真数据自动变化，featured 卡仍取 `featured` 项目，无需改动）；`vie-gallery` 全史回填（以当前状态为基准，向前持续记录）；文章/工具以外的新内容类型。
+评论、登录、后台、多语言；git API / CI 自动同步日志（手动录入数据文件）；VitePress 动态路由（`[slug].md` + `routes.ts`，项目数 ≤2 不值得）；日志进 RSS feed；标签页；`HomeBento` 改版（首页 metrics 与文章卡也是写死的本地常量，见 §1 已知遗留——首页真数据化按已定范围另单处理）；`vie-gallery` 全史回填（以当前状态为基准，向前持续记录）；文章/工具以外的新内容类型。
 
 ## 3. 约束（全局）
 
 - 沿用上一单（`2026-08-26-interviewer-proof`）：品牌 Vie；原则「内容质量 > 视觉呈现 > 功能复杂度」；统计仅后台；尊重 `prefers-reduced-motion`；Git 提交不带 `Co-authored-by: Cursor`。
 - 不新增运行时依赖：`vitest`、`@lucide/vue` 均已在 `site/package.json` devDependencies。
 - 样式沿用已实现的浅色 token（`custom.css` 的 `--vie-*`），复用 `.vie-badge` / `.vie-chip` / `.vie-link-row` / `.vie-feed` / `.vie-empty` 等现有类；新样式单独成文件，不塞进 `vie-bento.css`。
-- URL 冻结修订：新增 `/projects/<slug>`；slug 必须在 `projects.data.ts` 显式登记，且页面文件 `site/projects/<slug>.md` 显式创建——不产生任意 URL。
+- URL 冻结修订：新增 `/projects/<slug>`；slug 必须在 `projects.source.ts` 显式登记，且页面文件 `site/projects/<slug>.md` 显式创建——不产生任意 URL。
 - 日志为手动记录，以当前状态为基准（不回填全史），之后每完成一个功能点追加一条。
 
 ## 4. 架构
 
-仍是静态站，本迭代只动 `site/` 内容与主题。数据源头唯一：`projects.data.ts`（手编 TS，编译期类型校验），构建期进 SSG，无新后端、无新运行时。
+仍是静态站，本迭代只动 `site/` 内容与主题。数据源头唯一：`projects.source.ts`（手编 TS，编译期类型校验；`projects.data.ts` 只留 loader 薄壳），构建期进 SSG，无新后端、无新运行时。
 
 ```text
 访客
@@ -55,7 +56,8 @@
 
 | 单元 | 职责 | 依赖 |
 |------|------|------|
-| `site/projects.data.ts` | 唯一项目源：`Project` / `ProjectLogEntry` 类型与数据 | 无 |
+| `site/projects.source.ts`（新） | 唯一数据源：全部类型 + `projectsSource` 数组（纯 TS，vitest 可直接导入） | 无 |
+| `site/projects.data.ts` | VitePress data loader 薄壳，从 source 组装 `load()` | `projects.source` |
 | `site/projects.md` | 路由 `<Projects />` | theme 注册 |
 | `site/projects/vie-gallery.md` | 详情页路由，frontmatter 承载 title/description | theme 注册 |
 | `theme/components/Projects.vue` | 列表网格：徽章、决策、chips、gh/demo、日志入口 | `projects.data` |
@@ -68,9 +70,10 @@
 
 ## 5. 内容模型
 
-`site/projects.data.ts` 全量类型定义：
+数据与类型集中在 `site/projects.source.ts`（纯 TS 模块，无 VitePress 虚拟导出，vitest 可直接 import）；`site/projects.data.ts` 只留 loader 薄壳：
 
 ```ts
+// site/projects.source.ts —— 接口与数据
 export interface ProjectDecision {
   text: string
   href?: string
@@ -105,6 +108,22 @@ export interface Project {
 }
 ```
 
+`site/projects.data.ts` 薄壳（`projectsSource` 数组本体在 source 文件里，§6）：
+
+```ts
+import { projectsSource, type Project } from './projects.source'
+
+declare const data: Project[]
+export { data }
+
+export default {
+  watch: [],
+  load(): Project[] {
+    return projectsSource
+  },
+}
+```
+
 数据契约（由 Task 测试强制）：
 
 - `slug` 在全部项目内唯一；有 `slug` 的项目必须存在 `site/projects/<slug>.md`。
@@ -125,7 +144,7 @@ type 图标映射（`@lucide/vue`）：
 
 ## 6. 初始数据
 
-两条记录（`featured` 仅 Vie 为 `true`，首页 featured 卡行为不变）：
+两条记录（位于 `projectsSource` 数组；`featured` 仅 Vie 为 `true`，首页 featured 卡行为不变）：
 
 1. **Vie**：现有字段全部保留，新增 `status: 'live'`，不加 `slug` 与 `log`（无详情页）。
 2. **VIE Gallery**（文案为草案，用户改定后为准）：
@@ -221,16 +240,16 @@ const image =
 ## 11. 死代码清理与守卫同步
 
 - 删除：`theme/components/DevNotesHub.vue`、`theme/hub-reference.css`，及 `theme/index.ts` 中的 import / `app.component` / css import 三处引用（该组件内含的假计数、「登录/注册」假入口一并消失）。
-- `scripts/check-content.mjs` 现有断言「`name: 'Vie'` 恰好一次」保留，追加：
+- `scripts/check-content.mjs` 的 `projectsSrc` 读取路径由 `projects.data.ts` 改为 `projects.source.ts`（数据搬家）；「`name: 'Vie'` 恰好一次」保留，追加：
 
 ```js
 const galleryNames = projectsSrc.match(/name: 'VIE Gallery'/g) || []
 if (galleryNames.length !== 1) {
-  errors.push(`projects.data.ts: expected exactly one name: 'VIE Gallery', got ${galleryNames.length}`)
+  errors.push(`projects.source.ts: expected exactly one name: 'VIE Gallery', got ${galleryNames.length}`)
 }
 const slugNames = projectsSrc.match(/slug: 'vie-gallery'/g) || []
 if (slugNames.length !== 1) {
-  errors.push(`projects.data.ts: expected exactly one slug: 'vie-gallery', got ${slugNames.length}`)
+  errors.push(`projects.source.ts: expected exactly one slug: 'vie-gallery', got ${slugNames.length}`)
 }
 ```
 
@@ -245,7 +264,7 @@ if (slugNames.length !== 1) {
 
 ### 13.1 数据契约测试（新 `test:data`）
 
-`site/package.json` 增加 `"test:data": "vitest run --dir .vitepress/theme/data"`。测试文件 `.vitepress/theme/data/projects.data.test.ts` 断言：
+`site/package.json` 增加 `"test:data": "vitest run --dir .vitepress/theme/data"`。测试文件 `.vitepress/theme/data/projects.data.test.ts`，从 `projects.source` 导入 `projectsSource`（`.data.ts` 的虚拟 `data` 导出在 vitest 下不可解析，这正是 source/data 拆分的原因）。断言：
 
 1. 有 `slug` 的项目 slug 唯一，且包含 `'vie-gallery'`；
 2. 每个有 `slug` 的项目存在 `site/projects/<slug>.md`；
@@ -270,13 +289,13 @@ if (slugNames.length !== 1) {
 
 ## 14. PRODUCT.md / DESIGN.md 同步
 
-- `PRODUCT.md` Constraints：URL 冻结行改为「`/`、`/articles/`、`/projects`、`/projects/<slug>`、`/series/`、`/tools`、`/tools/*`、隐藏 `/stats-view`；`<slug>` 限于 `projects.data.ts` 显式登记的项目」。
+- `PRODUCT.md` Constraints：URL 冻结行改为「`/`、`/articles/`、`/projects`、`/projects/<slug>`、`/series/`、`/tools`、`/tools/*`、隐藏 `/stats-view`；`<slug>` 限于 `projects.source.ts` 显式登记的项目」。
 - `PRODUCT.md` Capabilities 增一行：「项目开发日志：成果页真数据 + 项目详情页时间线（数据文件手动录入）」。
 - `DESIGN.md` Hub pages 行的组件清单追加 `ProjectDetail`。
 
 ## 15. 实现顺序（摘要）
 
-1. `projects.data.ts`：类型扩展 + Vie 补 `status` + VIE Gallery 全量数据  
+1. `site/projects.source.ts`（类型 + `projectsSource` 数据）与 `site/projects.data.ts`（loader 薄壳）；Vie 补 `status`，VIE Gallery 全量数据  
 2. `Projects.vue`：状态徽章 + 日志入口  
 3. `ProjectDetail.vue` + `site/projects/vie-gallery.md` + `project-log.css` + theme 注册  
 4. `articles/index.md` 路由切换  
