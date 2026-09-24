@@ -12,3 +12,6 @@ site/*.timestamp-*.mjs
 deploy/.env
 deploy/gh-deploy
 deploy/gh-deploy.pub
+
+# superpowers worktrees
+.worktrees/
