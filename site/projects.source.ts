@@ -67,6 +67,7 @@ export const projectsSource: Project[] = [
     status: 'building',
     description:
       '个人相册产品：admin + viewer 双端。原图保存、相册整理、2D/3D 空间展示、受控链接分享。',
+    image: '/images/projects/vie-gallery-viewer.png',
     tags: ['Vue 3', 'Three.js', 'Spring Boot', 'MyBatis-Plus', 'Docker'],
     featured: false,
     log: [
