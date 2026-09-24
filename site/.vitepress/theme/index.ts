@@ -10,7 +10,6 @@ import ProjectDetail from './components/ProjectDetail.vue'
 import SeriesIndex from './components/SeriesIndex.vue'
 import SeriesPage from './components/SeriesPage.vue'
 import StatsView from './components/StatsView.vue'
-import DevNotesHub from './components/DevNotesHub.vue'
 import ToolIndex from './components/tools/ToolIndex.vue'
 import ToolShell from './components/tools/ToolShell.vue'
 import JsonWorkbench from './components/tools/JsonWorkbench.vue'
@@ -19,7 +18,6 @@ import JwtParser from './components/tools/JwtParser.vue'
 import './custom.css'
 import './vie-bento.css'
 import './home-reference.css'
-import './hub-reference.css'
 import './tools.css'
 import './project-log.css'
 
@@ -37,7 +35,6 @@ export default {
     app.component('SeriesIndex', SeriesIndex)
     app.component('SeriesPage', SeriesPage)
     app.component('StatsView', StatsView)
-    app.component('DevNotesHub', DevNotesHub)
     app.component('ToolIndex', ToolIndex)
     app.component('ToolShell', ToolShell)
     app.component('JsonWorkbench', JsonWorkbench)
