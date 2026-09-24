@@ -6,6 +6,7 @@
     "dev": "vitepress dev",
     "check:content": "node scripts/check-content.mjs",
     "test:tools": "vitest run --dir .vitepress/theme/tools",
+    "test:data": "vitest run --dir .vitepress/theme/data",
     "build": "vitepress build",
     "preview": "vitepress preview"
   },

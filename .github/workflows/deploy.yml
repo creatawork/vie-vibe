@@ -57,6 +57,7 @@ jobs:
         run: |
           npm ci
           npm run check:content
+          npm run test:data
           npm run build
 
       - name: 上传产物到临时目录
