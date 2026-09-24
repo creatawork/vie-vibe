@@ -256,7 +256,7 @@ if (slugNames.length !== 1) {
 ### 13.2 内容守卫与构建
 
 - `npm run check:content` 全绿（含 §11 新断言）。
-- `npm run build` 成功，产物检查：`dist/projects/index.html` 含「VIE Gallery」「开发中」；`dist/projects/vie-gallery.html` 存在且含「V1 Ready」；两个页面均不再含 DevNotesHub 专属字符串（「标签云」「学习进度」「登录 / 注册」）。
+- `npm run build` 成功，产物检查：`dist/projects.html` 含「VIE Gallery」「开发中」；`dist/projects/vie-gallery.html` 存在且含「V1 Ready」；两个页面均不再含 DevNotesHub 专属字符串（「标签云」「学习进度」「登录 / 注册」）。
 - CI：`.github/workflows/deploy.yml` 的 `site` job 在 `check:content` 后、`build` 前加一行 `npm run test:data`。
 
 ### 13.3 视觉验收
