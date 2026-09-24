@@ -35,7 +35,7 @@ Articles render on a dark **reading panel** (`vie-surface`) over the dot-grid ch
 
 - **Shell:** single column; no asymmetric masthead. Top nav + `VieShell` page chrome on list/hub pages.
 - **Home:** `<HomeBento />` — status bar, thesis tile (plus positioning line), featured ship, metrics, latest post, feed, series tile, overview-article tile, terminal snippet, and three real tool links.
-- **Hub pages:** `ArticleList`, `Projects`, `SeriesIndex`, `SeriesPage`, `StatsView` use `VieShell` + `vie-panel` / `vie-tile` / `vie-feed`.
+- **Hub pages:** `ArticleList`, `Projects`, `ProjectDetail`, `SeriesIndex`, `SeriesPage`, `StatsView` use `VieShell` + `vie-panel` / `vie-tile` / `vie-feed`.
 - **Tools:** `/tools` is a focused tool index; `/tools/json`, `/tools/timestamp`, and `/tools/jwt` use a shared `ToolShell` with browser-only processing, explicit error states, and responsive workbenches.
 - **Articles:** dark `vie-surface` reading panel; `SeriesNav` as vibe tile footer; VP right aside TOC restored.
 
