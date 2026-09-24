@@ -7,11 +7,11 @@ import VieShell from './VieShell.vue'
   <VieShell path="projects/" hint="ship">
     <div class="vie-project-grid">
       <article
-        v-for="(p, i) in projects"
+        v-for="p in projects"
         :key="p.name"
         class="vie-project-tile"
       >
-        <span class="vie-badge">{{ p.featured ? 'featured' : `p${i + 1}` }}</span>
+        <span class="vie-badge">{{ p.status === 'live' ? '已上线' : '开发中' }}</span>
         <img
           v-if="p.image"
           :src="p.image"
@@ -33,6 +33,7 @@ import VieShell from './VieShell.vue'
           <span v-for="t in p.tags" :key="t" class="vie-chip vie-chip--accent">{{ t }}</span>
         </div>
         <div class="vie-link-row vie-mono">
+          <a v-if="p.slug" :href="`/projects/${p.slug}`">日志</a>
           <a v-if="p.github" :href="p.github" target="_blank" rel="noopener">gh</a>
           <a v-if="p.demo" :href="p.demo" target="_blank" rel="noopener">demo</a>
         </div>
