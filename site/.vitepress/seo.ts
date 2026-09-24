@@ -30,7 +30,10 @@ export function headTagsForPage(pageData: HeadPageData, siteUrl: string): HeadCo
   const url = pageUrl(pageData.relativePath, siteUrl)
   const rel = pageData.relativePath.replace(/\\/g, '/')
   const isArticle = rel.startsWith('articles/') && !rel.endsWith('index.md')
-  const image = `${siteUrl}/images/vie-home.png`
+  const fmImage = pageData.frontmatter.image
+  const image =
+    (typeof fmImage === 'string' && fmImage && `${siteUrl}${fmImage}`) ||
+    `${siteUrl}/images/vie-home.png`
   return [
     [
       'link',
