@@ -1,0 +1,138 @@
+/* /projects/<slug> — project detail & dev-log timeline */
+.vie-project-detail {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 8px 20px 64px;
+}
+
+.vie-detail-crumb {
+  margin: 0 0 18px;
+  font-size: 0.78rem;
+  color: var(--vie-ink-soft);
+}
+
+.vie-detail-crumb a {
+  color: var(--vie-green);
+  text-decoration: none;
+}
+
+.vie-detail-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.vie-detail-title h2 {
+  margin: 0;
+  font-size: 1.6rem;
+  line-height: 1.3;
+  color: var(--vie-ink);
+}
+
+.vie-detail-desc {
+  margin: 10px 0 0;
+  color: var(--vie-ink-soft);
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+.vie-project-detail .vie-link-row {
+  margin-top: 14px;
+}
+
+.vie-timeline {
+  margin-top: 40px;
+}
+
+.vie-timeline-list {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 22px;
+  border-left: 2px solid var(--vie-line);
+}
+
+.vie-timeline-item {
+  position: relative;
+  padding: 4px 0 28px;
+}
+
+.vie-timeline-item:last-child {
+  padding-bottom: 0;
+}
+
+.vie-timeline-node {
+  position: absolute;
+  top: 8px;
+  left: -31px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: 1px solid var(--vie-line);
+  border-radius: 999px;
+  background: var(--vie-green-soft);
+  color: var(--vie-green);
+}
+
+.vie-timeline-card {
+  padding: 14px 16px;
+  border: 1px solid var(--vie-line);
+  border-radius: var(--vie-radius-sm);
+  background: var(--vie-panel-soft);
+}
+
+.vie-timeline-meta {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 0.74rem;
+  color: var(--vie-ink-soft);
+}
+
+.vie-timeline-card h3 {
+  margin: 6px 0 0;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--vie-ink);
+}
+
+.vie-timeline-desc {
+  margin: 6px 0 0;
+  color: var(--vie-ink-soft);
+  font-size: 0.88rem;
+  line-height: 1.7;
+}
+
+.vie-timeline-img {
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+  border: 1px solid var(--vie-line);
+  border-radius: 8px;
+}
+
+.vie-timeline-card .vie-chip-row {
+  margin-top: 10px;
+}
+
+.vie-timeline-links {
+  display: flex;
+  gap: 14px;
+  margin: 10px 0 0;
+  font-size: 0.8rem;
+}
+
+.vie-timeline-links a {
+  color: var(--vie-green);
+  text-decoration: none;
+  font-weight: 700;
+}
+
+@media (max-width: 900px) {
+  .vie-project-detail {
+    padding: 8px 16px 48px;
+  }
+}
