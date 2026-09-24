@@ -1,0 +1,58 @@
+- generic [ref=f12e4]:
+  - banner [ref=f12e5]:
+    - generic [ref=f12e6]:
+      - link "Vie 首页" [ref=f12e7] [cursor=pointer]:
+        - /url: /
+        - generic [ref=f12e9]: V
+        - generic [ref=f12e10]: ie
+      - navigation "主导航" [ref=f12e11]:
+        - link "首页" [ref=f12e12] [cursor=pointer]:
+          - /url: /
+        - link "文章" [ref=f12e13] [cursor=pointer]:
+          - /url: /articles/
+        - link "项目" [ref=f12e14] [cursor=pointer]:
+          - /url: /projects
+        - link "工具" [ref=f12e15] [cursor=pointer]:
+          - /url: /tools
+        - link "关于" [ref=f12e16] [cursor=pointer]:
+          - /url: /#about
+      - generic [ref=f12e17]:
+        - button "搜索文章" [ref=f12e18] [cursor=pointer]:
+          - generic [ref=f12e22]: 搜索
+        - link "GitHub 主页" [ref=f12e23] [cursor=pointer]:
+          - /url: https://github.com/creatawork
+          - generic [ref=f12e24]: V
+  - link "Skip to content" [ref=f12e25] [cursor=pointer]:
+    - /url: "#VPContent"
+  - text: Ctrl
+  - main [ref=f12e31]:
+    - generic [ref=f12e34]:
+      - generic [ref=f12e35]:
+        - generic [ref=f12e36]:
+          - paragraph [ref=f12e37]: Vie / tools
+          - heading "开发工具" [level=1] [ref=f12e38]
+          - paragraph [ref=f12e39]: 把重复的检查和转换留在浏览器里完成。
+        - generic [ref=f12e40]: 本地处理 · 不上传内容
+      - region "工具列表" [ref=f12e42]:
+        - link "JSON 工作台 严格校验、格式化和压缩 JSON，错误精确到行列。 格式化转换" [ref=f12e43] [cursor=pointer]:
+          - /url: /tools/json
+          - generic [ref=f12e48]:
+            - strong [ref=f12e49]: JSON 工作台
+            - generic [ref=f12e50]: 严格校验、格式化和压缩 JSON，错误精确到行列。
+            - generic [ref=f12e51]: 格式化转换
+        - link "时间戳转换 在 Unix 时间戳、ISO 8601、本地时间和指定时区之间转换。 开发效率" [ref=f12e54] [cursor=pointer]:
+          - /url: /tools/timestamp
+          - generic [ref=f12e59]:
+            - strong [ref=f12e60]: 时间戳转换
+            - generic [ref=f12e61]: 在 Unix 时间戳、ISO 8601、本地时间和指定时区之间转换。
+            - generic [ref=f12e62]: 开发效率
+        - link "JWT 解析器 解码 Header 与 Payload，并检查标准 Claims 的时间状态。 接口调试" [ref=f12e65] [cursor=pointer]:
+          - /url: /tools/jwt
+          - generic [ref=f12e70]:
+            - strong [ref=f12e71]: JWT 解析器
+            - generic [ref=f12e72]: 解码 Header 与 Payload，并检查标准 Claims 的时间状态。
+            - generic [ref=f12e73]: 接口调试
+      - generic [ref=f12e76]:
+        - generic [ref=f12e77]: 工具内容不会写入 URL、localStorage 或统计请求。
+        - link "了解本站实现" [ref=f12e78] [cursor=pointer]:
+          - /url: /articles/meta/how-this-site-works

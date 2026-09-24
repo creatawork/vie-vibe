@@ -1,0 +1,108 @@
+- generic [ref=f13e4]:
+  - banner [ref=f13e5]:
+    - generic [ref=f13e6]:
+      - link "Vie 首页" [ref=f13e7] [cursor=pointer]:
+        - /url: /
+        - generic [ref=f13e9]: V
+        - generic [ref=f13e10]: ie
+      - navigation "主导航" [ref=f13e11]:
+        - link "首页" [ref=f13e12] [cursor=pointer]:
+          - /url: /
+        - link "文章" [ref=f13e13] [cursor=pointer]:
+          - /url: /articles/
+        - link "项目" [ref=f13e14] [cursor=pointer]:
+          - /url: /projects
+        - link "工具" [ref=f13e15] [cursor=pointer]:
+          - /url: /tools
+        - link "关于" [ref=f13e16] [cursor=pointer]:
+          - /url: /#about
+      - generic [ref=f13e17]:
+        - button "搜索文章" [ref=f13e18] [cursor=pointer]:
+          - generic [ref=f13e22]: 搜索
+        - link "GitHub 主页" [ref=f13e23] [cursor=pointer]:
+          - /url: https://github.com/creatawork
+          - generic [ref=f13e24]: V
+  - link "Skip to content" [ref=f13e25] [cursor=pointer]:
+    - /url: "#VPContent"
+  - text: Ctrl
+  - generic [ref=f13e30]:
+    - main [ref=f13e31]:
+      - generic [ref=f13e34]:
+        - generic [ref=f13e35]:
+          - generic [aria-hidden] [ref=f13e36]:
+            - generic [ref=f13e37]: < VieNotes />
+            - generic [ref=f13e38]: projects/
+          - heading "项目" [level=1] [ref=f13e39]
+          - paragraph [ref=f13e40]: 把想法落地成可验证的作品
+        - generic [ref=f13e42]:
+          - paragraph [ref=f13e43]:
+            - link "projects/" [ref=f13e44] [cursor=pointer]:
+              - /url: /projects
+            - text: /vie-gallery
+          - generic [ref=f13e45]:
+            - heading "VIE Gallery" [level=2] [ref=f13e46]
+            - generic [ref=f13e47]: 开发中
+          - paragraph [ref=f13e48]: 个人相册产品：admin + viewer 双端。原图保存、相册整理、2D/3D 空间展示、受控链接分享。
+          - generic [ref=f13e49]:
+            - generic [ref=f13e50]: Vue 3
+            - generic [ref=f13e51]: Three.js
+            - generic [ref=f13e52]: Spring Boot
+            - generic [ref=f13e53]: MyBatis-Plus
+            - generic [ref=f13e54]: Docker
+          - region "开发日志" [ref=f13e55]:
+            - list [ref=f13e56]:
+              - listitem [ref=f13e57]:
+                - generic [ref=f13e61]:
+                  - generic [ref=f13e62]:
+                    - time [ref=f13e63]: 2026-09-12
+                    - generic [aria-hidden] [ref=f13e64]: "01"
+                  - heading "V1 签收：个人相册 V1 Ready 验收通过" [level=3] [ref=f13e65]
+                  - paragraph [ref=f13e66]: 双端（admin 工作台 / viewer）达到 V1 Ready：原图保存、相册管理、2D/3D 展示、受控链接分享、上传任务中心、配置版本化与资源变体通过真实环境验收；M7.5 综合回归在本机 Docker + 自动化门禁下通过。
+                  - generic [ref=f13e67]:
+                    - generic [ref=f13e68]: Vue 3
+                    - generic [ref=f13e69]: Three.js
+                    - generic [ref=f13e70]: Spring Boot
+                    - generic [ref=f13e71]: MyBatis-Plus
+                    - generic [ref=f13e72]: Docker
+    - contentinfo [ref=f13e73]:
+      - paragraph [ref=f13e76]:
+        - text: "最后更新:"
+        - time [ref=f13e77]: 2026/9/24 14:42
+  - contentinfo [ref=f13e78]:
+    - generic [ref=f13e79]:
+      - generic [ref=f13e80]:
+        - link "Vie 首页" [ref=f13e81] [cursor=pointer]:
+          - /url: /
+          - generic [ref=f13e83]: V
+          - generic [ref=f13e84]: ie
+        - paragraph [ref=f13e85]: 记录技术、分享经验、创造价值
+        - generic [ref=f13e86]: © 2026 Vie. All rights reserved.
+      - navigation "底部导航" [ref=f13e87]:
+        - strong [ref=f13e88]: 导航
+        - link "首页" [ref=f13e89] [cursor=pointer]:
+          - /url: /
+        - link "文章" [ref=f13e90] [cursor=pointer]:
+          - /url: /articles/
+        - link "项目" [ref=f13e91] [cursor=pointer]:
+          - /url: /projects
+        - link "系列" [ref=f13e92] [cursor=pointer]:
+          - /url: /series/
+      - navigation "分类" [ref=f13e93]:
+        - strong [ref=f13e94]: 分类
+        - link "后端开发" [ref=f13e95] [cursor=pointer]:
+          - /url: /articles/
+        - link "系统设计" [ref=f13e96] [cursor=pointer]:
+          - /url: /articles/
+        - link "实践篇" [ref=f13e97] [cursor=pointer]:
+          - /url: /articles/
+        - link "工具分享" [ref=f13e98] [cursor=pointer]:
+          - /url: /articles/
+      - navigation "联系" [ref=f13e99]:
+        - strong [ref=f13e100]: 联系
+        - link "GitHub" [ref=f13e101] [cursor=pointer]:
+          - /url: https://github.com/creatawork
+        - link "站点说明" [ref=f13e102] [cursor=pointer]:
+          - /url: /articles/meta/how-this-site-works
+    - link "回到顶部" [ref=f13e103] [cursor=pointer]:
+      - /url: "#"
+      - text: ↑

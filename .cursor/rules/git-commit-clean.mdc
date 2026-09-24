@@ -1,0 +1,56 @@
+---
+description: Prevent cursoragent from appearing as co-author in git commits
+alwaysApply: true
+---
+
+# Git Commit Cleanliness Rule
+
+## Problem
+
+Cursor automatically appends this line to every `git commit`:
+
+```
+Co-authored-by: Cursor <cursoragent@cursor.com>
+```
+
+This causes GitHub to list `cursoragent` as a contributor, which is unwanted.
+
+## Required Behavior
+
+**NEVER** use plain `git commit` for commits that will be pushed to GitHub. Always use one of these clean methods:
+
+### Method 1: commit-tree (Preferred for CI/CD or scripted commits)
+
+```bash
+TREE=$(git rev-parse HEAD^{tree})
+NEW=$(git commit-tree "$TREE" -p HEAD -m "your commit message")
+git reset --hard "$NEW"
+```
+
+### Method 2: Manual amend (For interactive commits)
+
+After `git commit`, immediately run:
+
+```bash
+git commit --amend -m "your commit message"
+```
+
+Then verify the commit message contains no `Co-authored-by`:
+
+```bash
+git log -1 --format="%B"
+```
+
+## Verification
+
+Before every `git push`, run:
+
+```bash
+git log --format="%B" | grep -i "co-authored\|cursoragent" && echo "ERROR: co-author found" || echo "OK: clean"
+```
+
+If any output shows co-author lines, **do not push** until cleaned.
+
+## Scope
+
+This rule applies to all git operations in this workspace, regardless of which subdirectory is being committed.

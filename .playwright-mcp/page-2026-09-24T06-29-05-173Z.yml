@@ -1,0 +1,87 @@
+- generic [ref=e4]:
+  - banner [ref=e5]:
+    - generic [ref=e6]:
+      - link "Vie 首页" [ref=e7] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e9]: V
+        - generic [ref=e10]: ie
+      - navigation "主导航" [ref=e11]:
+        - link "首页" [ref=e12] [cursor=pointer]:
+          - /url: /
+        - link "文章" [ref=e13] [cursor=pointer]:
+          - /url: /articles/
+        - link "项目" [ref=e14] [cursor=pointer]:
+          - /url: /projects
+        - link "工具" [ref=e15] [cursor=pointer]:
+          - /url: /tools
+        - link "关于" [ref=e16] [cursor=pointer]:
+          - /url: /#about
+      - generic [ref=e17]:
+        - button "搜索文章" [ref=e18] [cursor=pointer]:
+          - generic [ref=e22]: 搜索
+        - link "GitHub 主页" [ref=e23] [cursor=pointer]:
+          - /url: https://github.com/creatawork
+          - generic [ref=e24]: V
+  - link "Skip to content" [ref=e25] [cursor=pointer]:
+    - /url: "#VPContent"
+  - text: Ctrl
+  - generic [ref=e30]:
+    - main [ref=e31]:
+      - generic [ref=e34]:
+        - generic [ref=e35]:
+          - generic [aria-hidden] [ref=e36]:
+            - generic [ref=e37]: < VieNotes />
+            - generic [ref=e38]: projects/
+          - heading "项目" [level=1] [ref=e39]
+          - paragraph [ref=e40]: 把想法落地成可验证的作品
+        - generic [ref=e42]:
+          - article [ref=e43]:
+            - generic [ref=e44]: 已上线
+            - img "Vie" [ref=e45]
+            - heading "Vie" [level=2] [ref=e46]
+            - paragraph [ref=e47]: VitePress 静态站 + 同域 SpringBoot 统计 + Caddy / GitHub Actions 发布。
+            - list [ref=e48]:
+              - listitem [ref=e49]:
+                - generic [ref=e50]: "01"
+                - link "静态站 SSG，而不是 SSR" [ref=e51] [cursor=pointer]:
+                  - /url: /articles/meta/how-this-site-works
+              - listitem [ref=e52]:
+                - generic [ref=e53]: "02"
+                - link "统计自建，IP 只存日盐哈希" [ref=e54] [cursor=pointer]:
+                  - /url: /articles/backend/springboot-stats-api
+              - listitem [ref=e55]:
+                - generic [ref=e56]: "03"
+                - link "CI 拆 site 与 server 两个 job，静态目录原子切换" [ref=e57] [cursor=pointer]:
+                  - /url: /articles/devops/github-actions-deploy
+              - listitem [ref=e58]:
+                - generic [ref=e59]: "04"
+                - link "首页用 Bento，不用 VitePress 默认 Hero" [ref=e60] [cursor=pointer]:
+                  - /url: /articles/frontend/vitepress-theme
+            - generic [ref=e61]:
+              - generic [ref=e62]: VitePress
+              - generic [ref=e63]: Vue 3
+              - generic [ref=e64]: SpringBoot
+              - generic [ref=e65]: Docker
+              - generic [ref=e66]: GitHub Actions
+            - generic [ref=e67]:
+              - link "gh" [ref=e68] [cursor=pointer]:
+                - /url: https://github.com/creatawork/vie-vibe
+              - link "demo" [ref=e69] [cursor=pointer]:
+                - /url: https://vie-vibe.cn
+          - article [ref=e70]:
+            - generic [ref=e71]: 开发中
+            - img "VIE Gallery" [ref=e72]
+            - heading "VIE Gallery" [level=2] [ref=e73]
+            - paragraph [ref=e74]: 个人相册产品：admin + viewer 双端。原图保存、相册整理、2D/3D 空间展示、受控链接分享。
+            - generic [ref=e75]:
+              - generic [ref=e76]: Vue 3
+              - generic [ref=e77]: Three.js
+              - generic [ref=e78]: Spring Boot
+              - generic [ref=e79]: MyBatis-Plus
+              - generic [ref=e80]: Docker
+            - link "日志" [ref=e82] [cursor=pointer]:
+              - /url: /projects/vie-gallery
+    - contentinfo [ref=e83]:
+      - paragraph [ref=e86]:
+        - text: "最后更新:"
+        - time [ref=e87]: 2026/9/24 13:46
