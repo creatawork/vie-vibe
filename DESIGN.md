@@ -34,10 +34,13 @@ Articles render on a dark **reading panel** (`vie-surface`) over the dot-grid ch
 ## Layout
 
 - **Shell:** single column; no asymmetric masthead. Top nav + `VieShell` page chrome on list/hub pages.
-- **Home:** `<HomeBento />` — status bar, thesis tile (plus positioning line), featured ship, metrics, latest post, feed, series tile, overview-article tile, terminal snippet, and three real tool links.
+- **Home:** `<HomeBento />` — status bar, thesis tile (plus positioning line), featured ship, metrics, latest post, feed, series tile, overview-article tile, terminal snippet, and three real tool links. Metrics and the 当前项目 section read real site data (`articles.data` / `projects.data`).
+- **Project pages (2026-09-24):** `/projects` is a single-project flagship dossier (`Projects.vue` + `ProjectSpotlight` / `ProjectMediaStrip` / `ProjectCapabilityList`); `/projects/vie-gallery` is a case-study page (`ProjectDetail.vue` + `ProjectMilestoneList` timeline), H1 = project name. The site itself is no longer listed as a project.
+- **Project tokens:** `--vie-green-action` `#0B6B4B` (text links / buttons, WCAG AA on white) and `--vie-focus` `#1D5FD0` (unified `:focus-visible` ring) extend the light `--vie-*` palette; project component CSS lives in `project-flagship.css` + `project-log.css`.
 - **Hub pages:** `ArticleList`, `Projects`, `ProjectDetail`, `SeriesIndex`, `SeriesPage`, `StatsView` use `VieShell` + `vie-panel` / `vie-tile` / `vie-feed`.
 - **Tools:** `/tools` is a focused tool index; `/tools/json`, `/tools/timestamp`, and `/tools/jwt` use a shared `ToolShell` with browser-only processing, explicit error states, and responsive workbenches.
 - **Articles:** dark `vie-surface` reading panel; `SeriesNav` as vibe tile footer; VP right aside TOC restored.
+- **Mermaid:** fenced `mermaid` blocks render as build-time placeholders and hydrate on demand (`theme/mermaid.ts`); pages without a block never load the diagram runtime.
 
 ## Motion
 
@@ -53,3 +56,4 @@ Articles render on a dark **reading panel** (`vie-surface`) over the dot-grid ch
 ## Provenance
 
 - Vibe Bento + vibe-coding theme, 2026-08-26.
+- Project experience redesign (flagship dossier + case-study detail, on-demand Mermaid, hydration fix), 2026-09-24.
