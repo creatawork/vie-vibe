@@ -6,7 +6,23 @@ let initialized = false
 async function ensureMermaid() {
   const mermaid = (await import('mermaid')).default
   if (!initialized) {
-    mermaid.initialize({ startOnLoad: false, securityLevel: 'strict' })
+    // 'base' + themeVariables keeps diagrams in the site's green-on-white
+    // palette instead of mermaid's default violet.
+    mermaid.initialize({
+      startOnLoad: false,
+      securityLevel: 'strict',
+      theme: 'base',
+      themeVariables: {
+        background: '#ffffff',
+        fontFamily: "'Noto Sans SC', system-ui, sans-serif",
+        fontSize: '14px',
+        primaryColor: '#eaf6f0',
+        primaryTextColor: '#16202a',
+        primaryBorderColor: '#87c7a8',
+        lineColor: '#6b7c8a',
+        edgeLabelBackground: '#f6f8fb',
+      },
+    })
     initialized = true
   }
   return mermaid

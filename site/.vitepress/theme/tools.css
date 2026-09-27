@@ -179,6 +179,12 @@
 .tool-index-head > div { min-width: 0; }
 .tool-index-head h1 { font-size: clamp(2rem, 4vw, 3rem); }
 .tool-index-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; padding-top: 24px; }
+/* Tool pages are app surfaces inside .vp-doc: the default theme's prose
+   underline must not reach these UI links. */
+.vp-doc .tool-page a { text-decoration: none; }
+.vp-doc .tool-page a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.vp-doc a.tool-index-card, .vp-doc a.tool-index-card:hover { text-decoration: none; }
+.vp-doc a.tool-index-card strong { color: var(--tool-ink); }
 .tool-index-card { min-height: 214px; display: flex; flex-direction: column; justify-content: space-between; gap: 20px; padding: 20px; color: inherit; text-decoration: none; background: var(--vie-panel); border: 1px solid var(--tool-line); border-radius: var(--vie-radius); box-shadow: var(--vie-shadow-soft); transition: border-color 160ms ease, transform 160ms ease, box-shadow 160ms ease; }
 .tool-index-card:hover { border-color: var(--tool-line-strong); box-shadow: var(--vie-shadow); transform: translateY(-2px); }
 .tool-index-icon { width: 52px; height: 52px; display: grid; place-items: center; border-radius: 12px; }

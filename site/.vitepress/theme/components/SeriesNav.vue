@@ -38,7 +38,6 @@ const nav = computed(() => {
         <span class="vie-mono vie-syntax-fn">←</span>
         {{ nav.prev.title }}
       </a>
-      <span v-else class="vie-series-nav__ghost vie-mono">← start</span>
       <a
         v-if="nav.next"
         class="vie-series-nav__link vie-series-nav__link--next"
@@ -47,7 +46,6 @@ const nav = computed(() => {
         {{ nav.next.title }}
         <span class="vie-mono vie-syntax-fn">→</span>
       </a>
-      <span v-else class="vie-series-nav__ghost vie-mono">end →</span>
     </div>
   </nav>
 </template>

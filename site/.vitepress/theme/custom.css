@@ -310,6 +310,13 @@ body {
   font-weight: 800;
 }
 
+/* At nav size the shine pseudo-elements overlap the V stem and the mark
+   reads as a lowercase "y" — the tile keeps a clean V below mast size. */
+.vie-wordmark--nav .vie-wordmark-mark::before,
+.vie-wordmark--nav .vie-wordmark-mark::after {
+  display: none;
+}
+
 .vie-wordmark-name {
   color: var(--vie-ink);
   font-size: 1.08em;
@@ -332,6 +339,17 @@ body {
   max-width: min(1240px, calc(100vw - 32px));
   margin: 0 auto;
   padding: 18px 0 44px;
+}
+
+/* The custom sticky nav replaces VPNav/VPLocalNav (both display:none);
+   reclaim the reserved top padding on content pages so headers sit in the
+   first viewport. */
+.vie-vibe:not(.vie-page-home) .VPContent {
+  padding-top: 24px;
+}
+
+.vie-vibe:not(.vie-page-home) .VPDoc {
+  padding-top: 20px;
 }
 
 .vie-page-header {
@@ -1000,6 +1018,17 @@ body {
   padding: 0;
 }
 
+/* Panel heading inside .vp-doc: reset the VP doc h2 top rule, which shows
+   as a 24px empty band above the label. */
+.vp-doc .vie-feed-label {
+  margin: 0 0 10px;
+  padding: 0;
+  border: 0;
+  font-family: var(--vie-font-display);
+  font-size: 1.05rem;
+  letter-spacing: -0.02em;
+}
+
 .vie-feed li {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;
@@ -1199,6 +1228,80 @@ body {
 
 .vp-doc a {
   color: var(--vie-green-action);
+}
+
+/* Hub components render inside .vp-doc, where the default theme underlines
+   every anchor. These are UI links, not prose — restate their intended
+   color and drop the underline at matching specificity. */
+.vp-doc .vie-category-item {
+  color: inherit;
+  text-decoration: none;
+}
+
+.vp-doc .vie-feed a {
+  color: var(--vie-ink);
+  text-decoration: none;
+}
+
+.vp-doc .vie-feed a:hover {
+  color: var(--vie-green-action);
+}
+
+.vp-doc .vie-series-nav__link {
+  color: var(--vie-ink);
+  text-decoration: none;
+}
+
+.vp-doc .vie-series-nav__link:hover {
+  color: var(--vie-green-action);
+}
+
+.vp-doc .vie-section-head a {
+  color: var(--vie-ink-soft);
+  text-decoration: none;
+}
+
+.vp-doc a.vie-list-thumb {
+  color: inherit;
+  text-decoration: none;
+}
+
+.vp-doc a.vie-back-top {
+  color: var(--vie-green-action);
+  text-decoration: none;
+}
+
+.post-head {
+  margin-bottom: 20px;
+  padding-top: 6px;
+}
+
+.post-title {
+  margin: 0 0 12px;
+  font-family: var(--vie-font-display);
+  font-size: clamp(1.55rem, 3.6vw, 1.95rem);
+  line-height: 1.3;
+  letter-spacing: -0.03em;
+}
+
+.post-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 10px;
+  margin: 0;
+  color: var(--vie-ink-soft);
+  font-size: 0.78rem;
+}
+
+.post-meta__series {
+  color: var(--vie-green-action);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.post-meta__series:hover {
+  text-decoration: underline;
 }
 
 .vie-vibe:not(.vie-page-home) .VPDoc .content-container {

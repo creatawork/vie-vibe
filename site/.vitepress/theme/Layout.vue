@@ -19,6 +19,13 @@ const isTools = computed(() => route.path === '/tools' || route.path.startsWith(
 const wordCount = ref(0)
 const readingTime = ref(0)
 
+const postDate = computed(() => {
+  const raw = frontmatter.value.date
+  if (!raw) return ''
+  const date = new Date(raw)
+  return Number.isNaN(+date) ? String(raw) : date.toISOString().slice(0, 10)
+})
+
 function recount() {
   nextTick(() => {
     const el = document.querySelector('.vp-doc')
@@ -67,13 +74,12 @@ onMounted(() => {
     </template>
 
     <template #doc-before>
-      <div v-if="frontmatter.date" class="post-meta">
-        <p>
-          <time>{{ frontmatter.date }}</time>
-          <span v-if="readingTime"> · 约 {{ readingTime }} 分钟 · {{ wordCount }} 字</span>
-        </p>
-        <p v-if="frontmatter.series" class="post-meta__series">
-          <a :href="'/series/' + encodeURIComponent(frontmatter.series)">{{ frontmatter.series }}</a>
+      <div v-if="frontmatter.date" class="post-head">
+        <h1 class="post-title">{{ frontmatter.title }}</h1>
+        <p class="post-meta">
+          <time class="vie-mono">{{ postDate }}</time>
+          <span v-if="readingTime" class="vie-mono">· 约 {{ readingTime }} 分钟 · {{ wordCount }} 字</span>
+          <a v-if="frontmatter.series" class="post-meta__series vie-mono" :href="'/series/' + encodeURIComponent(frontmatter.series)">{{ frontmatter.series }}</a>
         </p>
       </div>
       <SeriesNav v-if="frontmatter.series" />
@@ -95,10 +101,11 @@ onMounted(() => {
           </nav>
           <nav aria-label="分类">
             <strong>分类</strong>
-            <a href="/articles/">后端开发</a>
-            <a href="/articles/">系统设计</a>
-            <a href="/articles/">实践篇</a>
-            <a href="/articles/">工具分享</a>
+            <a href="/articles/#backend">后端开发</a>
+            <a href="/articles/#frontend">前端</a>
+            <a href="/articles/#devops">部署运维</a>
+            <a href="/articles/#meta">建站</a>
+            <a href="/articles/#notes">笔记</a>
           </nav>
           <nav aria-label="联系">
             <strong>联系</strong>

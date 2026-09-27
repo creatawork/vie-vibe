@@ -12,6 +12,16 @@ const grouped = computed(() => {
 })
 
 const allPosts = computed(() => posts)
+
+// Anchor targets must be unique: only the first post of each category
+// carries the id the sidebar links to.
+const firstIndexByCategory = computed(() => {
+  const seen = new Map<string, number>()
+  for (const [i, post] of posts.entries()) {
+    if (!seen.has(post.category)) seen.set(post.category, i)
+  }
+  return seen
+})
 </script>
 
 <template>
@@ -33,7 +43,7 @@ const allPosts = computed(() => posts)
       <section class="vie-article-stack" aria-label="文章列表">
         <article
           v-for="(post, i) in allPosts"
-          :id="post.category"
+          :id="firstIndexByCategory.get(post.category) === i ? post.category : undefined"
           :key="post.url"
           class="vie-list-card"
         >
@@ -48,7 +58,7 @@ const allPosts = computed(() => posts)
             <div class="vie-card-meta">
               <span v-for="tag in post.tags.slice(0, 2)" :key="tag">{{ tag }}</span>
               <time>{{ post.date.slice(0, 10) }}</time>
-              <small>~{{ post.readingTime }}min</small>
+              <small>约 {{ post.readingTime }} 分钟</small>
             </div>
           </div>
           <span class="vie-list-eye vie-mono" aria-hidden="true">{{ String(i + 1).padStart(2, '0') }}</span>

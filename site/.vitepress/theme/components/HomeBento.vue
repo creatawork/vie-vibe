@@ -1,16 +1,14 @@
 <script setup lang="ts">
 import {
   ArrowRight,
-  Bot,
   Braces,
   ChartNoAxesColumnIncreasing,
   Code2,
   Database,
-  Eye,
   FileText,
   FolderKanban,
   KeyRound,
-  Sparkles,
+  Server,
   Tag,
   Timer,
   Wrench,
@@ -34,36 +32,25 @@ const metrics = computed(() => [
   { label: '标签', value: String(new Set(posts.flatMap((p) => p.tags)).size), unit: '个', icon: Tag, tone: 'slate' },
 ])
 
-const articles = [
-  {
-    title: 'Spring Boot 3.x 新特性实践指南',
-    description: '深入探索 Spring Boot 3.x 带来的变化和新特性，包括性能提升、原生镜像支持等。',
-    tags: ['Java'],
-    date: '2024-05-20',
-    views: '1.2k',
-    icon: Sparkles,
-    tone: 'spring',
-    featured: true,
-  },
-  {
-    title: '高并发下的数据库设计思考',
-    description: '在高并发场景下，如何设计合理的数据库结构和索引策略，提升系统性能。',
-    tags: ['MySQL'],
-    date: '2024-05-18',
-    views: '892',
-    icon: Database,
-    tone: 'database',
-  },
-  {
-    title: '从零搭建一个 AI 对话系统',
-    description: '基于大语言模型，搭建属于自己的 AI 对话系统，支持多轮对话和知识库。',
-    tags: ['AI', 'Python'],
-    date: '2024-05-15',
-    views: '1.5k',
-    icon: Bot,
-    tone: 'ai',
-  },
-]
+const categoryArt: Record<string, { icon: any; tone: string }> = {
+  backend: { icon: Database, tone: 'backend' },
+  frontend: { icon: Code2, tone: 'frontend' },
+  devops: { icon: Server, tone: 'devops' },
+  meta: { icon: Braces, tone: 'meta' },
+  notes: { icon: FileText, tone: 'notes' },
+}
+
+const latestPosts = computed(() =>
+  posts.slice(0, 3).map((p) => ({
+    title: p.title,
+    description: p.description,
+    tags: p.tags,
+    date: p.date.slice(0, 10),
+    url: p.url,
+    readingTime: p.readingTime,
+    ...(categoryArt[p.category] ?? { icon: FileText, tone: 'notes' }),
+  })),
+)
 
 const featuredProject = computed(() => projects.find((p) => p.featured))
 </script>
@@ -73,12 +60,11 @@ const featuredProject = computed(() => projects.find((p) => p.featured))
     <main>
       <section class="dn-hero" aria-labelledby="dn-title">
         <div class="dn-hero-copy">
-          <h1 id="dn-title">你好，我是 <span>vie</span></h1>
-          <p class="dn-role">后端开发工程师 / 技术记录者 / 工具创造者</p>
+          <h1 id="dn-title">你好，我是 <span>Vie</span></h1>
+          <p class="dn-role">写清楚每一个技术决策</p>
           <p class="dn-intro">热爱技术，喜欢探索和分享。<br>这里记录我的学习心得、开发经验和有趣的技术实践。</p>
           <div class="dn-hero-actions">
             <a class="dn-primary-btn" href="/articles/">阅读文章</a>
-            <span aria-hidden="true">+</span>
             <a class="dn-secondary-btn" href="/projects">探索项目</a>
           </div>
         </div>
@@ -110,7 +96,6 @@ const featuredProject = computed(() => projects.find((p) => p.featured))
         <article v-for="item in metrics" :key="item.label" :class="`tone-${item.tone}`">
           <span class="dn-icon-well"><component :is="item.icon" :size="22" /></span>
           <div><p>{{ item.label }}</p><strong>{{ item.value }}</strong> <small>{{ item.unit }}</small></div>
-          <span class="dn-trend">↑</span>
         </article>
       </section>
 
@@ -120,19 +105,18 @@ const featuredProject = computed(() => projects.find((p) => p.featured))
           <a href="/articles/">查看全部 <ArrowRight :size="16" /></a>
         </div>
         <div class="dn-article-grid">
-          <a v-for="item in articles" :key="item.title" href="/articles/" class="dn-article-card">
+          <a v-for="(item, i) in latestPosts" :key="item.url" :href="item.url" class="dn-article-card">
             <div :class="`dn-cover tone-${item.tone}`">
-              <span v-if="item.featured" class="dn-recommend">推荐</span>
+              <span v-if="i === 0" class="dn-recommend">最新</span>
               <component :is="item.icon" :size="56" stroke-width="1.35" />
-              <strong v-if="item.tone === 'spring'">Spring Boot 3</strong>
             </div>
             <div class="dn-card-body">
               <h3>{{ item.title }}</h3>
               <p>{{ item.description }}</p>
               <div class="dn-meta">
-                <span class="dn-tags"><i v-for="tagName in item.tags" :key="tagName">{{ tagName }}</i></span>
+                <span class="dn-tags"><i v-for="tagName in item.tags.slice(0, 2)" :key="tagName">{{ tagName }}</i></span>
                 <time>{{ item.date }}</time>
-                <span><Eye :size="13" /> {{ item.views }}</span>
+                <span class="vie-mono">约 {{ item.readingTime }} 分钟</span>
               </div>
             </div>
           </a>
@@ -178,11 +162,11 @@ const featuredProject = computed(() => projects.find((p) => p.featured))
       <div class="dn-footer-brand">
         <VieWordmark to="/" size="nav" />
         <p>记录技术、分享经验、创造价值</p>
-        <small>© 2026 vie. All rights reserved.</small>
+        <small>© 2026 Vie. All rights reserved.</small>
       </div>
       <nav aria-label="底部导航"><strong>导航</strong><a href="/">首页</a><a href="/articles/">文章</a><a href="/projects">项目</a><a href="#utilities">工具</a><a href="#about">关于</a></nav>
-      <nav aria-label="文章分类"><strong>分类</strong><a href="/articles/">后端开发</a><a href="/articles/">系统设计</a><a href="/articles/">数据库</a><a href="/articles/">AI/机器学习</a><a href="/articles/">工具分享</a></nav>
-      <nav aria-label="联系方式"><strong>联系</strong><a href="https://github.com/creatawork"><Code2 :size="15" /> GitHub</a><a href="mailto:hello@vie.dev">邮箱</a><a href="/articles/">微信</a></nav>
+      <nav aria-label="文章分类"><strong>分类</strong><a href="/articles/#backend">后端开发</a><a href="/articles/#frontend">前端</a><a href="/articles/#devops">部署运维</a><a href="/articles/#meta">建站</a><a href="/articles/#notes">笔记</a></nav>
+      <nav aria-label="联系方式"><strong>联系</strong><a href="https://github.com/creatawork"><Code2 :size="15" /> GitHub</a><a href="mailto:hello@vie.dev">邮箱</a></nav>
       <a class="dn-backtop" href="#" aria-label="回到顶部">↑</a>
     </footer>
   </div>
