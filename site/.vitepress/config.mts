@@ -1,10 +1,8 @@
 import { defineConfig } from 'vitepress'
-import { withMermaid } from 'vitepress-plugin-mermaid'
 
 export const SITE_URL = 'https://vie-vibe.cn'
 
-export default withMermaid(
-  defineConfig({
+export default defineConfig({
   title: 'Vie',
   titleTemplate: ':title | Vie',
   description: '技术实现细节与思路',
@@ -22,14 +20,29 @@ export default withMermaid(
       'link',
       {
         rel: 'stylesheet',
-        href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600;700&display=swap',
+        href: 'https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600;700&display=swap',
       },
     ],
   ],
-  vite: {
-    optimizeDeps: {
-      include: ['@braintree/sanitize-url', 'dayjs'],
+  markdown: {
+    config(md) {
+      // Mermaid fences render as an empty placeholder in the static build; the
+      // client (theme/mermaid.ts) hydrates them on pages that actually contain
+      // one, so project pages never load the diagram runtime.
+      const fence = md.renderer.rules.fence
+      md.renderer.rules.fence = (tokens, idx, options, env, self) => {
+        const token = tokens[idx]
+        if (token && token.info.trim() === 'mermaid') {
+          const code = Buffer.from(token.content, 'utf8').toString('base64')
+          return `<div class="vie-mermaid" data-code="${code}" role="img" aria-label="图表"></div>`
+        }
+        return fence
+          ? fence(tokens, idx, options, env, self)
+          : self.renderToken(tokens, idx, options)
+      }
     },
+  },
+  vite: {
     resolve: {
       alias: {
         dayjs: 'dayjs/',
@@ -67,15 +80,21 @@ export default withMermaid(
     lastUpdated: { text: '最后更新' },
     docFooter: { prev: '上一篇', next: '下一篇' },
   },
-  mermaid: {},
   async transformHead({ pageData }) {
     const { headTagsForPage } = await import('./seo')
     return headTagsForPage(pageData, SITE_URL)
+  },
+  transformHtml(code, id) {
+    // VitePress fills VPNavBar's scroll-state classes in a client post-effect,
+    // so the static HTML misses the `top` class the browser applies at scroll
+    // 0 and every page hydrates with a mismatch. Add it on the server side.
+    if (id.endsWith('.html')) {
+      return code.replace('<div class="VPNavBar"', '<div class="VPNavBar top"')
+    }
   },
   async buildEnd(siteConfig) {
     const { generateSitemap, generateFeed } = await import('./seo')
     await generateSitemap(siteConfig)
     await generateFeed(siteConfig)
   },
-  })
-)
+})

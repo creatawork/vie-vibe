@@ -1,43 +1,45 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { data as projects } from '../../../projects.data'
 import VieShell from './VieShell.vue'
+import ProjectSpotlight from './ProjectSpotlight.vue'
+import ProjectCapabilityList from './ProjectCapabilityList.vue'
+import ProjectMediaStrip from './ProjectMediaStrip.vue'
+
+const flagship = computed(() => projects.find((p) => p.featured) ?? projects[0])
+const latest = computed(() => flagship.value?.log?.[0])
 </script>
 
 <template>
   <VieShell path="projects/" hint="ship">
-    <div class="vie-project-grid">
-      <article
-        v-for="p in projects"
-        :key="p.name"
-        class="vie-project-tile"
-      >
-        <span class="vie-badge">{{ p.status === 'live' ? '已上线' : '开发中' }}</span>
-        <img
-          v-if="p.image"
-          :src="p.image"
-          :alt="p.name"
-          class="vie-project-img"
-          loading="lazy"
-          decoding="async"
-        />
-        <h2>{{ p.name }}</h2>
-        <p>{{ p.description }}</p>
-        <ul v-if="p.decisions?.length" class="vie-feed vie-decisions">
-          <li v-for="(d, j) in p.decisions" :key="j">
-            <span class="vie-ln vie-mono">{{ String(j + 1).padStart(2, '0') }}</span>
-            <a v-if="d.href" :href="d.href">{{ d.text }}</a>
-            <span v-else>{{ d.text }}</span>
-          </li>
-        </ul>
-        <div class="vie-chip-row">
-          <span v-for="t in p.tags" :key="t" class="vie-chip vie-chip--accent">{{ t }}</span>
+    <section v-if="flagship" class="vie-flagship">
+      <div class="vie-flagship__top">
+        <ProjectSpotlight :project="flagship" title-tag="h2">
+          <template #secondary>
+            <a
+              v-if="flagship.slug"
+              class="vie-cta vie-cta--ghost"
+              :href="`/projects/${flagship.slug}#devlog`"
+              :aria-label="`阅读 ${flagship.name} 开发日志`"
+            >阅读开发日志</a>
+          </template>
+        </ProjectSpotlight>
+        <div class="vie-flagship__media">
+          <ProjectMediaStrip :media="flagship.media ?? []" variant="flagship" eager />
         </div>
-        <div class="vie-link-row vie-mono">
-          <a v-if="p.slug" :href="`/projects/${p.slug}`">日志</a>
-          <a v-if="p.github" :href="p.github" target="_blank" rel="noopener">gh</a>
-          <a v-if="p.demo" :href="p.demo" target="_blank" rel="noopener">demo</a>
-        </div>
-      </article>
-    </div>
+      </div>
+      <ProjectCapabilityList
+        v-if="flagship.capabilities?.length"
+        class="vie-flagship__caps"
+        :capabilities="flagship.capabilities"
+        variant="full"
+      />
+      <footer v-if="latest" class="vie-flagship__milestone vie-mono">
+        <time :datetime="latest.date">{{ latest.date }}</time>
+        <span>{{ latest.title }}</span>
+        <a :href="`/projects/${flagship.slug}#devlog`">开发日志 →</a>
+      </footer>
+    </section>
+    <p v-else class="vie-empty vie-mono">// no flagship project yet</p>
   </VieShell>
 </template>

@@ -44,10 +44,6 @@ for (const file of walkMd(articlesDir)) {
 }
 
 const projectsSrc = fs.readFileSync(path.join(siteRoot, 'projects.source.ts'), 'utf8')
-const vieNames = projectsSrc.match(/name: 'Vie'/g) || []
-if (vieNames.length !== 1) {
-  errors.push(`projects.source.ts: expected exactly one name: 'Vie', got ${vieNames.length}`)
-}
 const galleryNames = projectsSrc.match(/name: 'VIE Gallery'/g) || []
 if (galleryNames.length !== 1) {
   errors.push(`projects.source.ts: expected exactly one name: 'VIE Gallery', got ${galleryNames.length}`)
@@ -56,12 +52,17 @@ const slugNames = projectsSrc.match(/slug: 'vie-gallery'/g) || []
 if (slugNames.length !== 1) {
   errors.push(`projects.source.ts: expected exactly one slug: 'vie-gallery', got ${slugNames.length}`)
 }
-if (!projectsSrc.includes('featured: true')) {
-  errors.push(`projects.source.ts: missing featured: true`)
+const vieProject = projectsSrc.match(/name: 'Vie'/g) || []
+if (vieProject.length !== 0) {
+  errors.push(`projects.source.ts: the site itself must not be a project, got ${vieProject.length} name: 'Vie'`)
+}
+const featuredCount = (projectsSrc.match(/featured: true/g) || []).length
+if (featuredCount !== 1) {
+  errors.push(`projects.source.ts: expected exactly one featured: true project, got ${featuredCount}`)
 }
 const hrefs = projectsSrc.match(/href: '\/articles\//g) || []
-if (hrefs.length < 3) {
-  errors.push(`projects.source.ts: expected >= 3 decision hrefs, got ${hrefs.length}`)
+if (hrefs.length !== 0) {
+  errors.push(`projects.source.ts: decision links belong to the site, not projects; found ${hrefs.length}`)
 }
 
 const home = fs.readFileSync(

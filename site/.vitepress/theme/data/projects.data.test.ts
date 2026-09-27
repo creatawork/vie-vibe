@@ -2,7 +2,12 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { describe, expect, it } from 'vitest'
-import { projectsSource, type Project } from '../../../projects.source'
+import {
+  projectsSource,
+  projectStatusLabel,
+  type Project,
+  type ProjectStatus,
+} from '../../../projects.source'
 
 const siteRoot = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
@@ -10,12 +15,24 @@ const siteRoot = path.resolve(
 )
 
 const projects: Project[] = projectsSource
+const statuses = Object.keys(projectStatusLabel) as ProjectStatus[]
 
 describe('projects data', () => {
-  it('slugs are unique and vie-gallery is registered', () => {
+  it('is non-empty and vie-gallery is the featured flagship', () => {
+    expect(projects.length).toBeGreaterThan(0)
     const slugs = projects.filter((p) => p.slug).map((p) => p.slug as string)
     expect(new Set(slugs).size).toBe(slugs.length)
     expect(slugs).toContain('vie-gallery')
+    const featured = projects.filter((p) => p.featured)
+    expect(featured.length).toBe(1)
+    expect(featured[0]?.slug).toBe('vie-gallery')
+  })
+
+  it('does not list the site itself as a project', () => {
+    const siteProjects = projects.filter(
+      (p) => p.name === 'Vie' || p.slug === 'vie' || p.demo === 'https://vie-vibe.cn',
+    )
+    expect(siteProjects.map((p) => p.name)).toEqual([])
   })
 
   it('every slug has a page file', () => {
@@ -28,9 +45,40 @@ describe('projects data', () => {
     }
   })
 
+  it('shared presentation fields are well-formed', () => {
+    for (const p of projects) {
+      expect(statuses, p.name).toContain(p.status)
+      expect(projectStatusLabel[p.status].length > 0, p.name).toBe(true)
+      expect(p.proposition.trim().length > 0, p.name).toBe(true)
+      expect(/^\d{4}-\d{2}-\d{2}$/.test(p.updatedAt), `${p.name}: updatedAt`).toBe(
+        true,
+      )
+      for (const c of p.capabilities ?? []) {
+        expect(c.title.trim().length > 0, p.name).toBe(true)
+        expect(c.description.trim().length > 0, `${p.name}: ${c.title}`).toBe(true)
+        if (c.image) {
+          expect(
+            fs.existsSync(path.join(siteRoot, 'public', c.image)),
+            `${p.name}: missing capability image ${c.image}`,
+          ).toBe(true)
+        }
+      }
+      for (const m of p.media ?? []) {
+        expect(m.src.startsWith('/'), `${p.name}: media src`).toBe(true)
+        expect(
+          fs.existsSync(path.join(siteRoot, 'public', m.src)),
+          `${p.name}: missing media ${m.src}`,
+        ).toBe(true)
+        expect(m.alt.trim().length > 0, `${p.name}: media alt`).toBe(true)
+        expect(m.caption.trim().length > 0, `${p.name}: media caption`).toBe(true)
+        expect(m.width > 0 && m.height > 0, `${p.name}: media size`).toBe(true)
+      }
+    }
+  })
+
   it('log entries are well-formed and strictly newest-first', () => {
     for (const p of projects) {
-      expect(['building', 'live'], p.name).toContain(p.status)
+      expect(statuses, p.name).toContain(p.status)
       let prevDate: string | null = null
       for (const e of p.log ?? []) {
         expect(e.title.trim().length > 0, p.name).toBe(true)

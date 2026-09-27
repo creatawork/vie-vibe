@@ -2,14 +2,12 @@
 import {
   ArrowRight,
   Bot,
-  Box,
   Braces,
   ChartNoAxesColumnIncreasing,
   Code2,
   Database,
   Eye,
   FileText,
-  Fingerprint,
   FolderKanban,
   KeyRound,
   Sparkles,
@@ -17,14 +15,24 @@ import {
   Timer,
   Wrench,
 } from '@lucide/vue'
+import { computed } from 'vue'
+import { data as posts } from '../../../articles.data'
+import { data as projects } from '../../../projects.data'
+import ProjectSpotlight from './ProjectSpotlight.vue'
 import VieWordmark from './VieWordmark.vue'
 
-const metrics = [
-  { label: '文章', value: '56', unit: '篇', icon: FileText, tone: 'blue' },
-  { label: '项目', value: '12', unit: '个', icon: FolderKanban, tone: 'orange' },
-  { label: '工具', value: '3', unit: '个', icon: Wrench, tone: 'green' },
-  { label: '标签', value: '28', unit: '个', icon: Tag, tone: 'slate' },
+const utilities = [
+  { name: 'JSON 工作台', description: '校验、格式化和压缩 JSON', href: '/tools/json', icon: Braces, tone: 'pink' },
+  { name: '时间戳转换', description: '时间戳与日期格式转换', href: '/tools/timestamp', icon: Timer, tone: 'cyan' },
+  { name: 'JWT 解析器', description: '解码 Token 并检查 Claims', href: '/tools/jwt', icon: KeyRound, tone: 'blue' },
 ]
+
+const metrics = computed(() => [
+  { label: '文章', value: String(posts.length), unit: '篇', icon: FileText, tone: 'blue' },
+  { label: '项目', value: String(projects.length), unit: '个', icon: FolderKanban, tone: 'orange' },
+  { label: '工具', value: String(utilities.length), unit: '个', icon: Wrench, tone: 'green' },
+  { label: '标签', value: String(new Set(posts.flatMap((p) => p.tags)).size), unit: '个', icon: Tag, tone: 'slate' },
+])
 
 const articles = [
   {
@@ -57,38 +65,7 @@ const articles = [
   },
 ]
 
-const projects = [
-  {
-    name: 'API Fox',
-    description: '高效的 API 管理和调试工具，支持接口文档生成、调试、Mock 等功能',
-    tags: ['Go', 'Gin', 'Vue3'],
-    views: '256',
-    icon: Code2,
-    tone: 'fox',
-  },
-  {
-    name: 'ChatAI',
-    description: '基于大语言模型的 AI 对话系统，支持多模型切换和自定义知识库',
-    tags: ['Python', 'FastAPI', 'React'],
-    views: '189',
-    icon: Bot,
-    tone: 'chat',
-  },
-  {
-    name: 'TinyCache',
-    description: '轻量级分布式缓存组件，支持多种缓存策略和数据模式',
-    tags: ['Java', 'Redis', 'Spring'],
-    views: '156',
-    icon: Box,
-    tone: 'cache',
-  },
-]
-
-const utilities = [
-  { name: 'JSON 工作台', description: '校验、格式化和压缩 JSON', href: '/tools/json', icon: Braces, tone: 'pink' },
-  { name: '时间戳转换', description: '时间戳与日期格式转换', href: '/tools/timestamp', icon: Timer, tone: 'cyan' },
-  { name: 'JWT 解析器', description: '解码 Token 并检查 Claims', href: '/tools/jwt', icon: KeyRound, tone: 'blue' },
-]
+const featuredProject = computed(() => projects.find((p) => p.featured))
 </script>
 
 <template>
@@ -164,21 +141,15 @@ const utilities = [
 
       <section class="dn-section" aria-labelledby="projects-title">
         <div class="dn-section-head">
-          <h2 id="projects-title">精选项目</h2>
-          <a href="/projects">查看全部 <ArrowRight :size="16" /></a>
+          <h2 id="projects-title">当前项目</h2>
+          <a href="/projects">查看全部项目 <ArrowRight :size="16" /></a>
         </div>
-        <div class="dn-project-grid">
-          <article v-for="project in projects" :key="project.name" class="dn-project-card">
-            <span :class="`dn-project-icon tone-${project.tone}`"><component :is="project.icon" :size="32" /></span>
-            <div class="dn-project-main">
-              <h3>{{ project.name }}</h3>
-              <p>{{ project.description }}</p>
-              <div class="dn-meta">
-                <span class="dn-tags"><i v-for="tagName in project.tags" :key="tagName">{{ tagName }}</i></span>
-                <span><Eye :size="13" /> {{ project.views }}</span>
-              </div>
-            </div>
-          </article>
+        <div v-if="featuredProject" class="dn-project-feature">
+          <ProjectSpotlight :project="featuredProject" title-tag="h3" compact>
+            <template #secondary>
+              <a class="dn-secondary-btn" href="/projects">项目页</a>
+            </template>
+          </ProjectSpotlight>
         </div>
       </section>
 
@@ -207,7 +178,7 @@ const utilities = [
       <div class="dn-footer-brand">
         <VieWordmark to="/" size="nav" />
         <p>记录技术、分享经验、创造价值</p>
-        <small>© 2024 vie. All rights reserved.</small>
+        <small>© 2026 vie. All rights reserved.</small>
       </div>
       <nav aria-label="底部导航"><strong>导航</strong><a href="/">首页</a><a href="/articles/">文章</a><a href="/projects">项目</a><a href="#utilities">工具</a><a href="#about">关于</a></nav>
       <nav aria-label="文章分类"><strong>分类</strong><a href="/articles/">后端开发</a><a href="/articles/">系统设计</a><a href="/articles/">数据库</a><a href="/articles/">AI/机器学习</a><a href="/articles/">工具分享</a></nav>

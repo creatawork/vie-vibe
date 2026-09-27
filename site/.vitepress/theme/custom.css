@@ -1,6 +1,6 @@
 :root {
   --vie-ink: #16202a;
-  --vie-ink-soft: #6c7681;
+  --vie-ink-soft: #526170;
   --vie-paper: #f6f8fb;
   --vie-paper-2: #ffffff;
   --vie-panel: #ffffff;
@@ -11,6 +11,8 @@
   --vie-shadow-soft: 0 8px 24px rgba(27, 40, 56, 0.06);
   --vie-green: #1fa36f;
   --vie-green-soft: #daf5eb;
+  --vie-green-action: #0b6b4b;
+  --vie-focus: #1d5fd0;
   --vie-blue: #4d7cff;
   --vie-blue-soft: #eaf0ff;
   --vie-cyan: #1fb5c9;
@@ -27,9 +29,9 @@
   --vie-font-body: 'Noto Sans SC', system-ui, -apple-system, sans-serif;
   --vie-font-mono: 'JetBrains Mono', ui-monospace, monospace;
   --vp-font-family-base: var(--vie-font-body);
-  --vp-c-brand-1: var(--vie-green);
-  --vp-c-brand-2: #2bbb82;
-  --vp-c-brand-3: #6cdfb0;
+  --vp-c-brand-1: var(--vie-green-action);
+  --vp-c-brand-2: #0b7a56;
+  --vp-c-brand-3: #17946a;
   --vp-c-bg: var(--vie-paper);
   --vp-c-bg-alt: #f1f5f9;
   --vp-c-bg-soft: #ffffff;
@@ -38,9 +40,9 @@
   --vp-c-text-3: #99a5b1;
   --vp-c-divider: var(--vie-line);
   --vp-c-gutter: transparent;
-  --vp-button-brand-bg: var(--vie-green);
-  --vp-button-brand-hover-bg: #17855a;
-  --vp-button-brand-active-bg: #136a49;
+  --vp-button-brand-bg: var(--vie-green-action);
+  --vp-button-brand-hover-bg: #095a3f;
+  --vp-button-brand-active-bg: #084b34;
   --vp-button-alt-bg: #ffffff;
   --vp-button-alt-text: var(--vie-ink);
   --vp-button-alt-border: var(--vie-line);
@@ -66,7 +68,7 @@ body {
 }
 
 :focus-visible {
-  outline: 2px solid var(--vie-green);
+  outline: 2px solid var(--vie-focus);
   outline-offset: 3px;
 }
 
@@ -136,7 +138,7 @@ body {
 
 .vie-global-nav__links a:hover,
 .vie-global-nav__links a.is-active {
-  color: var(--vie-green);
+  color: var(--vie-green-action);
 }
 
 .vie-global-nav__links a.is-active {
@@ -457,9 +459,9 @@ body {
 
 .vie-run-btn {
   padding: 0.85rem 1.25rem;
-  background: var(--vie-green);
+  background: var(--vie-green-action);
   color: #fff;
-  box-shadow: 0 14px 26px rgba(31, 163, 111, 0.22);
+  box-shadow: 0 14px 26px rgba(11, 107, 75, 0.22);
 }
 
 .vie-ghost-btn {
@@ -967,22 +969,6 @@ body {
   font-size: 0.76rem;
 }
 
-.vie-project-grid {
-  display: grid;
-  gap: 16px;
-}
-
-.vie-project-tile {
-  display: grid;
-  gap: 12px;
-}
-
-.vie-project-img {
-  width: 100%;
-  border-radius: 12px;
-  border: 1px solid var(--vie-line);
-}
-
 .vie-badge {
   display: inline-flex;
   align-items: center;
@@ -990,7 +976,7 @@ body {
   padding: 5px 10px;
   border-radius: 999px;
   background: var(--vie-green-soft);
-  color: var(--vie-green);
+  color: var(--vie-green-action);
   font-size: 0.72rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -1003,7 +989,7 @@ body {
 }
 
 .vie-link-row a {
-  color: var(--vie-green);
+  color: var(--vie-green-action);
   text-decoration: none;
   font-weight: 700;
 }
@@ -1201,7 +1187,7 @@ body {
   width: 40px;
   height: 40px;
   background: var(--vie-green-soft);
-  color: var(--vie-green);
+  color: var(--vie-green-action);
 }
 
 .vp-doc h1,
@@ -1212,7 +1198,7 @@ body {
 }
 
 .vp-doc a {
-  color: var(--vie-green);
+  color: var(--vie-green-action);
 }
 
 .vie-vibe:not(.vie-page-home) .VPDoc .content-container {
@@ -1222,6 +1208,26 @@ body {
   background: transparent;
   border: none;
   box-shadow: none;
+}
+
+/* Project surfaces own the full shell width; the default reading column
+   (784px) is for articles only. */
+.vie-vibe:not(.vie-page-home) .VPDoc .container:has(.vie-flagship),
+.vie-vibe:not(.vie-page-home) .VPDoc .container:has(.vie-project-detail) {
+  display: block;
+  max-width: min(1240px, 100%);
+}
+
+.vie-vibe:not(.vie-page-home) .VPDoc .content:has(.vie-flagship),
+.vie-vibe:not(.vie-page-home) .VPDoc .content:has(.vie-project-detail) {
+  max-width: min(1240px, 100%);
+  padding: 0;
+}
+
+.vie-vibe:not(.vie-page-home) .vp-doc:has(.vie-flagship),
+.vie-vibe:not(.vie-page-home) .vp-doc:has(.vie-project-detail) {
+  max-width: none;
+  padding: 0;
 }
 
 .vie-vibe:not(.vie-page-home) .vp-doc {
@@ -1374,6 +1380,10 @@ body {
     grid-template-columns: 1fr 1fr;
   }
 
+  .vie-footer-brand {
+    grid-column: 1 / -1;
+  }
+
   .vie-list-card {
     grid-template-columns: 1fr;
   }
@@ -1385,9 +1395,16 @@ body {
 
 @media (max-width: 520px) {
   .vie-metric-grid,
-  .vie-stats-cards,
-  .vie-footer-inner {
+  .vie-stats-cards {
     grid-template-columns: 1fr;
+  }
+
+  .vie-footer-inner {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .vie-footer-inner nav[aria-label='联系'] {
+    grid-column: 1 / -1;
   }
 
   .vie-hero {

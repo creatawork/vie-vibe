@@ -94,18 +94,6 @@
   line-height: 1.35;
 }
 
-.vie-project-grid {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.vie-project-tile {
-  min-height: 100%;
-}
-
-.vie-project-tile p {
-  margin-bottom: 0;
-}
-
 .vie-feed {
   display: grid;
 }
@@ -155,10 +143,6 @@
 }
 
 @media (max-width: 920px) {
-  .vie-project-grid {
-    grid-template-columns: 1fr;
-  }
-
   .vie-category-panel {
     position: static;
   }

@@ -5,6 +5,7 @@ import { computed, onMounted, ref, watch, nextTick } from 'vue'
 import SeriesNav from './components/SeriesNav.vue'
 import VieWordmark from './components/VieWordmark.vue'
 import VieGlobalNav from './components/VieGlobalNav.vue'
+import { renderMermaidBlocks } from './mermaid'
 import { sendTrack } from './track'
 
 const { Layout } = DefaultTheme
@@ -35,9 +36,11 @@ function recount() {
 onMounted(() => {
   sendTrack()
   recount()
+  renderMermaidBlocks()
   watch(() => route.path, () => {
     sendTrack()
     recount()
+    nextTick(renderMermaidBlocks)
   })
 })
 </script>
@@ -58,7 +61,9 @@ onMounted(() => {
       <VieGlobalNav />
     </template>
     <template #nav-bar-title-before>
-      <VieWordmark to="/" size="nav" />
+      <!-- span variant: the default theme already wraps this slot in its own
+           title <a>, and nested <a> breaks both HTML parsing and hydration -->
+      <VieWordmark size="nav" />
     </template>
 
     <template #doc-before>

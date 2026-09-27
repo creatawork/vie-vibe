@@ -16,7 +16,8 @@ const title = computed(() => {
 
 const subtitle = computed(() => {
   if (props.path.startsWith('articles')) return '记录成长系统，分享开发经验'
-  if (props.path.startsWith('projects')) return '把想法落地成可验证的作品'
+  if (props.path.startsWith('projects'))
+    return '不追求数量，记录真正做完、跑通并持续迭代的产品。'
   if (props.path.startsWith('series')) return '按主题串起完整的技术决策链'
   if (props.path.startsWith('stats')) return '站点数据的私有观察台'
   return props.hint ?? 'Vie 技术笔记'

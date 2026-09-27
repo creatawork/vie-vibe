@@ -34,7 +34,7 @@ export function headTagsForPage(pageData: HeadPageData, siteUrl: string): HeadCo
   const image =
     (typeof fmImage === 'string' && fmImage.startsWith('/') && `${siteUrl}${fmImage}`) ||
     `${siteUrl}/images/vie-home.png`
-  return [
+  const tags: HeadConfig[] = [
     [
       'link',
       {
@@ -44,6 +44,7 @@ export function headTagsForPage(pageData: HeadPageData, siteUrl: string): HeadCo
         title: 'Vie RSS',
       },
     ],
+    ['link', { rel: 'canonical', href: url }],
     ['meta', { property: 'og:site_name', content: 'Vie' }],
     ['meta', { property: 'og:title', content: pageData.title }],
     ['meta', { property: 'og:description', content: description }],
@@ -55,6 +56,11 @@ export function headTagsForPage(pageData: HeadPageData, siteUrl: string): HeadCo
     ['meta', { name: 'twitter:description', content: description }],
     ['meta', { name: 'twitter:image', content: image }],
   ]
+  const jsonLd = pageData.frontmatter.jsonLd
+  if (jsonLd && typeof jsonLd === 'object') {
+    tags.push(['script', { type: 'application/ld+json' }, JSON.stringify(jsonLd)])
+  }
+  return tags
 }
 
 interface SiteConfig {

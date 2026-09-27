@@ -1,19 +1,36 @@
-/* /projects/<slug> — project detail & dev-log timeline */
+/* /projects/<slug> — project detail & dev-log timeline.
+   Heading/paragraph rules are .vp-doc-prefixed to beat the default theme's
+   article typography (h2 border-top, p margins) inside these components. */
 .vie-project-detail {
-  max-width: 760px;
+  max-width: 860px;
   margin: 0 auto;
   padding: 8px 20px 64px;
 }
 
 .vie-detail-crumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   margin: 0 0 18px;
   font-size: 0.78rem;
   color: var(--vie-ink-soft);
 }
 
 .vie-detail-crumb a {
-  color: var(--vie-green);
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--vie-green-action);
   text-decoration: none;
+  font-weight: 600;
+}
+
+.vie-detail-hero {
+  padding: 24px 24px 22px;
+  border: 1px solid var(--vie-line);
+  border-radius: var(--vie-radius);
+  background: var(--vie-panel);
+  box-shadow: var(--vie-shadow-soft);
 }
 
 .vie-detail-title {
@@ -23,37 +40,170 @@
   flex-wrap: wrap;
 }
 
-.vie-detail-title h2 {
+.vp-doc .vie-detail-title h1 {
   margin: 0;
-  font-size: 1.6rem;
-  line-height: 1.3;
+  padding-top: 0;
+  border-top: 0;
+  font-family: var(--vie-font-display);
+  font-size: clamp(2.1rem, 4vw, 3rem);
+  line-height: 1.2;
+  letter-spacing: -0.03em;
   color: var(--vie-ink);
 }
 
-.vie-detail-desc {
-  margin: 10px 0 0;
+.vp-doc .vie-detail-desc {
+  margin: 12px 0 0;
+  color: var(--vie-ink);
+  font-size: 1.05rem;
+  line-height: 1.7;
+  max-width: 36em;
+}
+
+.vp-doc .vie-detail-summary {
+  margin: 8px 0 0;
   color: var(--vie-ink-soft);
   font-size: 0.95rem;
+  line-height: 1.75;
+  max-width: 42em;
+}
+
+.vp-doc .vie-detail-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.vie-detail-section {
+  padding: 30px 24px;
+  border: 1px solid var(--vie-line);
+  border-radius: var(--vie-radius);
+  background: var(--vie-panel);
+  box-shadow: var(--vie-shadow-soft);
+  scroll-margin-top: 92px;
+}
+
+.vie-detail-section--flush {
+  padding: 16px;
+}
+
+.vie-detail-section + .vie-detail-section,
+.vie-detail-hero + .vie-detail-section {
+  margin-top: 16px;
+}
+
+.vp-doc .vie-detail-section h2 {
+  margin: 0 0 16px;
+  padding-top: 0;
+  border-top: 0;
+  font-family: var(--vie-font-display);
+  font-size: 1.35rem;
+  letter-spacing: -0.03em;
+  color: var(--vie-ink);
+}
+
+.vp-doc .vie-detail-arch {
+  margin: 0 0 4px;
+  color: var(--vie-ink-soft);
+  line-height: 1.75;
+  max-width: 44em;
+}
+
+.vie-facts {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+}
+
+.vie-facts div {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr);
+  gap: 14px;
+  padding: 12px 14px;
+  border-radius: var(--vie-radius-sm);
+  background: var(--vie-panel-soft);
+  border: 1px solid var(--vie-line);
+}
+
+.vie-facts dt {
+  color: var(--vie-green-action);
+  font-weight: 700;
+  font-size: 0.88rem;
+}
+
+.vie-facts dd {
+  margin: 0;
+  color: var(--vie-ink-soft);
+  font-size: 0.92rem;
   line-height: 1.7;
 }
 
-.vie-project-detail .vie-link-row {
-  margin-top: 14px;
+.vie-flows {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
 }
 
-.vie-timeline {
-  margin-top: 40px;
+.vie-flows > div {
+  padding: 14px 16px;
+  border: 1px solid var(--vie-line);
+  border-radius: var(--vie-radius-sm);
+  background: var(--vie-panel-soft);
 }
 
+.vp-doc .vie-flows h3 {
+  margin: 0 0 8px;
+  padding-top: 0;
+  border-top: 0;
+  font-family: var(--vie-font-display);
+  font-size: 0.98rem;
+  color: var(--vie-ink);
+}
+
+.vie-flows ol {
+  margin: 0;
+  padding-left: 20px;
+  color: var(--vie-ink-soft);
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+
+.vie-flows li + li {
+  margin-top: 4px;
+}
+
+.vp-doc .vie-validation {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.vie-validation li {
+  position: relative;
+  padding: 10px 14px 10px 34px;
+  border-radius: var(--vie-radius-sm);
+  background: var(--vie-green-soft);
+  color: var(--vie-ink);
+  font-size: 0.92rem;
+  line-height: 1.65;
+}
+
+.vie-validation li::before {
+  content: '✓';
+  position: absolute;
+  left: 14px;
+  color: var(--vie-green-action);
+  font-weight: 700;
+}
+
+/* Timeline ---------------------------------------------------------------- */
 .vie-project-detail .vie-timeline-list {
   list-style: none;
   margin: 0;
   padding: 0 0 0 22px;
   border-left: 2px solid var(--vie-line);
-}
-
-.vie-project-detail .vie-timeline-item + .vie-timeline-item {
-  margin-top: 0;
 }
 
 .vie-timeline-item {
@@ -77,7 +227,7 @@
   border: 1px solid var(--vie-line);
   border-radius: 999px;
   background: var(--vie-green-soft);
-  color: var(--vie-green);
+  color: var(--vie-green-action);
 }
 
 .vie-timeline-card {
@@ -96,14 +246,16 @@
   color: var(--vie-ink-soft);
 }
 
-.vie-timeline-card h3 {
+.vp-doc .vie-timeline-card h3 {
   margin: 6px 0 0;
+  padding-top: 0;
+  border-top: 0;
   font-size: 1rem;
   line-height: 1.5;
   color: var(--vie-ink);
 }
 
-.vie-timeline-desc {
+.vp-doc .vie-timeline-desc {
   margin: 6px 0 0;
   color: var(--vie-ink-soft);
   font-size: 0.88rem;
@@ -130,7 +282,10 @@
 }
 
 .vie-timeline-links a {
-  color: var(--vie-green);
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--vie-green-action);
   text-decoration: none;
   font-weight: 700;
 }
@@ -139,4 +294,19 @@
   .vie-project-detail {
     padding: 8px 16px 48px;
   }
+
+  .vie-detail-hero,
+  .vie-detail-section {
+    padding: 18px 16px;
+  }
+
+  .vie-flows {
+    grid-template-columns: 1fr;
+  }
+
+  .vie-facts div {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
 }
+
