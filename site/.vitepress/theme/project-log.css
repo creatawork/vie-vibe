@@ -7,6 +7,129 @@
   padding: 8px 20px 64px;
 }
 
+/* Left TOC rail ------------------------------------------------------------
+   A sticky mini-map of the case-study page: six section anchors, with the
+   log entries nested under 开发日志. The 2px track mirrors the timeline's
+   left border — the rail is the timeline of the page itself. Rail is a
+   wide-viewport affordance; below 1101px the article column stands alone. */
+.vie-detail-toc {
+  display: none;
+}
+
+@media (min-width: 1101px) {
+  .vie-project-layout {
+    display: grid;
+    grid-template-columns: 220px minmax(0, 1fr);
+    gap: 20px;
+    align-items: start;
+  }
+
+  .vie-detail-toc {
+    display: block;
+    position: sticky;
+    top: 100px;
+    max-height: calc(100vh - 124px);
+    overflow-y: auto;
+    padding: 6px 10px 12px 0;
+  }
+}
+
+.vie-detail-toc__label {
+  margin: 0 0 10px;
+  padding-left: 16px;
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+  color: #99a5b1;
+}
+
+/* Anchor rules are .vp-doc-prefixed to beat the default theme's link
+   underline and list markers inside the rail. */
+.vp-doc .vie-toc-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-left: 2px solid var(--vie-line);
+}
+
+.vp-doc .vie-toc-sub {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 6px;
+}
+
+.vp-doc .vie-toc-list li,
+.vp-doc .vie-toc-sub li {
+  margin: 0;
+}
+
+.vp-doc .vie-toc-link {
+  display: block;
+  margin-left: -2px;
+  padding: 6px 12px 6px 16px;
+  border-left: 2px solid transparent;
+  color: var(--vie-ink-soft);
+  text-decoration: none;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  transition: color 160ms ease, border-color 160ms ease;
+}
+
+.vp-doc .vie-toc-link:hover {
+  color: var(--vie-ink);
+  text-decoration: none;
+}
+
+.vp-doc .vie-toc-link.is-parent {
+  color: var(--vie-ink);
+}
+
+.vp-doc .vie-toc-link.is-active {
+  border-left-color: var(--vie-green-action);
+  color: var(--vie-green-action);
+  font-weight: 650;
+}
+
+.vp-doc .vie-toc-entry {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-left: -2px;
+  padding: 5px 10px 5px 30px;
+  border-left: 2px solid transparent;
+  color: var(--vie-ink-soft);
+  text-decoration: none;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  transition: color 160ms ease, border-color 160ms ease;
+}
+
+.vp-doc .vie-toc-entry:hover {
+  color: var(--vie-ink);
+  text-decoration: none;
+}
+
+.vp-doc .vie-toc-entry.is-active {
+  border-left-color: var(--vie-green-action);
+  color: var(--vie-ink);
+  font-weight: 600;
+}
+
+.vp-doc .vie-toc-entry__no {
+  flex: none;
+  font-size: 0.72rem;
+  color: #8b98a6;
+}
+
+.vp-doc .vie-toc-entry.is-active .vie-toc-entry__no {
+  color: var(--vie-green-action);
+}
+
+.vp-doc .vie-toc-entry__title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .vie-detail-crumb {
   display: flex;
   align-items: center;
@@ -209,6 +332,7 @@
 .vie-timeline-item {
   position: relative;
   padding: 4px 0 28px;
+  scroll-margin-top: 96px;
 }
 
 .vie-timeline-item:last-child {

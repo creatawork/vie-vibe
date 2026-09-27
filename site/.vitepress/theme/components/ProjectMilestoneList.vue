@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Flag, GitBranch, Sparkles, Wrench } from '@lucide/vue'
 import type { ProjectLogEntry } from '../../../projects.source'
+import { logAnchorId, logNo } from './logAnchor'
 
 defineProps<{ entries: ProjectLogEntry[] }>()
 
@@ -16,6 +17,7 @@ const typeIcon = {
   <ol class="vie-timeline-list" role="list">
     <li
       v-for="(e, i) in entries"
+      :id="logAnchorId(entries.length, i)"
       :key="e.date + '-' + i"
       class="vie-timeline-item"
     >
@@ -25,9 +27,7 @@ const typeIcon = {
       <div class="vie-timeline-card">
         <div class="vie-timeline-meta">
           <time :datetime="e.date" class="vie-mono">{{ e.date }}</time>
-          <span class="vie-ln vie-mono" aria-hidden="true">{{
-            String(entries.length - i).padStart(2, '0')
-          }}</span>
+          <span class="vie-ln vie-mono" aria-hidden="true">{{ logNo(entries.length, i) }}</span>
         </div>
         <h3>{{ e.title }}</h3>
         <p v-if="e.detail" class="vie-timeline-desc">{{ e.detail }}</p>
