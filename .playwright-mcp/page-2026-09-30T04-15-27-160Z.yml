@@ -1,0 +1,471 @@
+- generic [ref=f3e4]:
+  - banner [ref=f3e5]:
+    - generic [ref=f3e6]:
+      - link "Vie 首页" [ref=f3e7] [cursor=pointer]:
+        - /url: /
+        - generic [ref=f3e9]: V
+        - generic [ref=f3e10]: ie
+      - navigation "主导航" [ref=f3e11]:
+        - link "首页" [ref=f3e12] [cursor=pointer]:
+          - /url: /
+        - link "文章" [ref=f3e13] [cursor=pointer]:
+          - /url: /articles/
+        - link "项目" [ref=f3e14] [cursor=pointer]:
+          - /url: /projects
+        - link "工具" [ref=f3e15] [cursor=pointer]:
+          - /url: /tools
+        - link "关于" [ref=f3e16] [cursor=pointer]:
+          - /url: /#about
+      - generic [ref=f3e17]:
+        - button "搜索文章" [ref=f3e18] [cursor=pointer]:
+          - generic [ref=f3e22]: 搜索
+        - link "GitHub 主页" [ref=f3e23] [cursor=pointer]:
+          - /url: https://github.com/creatawork
+          - generic [ref=f3e24]: V
+  - link "Skip to content" [ref=f3e25] [cursor=pointer]:
+    - /url: "#VPContent"
+  - text: Ctrl
+  - generic [ref=f3e28]:
+    - navigation [ref=f3e34]:
+      - generic [ref=f3e35]:
+        - heading "本页目录" [level=2] [ref=f3e37]
+        - list [ref=f3e38]:
+          - listitem [ref=f3e39]:
+            - link "一、先让流式跑起来" [ref=f3e40] [cursor=pointer]:
+              - /url: "#一、先让流式跑起来"
+          - listitem [ref=f3e41]:
+            - link "二、工具循环：agent 的本体" [ref=f3e42] [cursor=pointer]:
+              - /url: "#二、工具循环-agent-的本体"
+          - listitem [ref=f3e43]:
+            - link "三、防护：循环的第一课是刹车" [ref=f3e44] [cursor=pointer]:
+              - /url: "#三、防护-循环的第一课是刹车"
+          - listitem [ref=f3e45]:
+            - link "四、并行工具调用" [ref=f3e46] [cursor=pointer]:
+              - /url: "#四、并行工具调用"
+          - listitem [ref=f3e47]:
+            - link "五、上下文压缩：把历史塞回预算里" [ref=f3e48] [cursor=pointer]:
+              - /url: "#五、上下文压缩-把历史塞回预算里"
+          - listitem [ref=f3e49]:
+            - link "六、可观测：没有 trace 的 agent 不可调试" [ref=f3e50] [cursor=pointer]:
+              - /url: "#六、可观测-没有-trace-的-agent-不可调试"
+          - listitem [ref=f3e51]:
+            - link "七、三条入口，一个循环" [ref=f3e52] [cursor=pointer]:
+              - /url: "#七、三条入口-一个循环"
+          - listitem [ref=f3e53]:
+            - link "写在最后：什么时候轮到框架" [ref=f3e54] [cursor=pointer]:
+              - /url: "#写在最后-什么时候轮到框架"
+    - generic [ref=f3e57]:
+      - generic [ref=f3e58]:
+        - heading "手写 Agent Loop：从一次 API 调用到多步任务" [level=1] [ref=f3e59]
+        - paragraph [ref=f3e60]:
+          - time [ref=f3e61]: 2026-09-30
+          - generic [ref=f3e62]: · 约 17 分钟 · 6492 字
+          - link "Erpilot 开发实录" [ref=f3e63] [cursor=pointer]:
+            - /url: /series/Erpilot%20%E5%BC%80%E5%8F%91%E5%AE%9E%E5%BD%95
+      - navigation "系列导航" [ref=f3e64]:
+        - paragraph [ref=f3e65]:
+          - text: part 1 of 1 ·
+          - link "Erpilot 开发实录" [ref=f3e66] [cursor=pointer]:
+            - /url: /series/Erpilot%20%E5%BC%80%E5%8F%91%E5%AE%9E%E5%BD%95
+      - main [ref=f3e67]:
+        - generic [ref=f3e69]:
+          - blockquote [ref=f3e70]:
+            - paragraph [ref=f3e71]: Erpilot 系列第 1 篇 · 2026-09-30
+            - paragraph [ref=f3e72]:
+              - text: 代码在
+              - link "erpilot/packages/agent_core" [ref=f3e73] [cursor=pointer]:
+                - /url: https://github.com/creatawork/Erpilot
+              - text: （M1 第 1–4 周），约 1200 行 Python + 44 项单测。 这一版刻意不用任何 agent 框架——为什么、以及什么时候我会换上 LangGraph，文末说。
+          - paragraph [ref=f3e74]:
+            - text: 大模型 API 只会一件事：发一段消息列表，收一段消息。但我的"掌柜助手"已经能完成这样的任务——用户问"订单 123 里买了什么？还有货吗？报个价"，它自己拆成三步：查订单 → 查库存和报价（这一轮它
+            - strong [ref=f3e75]: 自发同时调用了两个工具
+            - text: ，没人教过它并行）→ 组织一句能直接发给顾客的回复。三轮 LLM 往返，成本约 ¥0.0003。
+          - paragraph [ref=f3e76]: 中间没有魔法，只有一个循环。市面上的 agent 框架，剥掉 UI 和生态，核心都是这个循环。这篇文章把它从零写一遍：从一次流式 API 调用开始，到多步工具调用、防死循环、错误回填、上下文压缩，最后落一份可回放的 trace。写完你会知道框架在替你做什么——以及哪些它替不了。
+          - heading [level=2] [ref=f3e77]:
+            - text: 一、先让流式跑起来
+            - link "Permalink to \"一、先让流式跑起来\"" [ref=f3e78] [cursor=pointer]:
+              - /url: "#一、先让流式跑起来"
+              - text: "#"
+          - paragraph [ref=f3e79]:
+            - text: 直接调
+            - code [ref=f3e80]: chat.completions.create
+            - text: 拿完整回复当然可以，但一次任务要经历多轮生成，不把字往外吐，用户就只能对着空白界面猜程序是不是死了。所以第一件事是流式：
+          - generic [ref=f3e81]:
+            - button "Copy Code" [ref=f3e82] [cursor=pointer]
+            - generic [ref=f3e83]: python
+            - code [ref=f3e85]:
+              - generic [ref=f3e86]: stream = await client.chat.completions.create(
+              - generic [ref=f3e87]: model=model, messages=messages, stream=True,
+              - generic [ref=f3e88]: "stream_options={\"include_usage\": True},"
+              - generic [ref=f3e89]: )
+              - generic [ref=f3e90]: "async for chunk in stream:"
+              - generic [ref=f3e91]: "if chunk.choices and chunk.choices[0].delta.content:"
+              - generic [ref=f3e92]: yield TextDelta(chunk.choices[0].delta.content)
+              - generic [ref=f3e93]: "if chunk.usage is not None:"
+              - generic [ref=f3e94]: "usage = Usage(...) # 最后一个包带 token 计量"
+          - paragraph [ref=f3e95]:
+            - text: 第一个设计决定在这里：
+            - strong [ref=f3e96]: 不要把 SDK 的 chunk 对象泄漏出去
+            - text: 。定义自己的事件模型——
+          - generic [ref=f3e97]:
+            - button "Copy Code" [ref=f3e98] [cursor=pointer]
+            - generic [ref=f3e99]: python
+            - code [ref=f3e101]:
+              - generic [ref=f3e102]: "@dataclass(frozen=True, slots=True)"
+              - generic [ref=f3e103]: "class TextDelta: text: str"
+              - generic [ref=f3e104]: "@dataclass(frozen=True, slots=True)"
+              - generic [ref=f3e105]: "class ToolCall: id: str; name: str; arguments: str"
+              - generic [ref=f3e106]: "@dataclass(frozen=True, slots=True)"
+              - generic [ref=f3e107]: "class StreamEnd: usage: Usage | None"
+          - paragraph [ref=f3e108]:
+            - code [ref=f3e109]: stream_chat()
+            - text: 产出
+            - code [ref=f3e110]: TextDelta | ToolCall | StreamEnd
+            - text: ，并且保证
+            - strong [ref=f3e111]: 恰好以一个 StreamEnd 结束
+            - text: 。有了这层边界，下游就只需要认识三种事件：CLI 等一个终止信号来收口统计，SSE 把事件逐个转发，trace 逐行落盘——SDK 的流式细节被封在
+            - code [ref=f3e112]: stream_chat
+            - text: 里面，谁都不用再碰。
+          - paragraph [ref=f3e113]:
+            - text: 顺带处理一个容易忽略的细节：流式模式下工具调用是
+            - strong [ref=f3e114]: 分片到达
+            - text: 的——第一个包只有
+            - code [ref=f3e115]: id
+            - text: 和函数名，参数 JSON 分成好几段。要按
+            - code [ref=f3e116]: index
+            - text: 把碎片归并回完整的 ToolCall：
+          - generic [ref=f3e117]:
+            - button "Copy Code" [ref=f3e118] [cursor=pointer]
+            - generic [ref=f3e119]: python
+            - code [ref=f3e121]:
+              - generic [ref=f3e122]: "slot = pending.setdefault(delta.index, {\"id\": None, \"name\": None, \"arguments\": []})"
+              - generic [ref=f3e123]: "if delta.function.arguments:"
+              - generic [ref=f3e124]: slot["arguments"].append(delta.function.arguments)
+          - heading [level=2] [ref=f3e125]:
+            - text: 二、工具循环：agent 的本体
+            - link "Permalink to \"二、工具循环：agent 的本体\"" [ref=f3e126] [cursor=pointer]:
+              - /url: "#二、工具循环-agent-的本体"
+              - text: "#"
+          - paragraph [ref=f3e127]:
+            - text: 有了流式，agent 的本体是这样一个循环：
+            - strong [ref=f3e128]: 生成 → 有工具调用就执行 → 结果回填 → 再生成
+            - text: ，直到模型给出不含工具调用的回答。核心不到三十行（真实版本在
+            - code [ref=f3e129]: loop.py
+            - text: ，含防护与重试，这里删了枝节）：
+          - generic [ref=f3e130]:
+            - button "Copy Code" [ref=f3e131] [cursor=pointer]
+            - generic [ref=f3e132]: python
+            - code [ref=f3e134]:
+              - generic [ref=f3e135]: "async def run(self, messages) -> AsyncIterator[AgentEvent]:"
+              - generic [ref=f3e136]: schemas = [t.openai_schema() for t in self._tools.values()]
+              - generic [ref=f3e137]: total_usage = None
+              - generic [ref=f3e138]: "for step in range(1, self._config.max_steps + 1):"
+              - generic [ref=f3e139]: yield StepStarted(step=step)
+              - generic [ref=f3e140]: "compress_messages(messages, self._config.context) # 上下文压缩，第五节"
+              - generic [ref=f3e141]: parts, calls, step_usage = [], [], None
+              - generic [ref=f3e142]: "async for event in self._client.stream_chat(messages, tools=schemas):"
+              - generic [ref=f3e143]: "match event:"
+              - generic [ref=f3e144]: "case TextDelta(text=text):"
+              - generic [ref=f3e145]: parts.append(text); yield event
+              - generic [ref=f3e146]: "case ToolCall() as call:"
+              - generic [ref=f3e147]: calls.append(call)
+              - generic [ref=f3e148]: "case StreamEnd(usage=usage):"
+              - generic [ref=f3e149]: "step_usage = usage # 本步 token 计量"
+              - generic [ref=f3e150]: "total_usage = _merge_usage(total_usage, step_usage) # 跨步合计"
+              - generic [ref=f3e151]: "yield StepEnd(step=step, usage=step_usage, ...) # 供 trace 逐轮记录"
+              - generic [ref=f3e152]: "if not calls: # 没有工具调用 = 最终回答"
+              - generic [ref=f3e153]: "messages.append({\"role\": \"assistant\", \"content\": \"\".join(parts)})"
+              - generic [ref=f3e154]: yield LoopEnd(steps=step, usage=total_usage, completed=True)
+              - generic [ref=f3e155]: return
+              - generic [ref=f3e156]: messages.append(_assistant_toolcall_message("".join(parts), calls))
+              - generic [ref=f3e157]: "for call in calls:"
+              - generic [ref=f3e158]: yield ToolCallStarted(call=call)
+              - generic [ref=f3e159]: pending = [self._execute_indexed(i, c) for i, c in enumerate(calls)]
+              - generic [ref=f3e160]: "for done in asyncio.as_completed(pending): # 并行执行，第四节"
+              - generic [ref=f3e161]: index, content, ok = await done
+              - generic [ref=f3e162]: "yield ToolCallFinished(...) # 带 call_id，乱序可配对"
+              - generic [ref=f3e163]: "# 结果按调用顺序回填进 messages，进入下一轮"
+          - paragraph [ref=f3e164]:
+            - text: （重试与工具超时在
+            - code [ref=f3e165]: _execute
+            - text: 里，此处删了枝节；其余与
+            - code [ref=f3e166]: loop.py
+            - text: 一致。）
+          - paragraph [ref=f3e167]: 三个协议细节必须做对：
+          - paragraph [ref=f3e168]:
+            - strong [ref=f3e169]: schema 注入
+            - text: 。工具用 Pydantic 定义参数模型，
+            - code [ref=f3e170]: model_json_schema()
+            - text: 自动生成 OpenAI tools 格式。一个小技巧：生成后递归剥掉所有
+            - code [ref=f3e171]: title
+            - text: 键——Pydantic 会给每个字段加 title，对注入请求是纯噪音，白花 token。
+          - paragraph [ref=f3e172]:
+            - strong [ref=f3e173]: 回填必须成对
+            - text: 。模型发出工具调用后，历史里要有两条消息：assistant 消息带
+            - code [ref=f3e174]: tool_calls
+            - text: （它在请求什么），tool 消息带
+            - code [ref=f3e175]: tool_call_id
+            - text: （结果是什么）。漏掉一半或者 id 对不上，请求直接报错。这也是第五节上下文压缩的约束来源：
+            - strong [ref=f3e176]: 裁剪只能按轮进行，不能把 tool 结果和它的父调用拆开
+            - text: 。
+          - paragraph [ref=f3e177]:
+            - strong [ref=f3e178]: 校验放在执行前
+            - text: 。工具入参先过 Pydantic 校验，模型给错参数时，错误信息回填给它自己修正，而不是让 handler 炸出一个堆栈。
+          - paragraph [ref=f3e179]:
+            - text: 到这里，"查订单 123 的状态"就能跑通了：模型请求
+            - code [ref=f3e180]: get_order_status
+            - text: → 执行 → 回填 → 第二轮生成"订单 123 已发货"。两步，这就是一个最小的 agent。
+          - paragraph [ref=f3e181]: 整个循环对外只暴露一条事件流，这是本文最重要的一张图：
+          - generic [ref=f3e182]:
+            - button "Copy Code" [ref=f3e183] [cursor=pointer]
+            - code [ref=f3e185]:
+              - generic [ref=f3e186]: LLM(流式) ──▶ AgentLoop.run() ──▶ AgentEvent 流 ──┬─▶ trace.py JSONL 落盘 + 回放
+              - generic [ref=f3e187]: 生成 → 工具 → 回填 → 再生成 ├─▶ cli.py rich 渲染
+              - generic [ref=f3e188]: └─▶ FastAPI SSE ──▶ React 页
+          - paragraph [ref=f3e189]: 循环本身不知道也不关心谁在消费——第六节的 trace、CLI 的渲染、第七节的前端，挂的都是同一条流。
+          - heading [level=2] [ref=f3e190]:
+            - text: 三、防护：循环的第一课是刹车
+            - link "Permalink to \"三、防护：循环的第一课是刹车\"" [ref=f3e191] [cursor=pointer]:
+              - /url: "#三、防护-循环的第一课是刹车"
+              - text: "#"
+          - paragraph [ref=f3e192]: 无限循环并不罕见：模型会在同一处反复调用同一个工具、或者每次都发明一个新参数。三道闸：
+          - paragraph [ref=f3e193]:
+            - strong [ref=f3e194]: max_steps 防死循环
+            - text: ——到步数上限就停，事件里带
+            - code [ref=f3e195]: completed=False
+            - text: ，上层可以提示用户而不是无声失败。
+          - paragraph [ref=f3e196]:
+            - strong [ref=f3e197]: 单工具超时
+            - text: ——
+            - code [ref=f3e198]: asyncio.wait_for(tool.handler(args), timeout)
+            - text: 。任何工具作者都可能写出死循环或慢查询，不能让一个工具挂死整个 agent。
+          - paragraph [ref=f3e199]:
+            - strong [ref=f3e200]: 异常永不外抛，转成结构化错误回填
+            - text: 。这是我认为 loop 设计里最重要的一个决定。工具抛异常、参数校验失败、超时——统统转成这样的 JSON 塞回对话：
+          - generic [ref=f3e201]:
+            - button "Copy Code" [ref=f3e202] [cursor=pointer]
+            - generic [ref=f3e203]: json
+            - code [ref=f3e205]:
+              - generic [ref=f3e206]: "{\"error\": {\"type\": \"timeout\", \"message\": \"工具执行超时（>30s，已重试 1 次）\"}}"
+          - paragraph [ref=f3e207]:
+            - text: 为什么不直接 raise？因为
+            - strong [ref=f3e208]: 模型看到错误是可以自救的
+            - text: ：参数错了会改参数，工具坏了会换一条路，甚至直接告诉用户"库存系统暂时查不了"。把异常抛给调用方等于放弃自愈能力，而结构化的
+            - code [ref=f3e209]: type
+            - text: 字段让模型可以稳定地区分"该重试的瞬态故障"和"该改道的确定性错误"。
+          - paragraph [ref=f3e210]:
+            - text: 顺着这个区分就有了重试策略 v1：
+            - code [ref=f3e211]: timeout
+            - text: /
+            - code [ref=f3e212]: execution
+            - text: 视为瞬态，按次数 + 退避自动重试；
+            - code [ref=f3e213]: validation
+            - text: /
+            - code [ref=f3e214]: unknown_tool
+            - text: 是确定性错误，重试毫无意义，立刻回填让模型修正。
+          - heading [level=2] [ref=f3e215]:
+            - text: 四、并行工具调用
+            - link "Permalink to \"四、并行工具调用\"" [ref=f3e216] [cursor=pointer]:
+              - /url: "#四、并行工具调用"
+              - text: "#"
+          - paragraph [ref=f3e217]: 开头那个三步任务里，模型在第二轮同时要了库存和价格。两个调用互相独立，串行执行纯属浪费：
+          - generic [ref=f3e218]:
+            - button "Copy Code" [ref=f3e219] [cursor=pointer]
+            - generic [ref=f3e220]: python
+            - code [ref=f3e222]:
+              - generic [ref=f3e223]: pending = [self._execute_indexed(i, c) for i, c in enumerate(calls)]
+              - generic [ref=f3e224]: "for done in asyncio.as_completed(pending):"
+              - generic [ref=f3e225]: index, content, ok = await done
+              - generic [ref=f3e226]: "yield ToolCallFinished(...) # 完成一个转发一个"
+          - paragraph [ref=f3e227]:
+            - text: 三个顺序要分清：
+            - code [ref=f3e228]: Started
+            - text: 事件按
+            - strong [ref=f3e229]: 调用顺序
+            - text: 发（模型请求了什么）；
+            - code [ref=f3e230]: Finished
+            - text: 按
+            - strong [ref=f3e231]: 完成顺序
+            - text: 发（谁先跑完谁先走，前端时间线如实呈现）；回填消息按
+            - strong [ref=f3e232]: 调用顺序
+            - text: 放（与 assistant 消息里的
+            - code [ref=f3e233]: tool_calls
+            - text: 一一对应，协议最稳）。
+            - code [ref=f3e234]: Finished
+            - text: 事件带着
+            - code [ref=f3e235]: call_id
+            - text: ，前端靠它把 started/finished 配对，不怕乱序。
+          - paragraph [ref=f3e236]:
+            - text: 有意思的是，
+            - strong [ref=f3e237]: 并行不是代码教给模型的，是模型自己决定的
+            - text: 。工具定义和系统提示词里都没有"可以并行"的字样——OpenAI 兼容协议本身就允许一轮返回多个 tool_calls，模型自然会用。代码要做的只是别把它们串起来。省下的时间也很直观：trace 里一次工具执行只要几毫秒，任务耗时几乎全花在等 LLM 往返上——把同一轮的两次独立调用并成一次等待，省的就是最贵的那部分。
+          - heading [level=2] [ref=f3e238]:
+            - text: 五、上下文压缩：把历史塞回预算里
+            - link "Permalink to \"五、上下文压缩：把历史塞回预算里\"" [ref=f3e239] [cursor=pointer]:
+              - /url: "#五、上下文压缩-把历史塞回预算里"
+              - text: "#"
+          - paragraph [ref=f3e240]: 工具结果往往比对话文本肥——本项目演示数据里一次订单查询就有几十 token，真实 ERP 的记录只会更大，多轮历史会逐渐吃满预算（ContextPolicy 默认 24k）。压缩策略 v1 是两层防线：
+          - list [ref=f3e241]:
+            - listitem [ref=f3e242]:
+              - strong [ref=f3e243]: 单条截断
+              - text: ：超长的 tool 结果保留头尾（头 2/3 尾 1/3），中间换成省略标记——JSON 的结构信息通常在头尾
+            - listitem [ref=f3e244]:
+              - strong [ref=f3e245]: 整轮丢弃
+              - text: ：总体超预算时，从最老的轮次开始一整轮一整轮地丢（一条 user 消息连同它引发的 assistant/tool 消息）。丢弃的边界
+              - strong [ref=f3e246]: 绝不能落在工具交换中间
+              - text: ，否则就违反了第二节说的成对约束
+          - paragraph [ref=f3e247]:
+            - text: system 消息和最近几条永远保留；发生过丢弃就插入一条 system 提示"更早的对话已被省略"，让模型知道自己失忆了。token 估算用
+            - code [ref=f3e248]: len/3
+            - text: 的粗启发式——中英混合场景够用，等接了 LiteLLM 再换真 tokenizer。
+          - heading [level=2] [ref=f3e249]:
+            - text: 六、可观测：没有 trace 的 agent 不可调试
+            - link "Permalink to \"六、可观测：没有 trace 的 agent 不可调试\"" [ref=f3e250] [cursor=pointer]:
+              - /url: "#六、可观测-没有-trace-的-agent-不可调试"
+              - text: "#"
+          - paragraph [ref=f3e251]:
+            - text: agent 的行为是非确定的：同一个问题，可能这次两步、下次三步，工具调用顺序也可能不同。
+            - strong [ref=f3e252]: 出了错，你需要的不是堆栈，是完整的过程回放
+            - text: 。
+          - paragraph [ref=f3e253]: trace 模块在设计上只做一件事：旁观事件流，原样落盘。
+          - generic [ref=f3e254]:
+            - button "Copy Code" [ref=f3e255] [cursor=pointer]
+            - generic [ref=f3e256]: python
+            - code [ref=f3e258]:
+              - generic [ref=f3e259]: recorder = JsonlTraceRecorder(path, model=config.model)
+              - generic [ref=f3e260]: "async for event in recorder.run(agent, messages): # 事件原样透传"
+              - generic [ref=f3e261]: ...
+          - paragraph [ref=f3e262]:
+            - text: 一行一个 JSON 记录，追加写、逐行 flush：
+            - code [ref=f3e263]: run_start
+            - text: （开跑时的历史快照）→
+            - code [ref=f3e264]: step_start
+            - text: /
+            - code [ref=f3e265]: step_end
+            - text: （每轮文本、token、成本、耗时）→
+            - code [ref=f3e266]: tool_call
+            - text: （每次调用的入参出参与耗时）→
+            - code [ref=f3e267]: run_end
+            - text: （结束时完整历史）。异常也留痕：
+            - code [ref=f3e268]: run_error
+            - text: 记完再原样抛出。
+          - paragraph [ref=f3e269]:
+            - text: 为什么不是直接上 Langfuse？不是它不好，是 M1 用不上：自托管一套要 Docker + Postgres + ClickHouse + 对象存储，而现在的场景是单机、单进程、低频调用。逐行 flush 的 JSONL 意味着
+            - strong [ref=f3e270]: 进程崩了已写的行还在
+            - text: （观测管道最需要工作的时刻恰恰是故障时刻）；裸文本意味着
+            - code [ref=f3e271]: grep
+            - text: /
+            - code [ref=f3e272]: jq
+            - text: /
+            - code [ref=f3e273]: tail -f
+            - text: 全都能用；格式是自定义的，将来映射到 OTel GenAI 语义约定或者 Langfuse 只是换个 sink。取舍全文写进了
+            - link "ADR-0003" [ref=f3e274] [cursor=pointer]:
+              - /url: https://github.com/creatawork/Erpilot/blob/main/docs/adr/0003-local-jsonl-trace-first.md
+            - text: 。
+          - paragraph [ref=f3e275]:
+            - code [ref=f3e276]: erpilot replay
+            - text: 把流水还原成可读对话。下面是本文写作当天的一段
+            - strong [ref=f3e277]: 真实 trace
+            - text: ——当时上游端点不稳定，一轮请求慢到 266 秒，我在等待第 2 轮结果时手动中止了它：
+          - generic [ref=f3e278]:
+            - button "Copy Code" [ref=f3e279] [cursor=pointer]
+            - code [ref=f3e281]:
+              - generic [ref=f3e282]: == run b3f76f57cf40 · glm-5.3-flash · 2026-09-30T10:13:38 ==
+              - generic [ref=f3e283]: "[用户] 订单 123 里买了什么？现在还有货吗？"
+              - generic [ref=f3e284]: "--- 第 1 轮 ---"
+              - generic [ref=f3e285]: （266261ms · in 332 / out 121 tok · ≈¥0.0001）
+              - generic [ref=f3e286]: "[工具✓] get_order_status({\"order_id\":\"123\"}) → {\"status\": \"待发货\", ...}（5ms）"
+              - generic [ref=f3e287]: "--- 第 2 轮 ---"
+              - generic [ref=f3e288]: （68289ms · in 390 / out 34 tok · ≈¥0.0000）
+          - paragraph [ref=f3e289]:
+            - text: 同一天更早的两次尝试直接死在上游（一次 APIError、一次 502 upstream_error），也都被
+            - code [ref=f3e290]: run_error
+            - text: 完整留痕。trace 的第一次实战价值，就是记录它自己没跑成的那几次——顺便注意上面那组数字：工具执行 5ms，LLM 一轮 266 秒，第四节说的"时间都花在等模型"在这里是字面意义的。
+          - heading [level=2] [ref=f3e291]:
+            - text: 七、三条入口，一个循环
+            - link "Permalink to \"七、三条入口，一个循环\"" [ref=f3e292] [cursor=pointer]:
+              - /url: "#七、三条入口-一个循环"
+              - text: "#"
+          - paragraph [ref=f3e293]:
+            - text: 同一套 loop + 同一批工具，三种消费方式：
+            - strong [ref=f3e294]: CLI
+            - text: （
+            - code [ref=f3e295]: erpilot chat
+            - text: ，rich 渲染流式输出与工具时间线，trace 自动落盘）；
+            - strong [ref=f3e296]: FastAPI
+            - text: （
+            - code [ref=f3e297]: POST /api/chat/stream
+            - text: ，loop 事件逐个转成 SSE 帧转发）；
+            - strong [ref=f3e298]: React 页
+            - text: （fetch + ReadableStream 手解 SSE——
+            - code [ref=f3e299]: EventSource
+            - text: 不支持 POST——增量文本、工具时间线、token/成本全都在）。
+          - paragraph [ref=f3e300]:
+            - text: 前后端协议就是 loop 的事件模型加三个信封事件（
+            - code [ref=f3e301]: start
+            - text: /
+            - code [ref=f3e302]: done
+            - text: /
+            - code [ref=f3e303]: error
+            - text: ），字段表在
+            - code [ref=f3e304]: erpilot_api/events.py
+            - text: 的 docstring 里，TypeScript 侧的镜像类型在
+            - code [ref=f3e305]: apps/web/src/protocol.ts
+            - text: ——两侧必须同步改，这是目前协议唯一的"文档"。
+          - heading [level=2] [ref=f3e306]:
+            - text: 写在最后：什么时候轮到框架
+            - link "Permalink to \"写在最后：什么时候轮到框架\"" [ref=f3e307] [cursor=pointer]:
+              - /url: "#写在最后-什么时候轮到框架"
+              - text: "#"
+          - paragraph [ref=f3e308]:
+            - text: 手写这上千行，收获是知道框架在替你做什么：流式事件归并、工具执行的并发调度、错误回填——各自的实现位置和取舍都过了一遍。同时也确认了
+            - strong [ref=f3e309]: 手写解决不了什么
+            - text: ：会话持久化、断点恢复、人工审批的 interrupt/恢复，这些是 LangGraph 的 checkpointer 和 interrupt 所覆盖的，恰好是 Erpilot 的核心设计（分级 HITL 审批）到 M6 才需要的。
+          - paragraph [ref=f3e310]:
+            - text: 所以计划是：M6 把 loop 内核换成 LangGraph，事件协议、trace 格式、前端、评测
+            - strong [ref=f3e311]: 全部不动
+            - text: ——这层协议的稳定，是手写阶段换来的。迁移完成后我会再写一篇对比，验证这个判断。
+          - paragraph [ref=f3e312]: 下一篇：《给 ERP 写一个 MCP Server》。
+      - contentinfo
+  - contentinfo [ref=f3e313]:
+    - generic [ref=f3e314]:
+      - generic [ref=f3e315]:
+        - link "Vie 首页" [ref=f3e316] [cursor=pointer]:
+          - /url: /
+          - generic [ref=f3e318]: V
+          - generic [ref=f3e319]: ie
+        - paragraph [ref=f3e320]: 记录技术、分享经验、创造价值
+        - generic [ref=f3e321]: © 2026 Vie. All rights reserved.
+      - navigation "底部导航" [ref=f3e322]:
+        - strong [ref=f3e323]: 导航
+        - link "首页" [ref=f3e324] [cursor=pointer]:
+          - /url: /
+        - link "文章" [ref=f3e325] [cursor=pointer]:
+          - /url: /articles/
+        - link "项目" [ref=f3e326] [cursor=pointer]:
+          - /url: /projects
+        - link "系列" [ref=f3e327] [cursor=pointer]:
+          - /url: /series/
+      - navigation "分类" [ref=f3e328]:
+        - strong [ref=f3e329]: 分类
+        - link "后端开发" [ref=f3e330] [cursor=pointer]:
+          - /url: /articles/#backend
+        - link "前端" [ref=f3e331] [cursor=pointer]:
+          - /url: /articles/#frontend
+        - link "部署运维" [ref=f3e332] [cursor=pointer]:
+          - /url: /articles/#devops
+        - link "AI 工程" [ref=f3e333] [cursor=pointer]:
+          - /url: /articles/#ai
+        - link "建站" [ref=f3e334] [cursor=pointer]:
+          - /url: /articles/#meta
+        - link "笔记" [ref=f3e335] [cursor=pointer]:
+          - /url: /articles/#notes
+      - navigation "联系" [ref=f3e336]:
+        - strong [ref=f3e337]: 联系
+        - link "GitHub" [ref=f3e338] [cursor=pointer]:
+          - /url: https://github.com/creatawork
+        - link "站点说明" [ref=f3e339] [cursor=pointer]:
+          - /url: /articles/meta/how-this-site-works
+    - link "回到顶部" [ref=f3e340] [cursor=pointer]:
+      - /url: "#"
+      - text: ↑

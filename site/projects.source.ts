@@ -23,6 +23,16 @@ export interface ProjectCapability {
   image?: string
 }
 
+export interface ProjectFact {
+  term: string
+  text: string
+}
+
+export interface ProjectFlow {
+  title: string
+  steps: string[]
+}
+
 export interface ProjectMedia {
   src: string
   alt: string
@@ -47,6 +57,10 @@ export interface Project {
   demo?: string
   decisions?: ProjectDecision[]
   log?: ProjectLogEntry[]
+  overview?: ProjectFact[]
+  flows?: ProjectFlow[]
+  architecture?: string
+  validation?: string[]
 }
 
 export const projectStatusLabel = {
@@ -111,6 +125,45 @@ export const projectsSource: Project[] = [
         width: 1062,
         height: 674,
       },
+    ],
+    overview: [
+      {
+        term: '问题',
+        text: '私人照片散落在聊天记录和网盘里，长期保存、整理和分享都受制于人。',
+      },
+      {
+        term: '对象',
+        text: '管理相册的内容创作者，以及通过受控链接访问的受邀访客。',
+      },
+      {
+        term: '范围',
+        text: 'admin 管理端 + viewer 浏览端，双端产品。',
+      },
+    ],
+    flows: [
+      {
+        title: '管理流程',
+        steps: [
+          '上传照片，原图直接入库保存',
+          '在展厅工作台配置氛围、封面与排序',
+          '发布展厅，进入访客可见状态',
+          '生成带访问模式与有效期的受控分享链接',
+        ],
+      },
+      {
+        title: '浏览流程',
+        steps: [
+          '打开受控链接进入展厅',
+          '在经典网格与 3D 空间之间自由切换',
+          '通过系统分享或复制链接转发给朋友',
+        ],
+      },
+    ],
+    architecture:
+      '前端使用 Vue 3 与 Three.js 构建 admin 工作台与 viewer 的 3D 空间浏览；后端由 Spring Boot 与 MyBatis-Plus 提供服务；Docker 承担本机部署与自动化门禁。',
+    validation: [
+      '2026-09-12：双端达到 V1 Ready，验收通过。',
+      'M7.5 综合回归在本机 Docker + 自动化门禁下通过。',
     ],
     log: [
       {
@@ -206,6 +259,124 @@ export const projectsSource: Project[] = [
           '双端（admin 工作台 / viewer）达到 V1 Ready：原图保存、相册管理、2D/3D 展示、受控链接分享、上传任务中心、配置版本化与资源变体通过真实环境验收；M7.5 综合回归在本机 Docker + 自动化门禁下通过。',
         type: 'milestone',
         tech: ['Vue 3', 'Three.js', 'Spring Boot', 'MyBatis-Plus', 'Docker'],
+      },
+    ],
+  },
+  {
+    name: 'Erpilot',
+    slug: 'erpilot',
+    status: 'building',
+    description:
+      '会请示的 ERP 智能体：agent 应用开发求职作品集项目。运行在 mini-ERP（商品 / 库存 / 订单）上，FastMCP 工具层 + 分级人工审批（HITL）+ 全程评测驱动。',
+    proposition:
+      '只读操作自动执行，低风险操作批量确认，资金相关操作单笔审批——动账动货的事，必须请示东家。',
+    updatedAt: '2026-09-30',
+    tags: ['Python 3.12', 'FastAPI', 'FastMCP', 'LangGraph', 'React'],
+    featured: false,
+    github: 'https://github.com/creatawork/Erpilot',
+    capabilities: [
+      {
+        title: '手写 agent loop',
+        description:
+          '流式事件模型 + 工具循环 + 防护（max_steps / 超时 / 错误回填）+ 上下文压缩，不依赖框架，44 项单测覆盖。',
+      },
+      {
+        title: '并行工具调用',
+        description:
+          '同一轮多个工具并发执行：完成序转发、调用序回填，前端时间线靠 call_id 精确配对。',
+      },
+      {
+        title: '可回放 trace',
+        description:
+          'JSONL 六类记录逐行落盘，异常也留痕；erpilot replay 把 trace 还原成可读对话。',
+      },
+      {
+        title: '三条入口一个协议',
+        description:
+          'CLI（rich 渲染）、FastAPI SSE、React 流式页挂同一条事件流，前后端类型镜像同步维护。',
+      },
+    ],
+    overview: [
+      {
+        term: '问题',
+        text: '大模型 API 只会“发消息、收消息”，业务系统要的是可控执行：工具调用、人工审批、可评测、可回放。',
+      },
+      {
+        term: '对象',
+        text: 'agent 应用开发岗位的求职作品集；演示场景是 mini-ERP（商品 / 库存 / 订单）的掌柜助手。',
+      },
+      {
+        term: '范围',
+        text: '单主管 agent + 15~20 个 MCP 工具、分级 HITL 审批、评测体系、React 前端；多 agent 与 RAG 延后决策。',
+      },
+    ],
+    flows: [
+      {
+        title: '对话流程',
+        steps: [
+          '用一句业务问题提问（订单 / 库存 / 报价）',
+          'agent 拆解为多步工具调用，文本流式输出',
+          '工具时间线逐个点亮，并行动作如实呈现',
+          '答复收口，展示 token 与成本',
+        ],
+      },
+      {
+        title: '过程回放',
+        steps: [
+          '每次运行 trace 自动落盘 traces/*.jsonl',
+          '上游故障与异常一并留痕（run_error）',
+          'erpilot replay 把 trace 还原成可读对话',
+        ],
+      },
+    ],
+    architecture:
+      'Python 3.12 承载全部 agent 逻辑：agent_core 手写事件驱动的 agent loop（M6 起以 LangGraph 重构编排），FastMCP 把 ERP 能力暴露为工具，FastAPI + SSE 对接前端；React + TypeScript 提供流式对话、工具时间线与审批卡片；评测 runner 独立成包，PostgreSQL + pgvector 与 Langfuse 按里程碑接入。',
+    validation: [
+      '2026-09-29：M1 第 1–3 周真实链路验收通过——单工具任务 2 步收口，多步任务 3 步完成（第 2 轮模型自发并行调用两工具），成本约 ¥0.0003。',
+      '44 项单元测试走传输层 mock，不消耗 token；ruff / pytest / tsc + vite build 进 CI 门禁。',
+      'trace 覆盖成功与异常路径：上游端点故障（APIError / 502 upstream_error）均被 run_error 完整留痕。',
+    ],
+    log: [
+      {
+        date: '2026-09-30',
+        title: 'M1 收口：本地 trace + 三条入口 + 首篇文章发布',
+        detail:
+          'trace 六类记录逐行落盘（run_start / step_start / step_end / tool_call / run_end / run_error），异常留痕后原样抛出；typer + rich CLI 支持 chat 与 replay；FastAPI SSE 链路与 React 流式页（fetch + ReadableStream 手解 SSE）打通，前后端协议镜像同步；ADR-0002 手写 loop 优先、ADR-0003 本地 JSONL trace 先行。测试增至 44 项。首篇系列文章《手写 Agent Loop》在 Vie 发布，并沉淀撰写规则：禁虚构经历与数据、客观口吻、代码片段与仓库逐行 diff。',
+        type: 'milestone',
+        tech: ['Python', 'FastAPI', 'React'],
+        article: '/articles/ai/handwritten-agent-loop',
+      },
+      {
+        date: '2026-09-29',
+        title: 'M1 第 3 周：并行工具调用 + 错误回填策略 v1 + 上下文压缩',
+        detail:
+          '同一轮多个 tool_calls 用 asyncio.as_completed 并发执行（完成序转发、调用序回填）；工具报错回填为结构化 JSON，瞬态错误按重试策略自动重试、确定性错误立即回填让模型改道；上下文压缩 v1：超长截断 + 整轮丢弃，裁剪边界不落在工具交换中间。3 步真实链路验收通过，第 2 轮模型自发并行调用两工具（≈¥0.0003）。',
+        type: 'feature',
+        tech: ['Python', 'asyncio'],
+      },
+      {
+        date: '2026-09-29',
+        title: 'M1 第 2 周：工具调用循环 + 防护 + 结构化输出',
+        detail:
+          'Tool 协议：Pydantic 参数模型自动生成 OpenAI tools schema（递归剥 title）；AgentLoop 主循环：schema 注入 → 解析 tool_calls → 校验 → 执行 → 回填 → 再生成；max_steps 防死循环 + 单工具超时；结构化输出走提示词注入 schema + Pydantic 强校验。单工具任务 2 步真实链路验收通过。',
+        type: 'feature',
+        tech: ['Python', 'Pydantic'],
+      },
+      {
+        date: '2026-09-29',
+        title: 'M1 第 1 周：LLM client 流式 + usage / 成本计量',
+        detail:
+          'AsyncOpenAI 流式补全，事件模型保证恰好以一个终止事件结束；GLM-5.3 Flash 价目表成本估算；传输层 mock（httpx2.MockTransport）11 项单测不烧真实 token。',
+        type: 'feature',
+        tech: ['Python', 'OpenAI SDK'],
+      },
+      {
+        date: '2026-09-29',
+        title: '项目启动：uv workspace 脚手架与选型定案',
+        detail:
+          '四包骨架（agent_core / mcp_erp / erp_store / evals）+ CI 就绪；ADR-0001 定技术栈：Python 3.12 + FastAPI + FastMCP + PostgreSQL + LiteLLM（GLM-5.3 Flash）+ React，对齐行业真实 agent 栈。',
+        type: 'milestone',
+        tech: ['uv', 'FastAPI', 'PostgreSQL'],
       },
     ],
   },

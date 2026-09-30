@@ -1,0 +1,83 @@
+- generic [ref=f6e4]:
+  - banner [ref=f6e5]:
+    - generic [ref=f6e6]:
+      - link "Vie 首页" [ref=f6e7] [cursor=pointer]:
+        - /url: /
+        - generic [ref=f6e9]: V
+        - generic [ref=f6e10]: ie
+      - generic [ref=f6e11]:
+        - button "搜索文章" [ref=f6e12] [cursor=pointer]
+        - link "GitHub 主页" [ref=f6e16] [cursor=pointer]:
+          - /url: https://github.com/creatawork
+          - generic [ref=f6e17]: V
+        - button "打开导航菜单" [ref=f6e18] [cursor=pointer]
+  - link "Skip to content" [ref=f6e20] [cursor=pointer]:
+    - /url: "#VPContent"
+  - text: Ctrl
+  - generic [ref=f6e25]:
+    - main [ref=f6e26]:
+      - generic [ref=f6e29]:
+        - generic [ref=f6e30]:
+          - generic [aria-hidden] [ref=f6e31]:
+            - generic [ref=f6e32]: < VieNotes />
+            - generic [ref=f6e33]: projects/
+          - heading "项目" [level=1] [ref=f6e34]
+          - paragraph [ref=f6e35]: 不追求数量，记录真正做完、跑通并持续迭代的产品。
+        - generic [ref=f6e36]:
+          - generic [ref=f6e37]:
+            - generic [ref=f6e38]:
+              - article [ref=f6e39]:
+                - generic [ref=f6e40]: V1 已验收 · 持续迭代
+                - heading "VIE Gallery" [level=2] [ref=f6e41]
+                - paragraph [ref=f6e42]: 把私人影像整理成可长期保存、自然浏览、受控分享的个人空间。
+                - paragraph [ref=f6e43]: 个人相册产品：admin + viewer 双端。原图保存、相册整理、2D/3D 空间展示、受控链接分享。
+                - generic [ref=f6e44]:
+                  - link "查看 VIE Gallery 项目案例" [ref=f6e45] [cursor=pointer]:
+                    - /url: /projects/vie-gallery
+                    - text: 查看项目案例
+                  - link "阅读 VIE Gallery 开发日志" [ref=f6e46] [cursor=pointer]:
+                    - /url: /projects/vie-gallery#devlog
+                    - text: 阅读开发日志
+              - generic [ref=f6e48]:
+                - figure "Admin · 展厅工作台" [ref=f6e49]:
+                  - img "VIE Gallery 管理端的展厅工作台界面，包含照片管理、发布中心与发布流程" [ref=f6e50]
+                - figure "Admin · 受控分享配置" [ref=f6e52]:
+                  - img "VIE Gallery 的展厅分享与交付配置界面，可设置访问模式、下载权限与有效期" [ref=f6e53]
+                - figure "Viewer · 3D 空间浏览" [ref=f6e55]:
+                  - img "VIE Gallery 访客端的 3D 空间浏览界面，照片悬浮在星空场景中" [ref=f6e56]
+            - list [ref=f6e58]:
+              - listitem [ref=f6e59]:
+                - generic [ref=f6e60]:
+                  - heading "原图留存" [level=3] [ref=f6e61]
+                  - paragraph [ref=f6e62]: 上传即保存原图，照片长期留存不受展示压缩影响。
+              - listitem [ref=f6e63]:
+                - generic [ref=f6e64]:
+                  - heading "相册整理" [level=3] [ref=f6e65]
+                  - paragraph [ref=f6e66]: 上传、封面、排序与标题修改在展厅工作台一次完成。
+              - listitem [ref=f6e67]:
+                - generic [ref=f6e68]:
+                  - heading "2D / 3D 浏览" [level=3] [ref=f6e69]
+                  - paragraph [ref=f6e70]: 经典网格与 3D 空间两种浏览方式，访客可自由切换。
+              - listitem [ref=f6e71]:
+                - generic [ref=f6e72]:
+                  - heading "受控分享" [level=3] [ref=f6e73]
+                  - paragraph [ref=f6e74]: 分享链接支持访问模式与有效期配置，默认禁止访客下载。
+            - generic [ref=f6e75]:
+              - time [ref=f6e76]: 2026-09-29
+              - generic [ref=f6e77]: 品牌站模板体系全链路落地
+              - link "开发日志 →" [ref=f6e78] [cursor=pointer]:
+                - /url: /projects/vie-gallery#devlog
+          - region [ref=f6e79]:
+            - heading "其他项目" [level=2] [ref=f6e80]
+            - article [ref=f6e82]:
+              - generic [ref=f6e83]: 开发中
+              - heading "Erpilot" [level=3] [ref=f6e84]
+              - paragraph [ref=f6e85]: 只读操作自动执行，低风险操作批量确认，资金相关操作单笔审批——动账动货的事，必须请示东家。
+              - paragraph [ref=f6e86]: 会请示的 ERP 智能体：agent 应用开发求职作品集项目。运行在 mini-ERP（商品 / 库存 / 订单）上，FastMCP 工具层 + 分级人工审批（HITL）+ 全程评测驱动。
+              - generic [ref=f6e87]:
+                - link "查看 Erpilot 项目案例" [ref=f6e88] [cursor=pointer]:
+                  - /url: /projects/erpilot
+                  - text: 查看项目案例
+                - link "GitHub" [ref=f6e89] [cursor=pointer]:
+                  - /url: https://github.com/creatawork/Erpilot
+    - contentinfo

@@ -76,7 +76,7 @@ describe('projects data', () => {
     }
   })
 
-  it('log entries are well-formed and strictly newest-first', () => {
+  it('log entries are well-formed and newest-first (same-day entries allowed)', () => {
     for (const p of projects) {
       expect(statuses, p.name).toContain(p.status)
       let prevDate: string | null = null
@@ -89,10 +89,32 @@ describe('projects data', () => {
         if (prevDate) {
           expect(
             +new Date(prevDate),
-            `${p.name}: ${prevDate} must be newer than ${e.date}`,
-          ).toBeGreaterThan(+new Date(e.date))
+            `${p.name}: ${prevDate} must not be older than ${e.date}`,
+          ).toBeGreaterThanOrEqual(+new Date(e.date))
         }
         prevDate = e.date
+      }
+    }
+  })
+
+  it('detail fields are well-formed', () => {
+    for (const p of projects) {
+      for (const f of p.overview ?? []) {
+        expect(f.term.trim().length > 0, p.name).toBe(true)
+        expect(f.text.trim().length > 0, `${p.name}: fact ${f.term}`).toBe(true)
+      }
+      for (const flow of p.flows ?? []) {
+        expect(flow.title.trim().length > 0, p.name).toBe(true)
+        expect(flow.steps.length > 0, `${p.name}: flow ${flow.title}`).toBe(true)
+        for (const s of flow.steps) {
+          expect(s.trim().length > 0, `${p.name}: flow ${flow.title}`).toBe(true)
+        }
+      }
+      if (p.architecture !== undefined) {
+        expect(p.architecture.trim().length > 0, p.name).toBe(true)
+      }
+      for (const v of p.validation ?? []) {
+        expect(v.trim().length > 0, p.name).toBe(true)
       }
     }
   })

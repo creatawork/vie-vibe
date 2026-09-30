@@ -767,6 +767,7 @@ body {
 .vie-article-cover.tone-backend { background: linear-gradient(135deg, #eef4ff, #fff); }
 .vie-article-cover.tone-devops { background: linear-gradient(135deg, #f7fbf2, #fff); }
 .vie-article-cover.tone-frontend { background: linear-gradient(135deg, #effbf8, #fff); }
+.vie-article-cover.tone-ai { background: linear-gradient(135deg, #eef0ff, #fff); }
 .vie-article-cover.tone-meta { background: linear-gradient(135deg, #fff3ea, #fff); }
 .vie-article-cover.tone-notes { background: linear-gradient(135deg, #f9f4ff, #fff); }
 
@@ -963,6 +964,7 @@ body {
 .vie-list-thumb.tone-backend { background: linear-gradient(135deg, #edf3ff, #fff); }
 .vie-list-thumb.tone-devops { background: linear-gradient(135deg, #f4faee, #fff); }
 .vie-list-thumb.tone-frontend { background: linear-gradient(135deg, #edfdf7, #fff); }
+.vie-list-thumb.tone-ai { background: linear-gradient(135deg, #eaedff, #fff); }
 .vie-list-thumb.tone-meta { background: linear-gradient(135deg, #fff3ea, #fff); }
 .vie-list-thumb.tone-notes { background: linear-gradient(135deg, #f8f3ff, #fff); }
 

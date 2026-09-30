@@ -104,6 +104,7 @@ onMounted(() => {
             <a href="/articles/#backend">后端开发</a>
             <a href="/articles/#frontend">前端</a>
             <a href="/articles/#devops">部署运维</a>
+            <a href="/articles/#ai">AI 工程</a>
             <a href="/articles/#meta">建站</a>
             <a href="/articles/#notes">笔记</a>
           </nav>

@@ -1,0 +1,190 @@
+- generic [ref=f4e4]:
+  - banner [ref=f4e5]:
+    - generic [ref=f4e6]:
+      - link "Vie 首页" [ref=f4e7] [cursor=pointer]:
+        - /url: /
+        - generic [ref=f4e9]: V
+        - generic [ref=f4e10]: ie
+      - navigation "主导航" [ref=f4e11]:
+        - link "首页" [ref=f4e12] [cursor=pointer]:
+          - /url: /
+        - link "文章" [ref=f4e13] [cursor=pointer]:
+          - /url: /articles/
+        - link "项目" [ref=f4e14] [cursor=pointer]:
+          - /url: /projects
+        - link "工具" [ref=f4e15] [cursor=pointer]:
+          - /url: /tools
+        - link "关于" [ref=f4e16] [cursor=pointer]:
+          - /url: /#about
+      - generic [ref=f4e17]:
+        - button "搜索文章" [ref=f4e18] [cursor=pointer]:
+          - generic [ref=f4e22]: 搜索
+        - link "GitHub 主页" [ref=f4e23] [cursor=pointer]:
+          - /url: https://github.com/creatawork
+          - generic [ref=f4e24]: V
+  - link "Skip to content" [ref=f4e25] [cursor=pointer]:
+    - /url: "#VPContent"
+  - text: Ctrl
+  - main [ref=f4e31]:
+    - generic [ref=f4e34]:
+      - main [ref=f4e35]:
+        - region [ref=f4e36]:
+          - generic [ref=f4e37]:
+            - heading "你好，我是 Vie" [level=1] [ref=f4e38]
+            - paragraph [ref=f4e39]: 写清楚每一个技术决策
+            - paragraph [ref=f4e40]: 热爱技术，喜欢探索和分享。这里记录我的学习心得、开发经验和有趣的技术实践。
+            - generic [ref=f4e41]:
+              - link "阅读文章" [ref=f4e42] [cursor=pointer]:
+                - /url: /articles/
+              - link "探索项目" [ref=f4e43] [cursor=pointer]:
+                - /url: /projects
+          - img "编程工作台插画" [ref=f4e44]:
+            - generic [ref=f4e46]: AI
+            - generic [ref=f4e54]: "const dev = { focus: 'build', status: 'learning' }"
+        - region "站点数据" [ref=f4e74]:
+          - article [ref=f4e75]:
+            - generic [ref=f4e80]:
+              - paragraph [ref=f4e81]: 文章
+              - strong [ref=f4e82]: "9"
+              - text: 篇
+          - article [ref=f4e83]:
+            - generic [ref=f4e87]:
+              - paragraph [ref=f4e88]: 项目
+              - strong [ref=f4e89]: "2"
+              - text: 个
+          - article [ref=f4e90]:
+            - generic [ref=f4e94]:
+              - paragraph [ref=f4e95]: 工具
+              - strong [ref=f4e96]: "3"
+              - text: 个
+          - article [ref=f4e97]:
+            - generic [ref=f4e102]:
+              - paragraph [ref=f4e103]: 标签
+              - strong [ref=f4e104]: "20"
+              - text: 个
+        - region [ref=f4e105]:
+          - generic [ref=f4e106]:
+            - heading "最新文章" [level=2] [ref=f4e107]
+            - link "查看全部" [ref=f4e108] [cursor=pointer]:
+              - /url: /articles/
+          - generic [ref=f4e111]:
+            - link "最新 手写 Agent Loop：从一次 API 调用到多步任务 从一次流式 API 调用开始手写 agent loop：事件模型、工具循环、防死循环、错误回填、并行调用、上下文压缩与可回放 trace，看清框架替你做了什么。 Agent LLM 2026-09-30 约 1 分钟" [ref=f4e112] [cursor=pointer]:
+              - /url: /articles/ai/handwritten-agent-loop
+              - generic [ref=f4e113]: 最新
+              - generic [ref=f4e118]:
+                - heading "手写 Agent Loop：从一次 API 调用到多步任务" [level=3] [ref=f4e119]
+                - paragraph [ref=f4e120]: 从一次流式 API 调用开始手写 agent loop：事件模型、工具循环、防死循环、错误回填、并行调用、上下文压缩与可回放 trace，看清框架替你做了什么。
+                - generic [ref=f4e121]:
+                  - generic [ref=f4e122]:
+                    - generic [ref=f4e123]: Agent
+                    - generic [ref=f4e124]: LLM
+                  - time [ref=f4e125]: 2026-09-30
+                  - generic [ref=f4e126]: 约 1 分钟
+            - link "这个网站是怎么搭起来的 为什么用 VitePress 静态站加同域 SpringBoot，而不是做成 SSR 应用。 vitepress 建站 2026-08-25 约 1 分钟" [ref=f4e127] [cursor=pointer]:
+              - /url: /articles/meta/how-this-site-works
+              - generic [ref=f4e132]:
+                - heading "这个网站是怎么搭起来的" [level=3] [ref=f4e133]
+                - paragraph [ref=f4e134]: 为什么用 VitePress 静态站加同域 SpringBoot，而不是做成 SSR 应用。
+                - generic [ref=f4e135]:
+                  - generic [ref=f4e136]:
+                    - generic [ref=f4e137]: vitepress
+                    - generic [ref=f4e138]: 建站
+                  - time [ref=f4e139]: 2026-08-25
+                  - generic [ref=f4e140]: 约 1 分钟
+            - link "SpringBoot 统计接口怎么设计 同域上报 PV、日盐哈希 UV、内存缓存汇总，口令接口与页面写入分离。 springboot api 2026-08-20 约 1 分钟" [ref=f4e141] [cursor=pointer]:
+              - /url: /articles/backend/springboot-stats-api
+              - generic [ref=f4e147]:
+                - heading "SpringBoot 统计接口怎么设计" [level=3] [ref=f4e148]
+                - paragraph [ref=f4e149]: 同域上报 PV、日盐哈希 UV、内存缓存汇总，口令接口与页面写入分离。
+                - generic [ref=f4e150]:
+                  - generic [ref=f4e151]:
+                    - generic [ref=f4e152]: springboot
+                    - generic [ref=f4e153]: api
+                  - time [ref=f4e154]: 2026-08-20
+                  - generic [ref=f4e155]: 约 1 分钟
+        - region [ref=f4e156]:
+          - generic [ref=f4e157]:
+            - heading "当前项目" [level=2] [ref=f4e158]
+            - link "查看全部项目" [ref=f4e159] [cursor=pointer]:
+              - /url: /projects
+          - article [ref=f4e163]:
+            - generic [ref=f4e164]: V1 已验收 · 持续迭代
+            - heading "VIE Gallery" [level=3] [ref=f4e165]
+            - paragraph [ref=f4e166]: 把私人影像整理成可长期保存、自然浏览、受控分享的个人空间。
+            - paragraph [ref=f4e167]: 个人相册产品：admin + viewer 双端。原图保存、相册整理、2D/3D 空间展示、受控链接分享。
+            - generic [ref=f4e168]:
+              - link "查看 VIE Gallery 项目案例" [ref=f4e169] [cursor=pointer]:
+                - /url: /projects/vie-gallery
+                - text: 查看项目案例
+              - link "项目页" [ref=f4e170] [cursor=pointer]:
+                - /url: /projects
+        - region [ref=f4e171]:
+          - generic [ref=f4e172]:
+            - heading "实用工具" [level=2] [ref=f4e173]
+            - link "查看全部" [ref=f4e174] [cursor=pointer]:
+              - /url: /tools
+          - generic [ref=f4e177]:
+            - link [ref=f4e178] [cursor=pointer]:
+              - /url: /tools/json
+              - generic [ref=f4e183]:
+                - heading "JSON 工作台" [level=3] [ref=f4e184]
+                - paragraph [ref=f4e185]: 校验、格式化和压缩 JSON
+              - strong [ref=f4e186]: 使用
+            - link [ref=f4e187] [cursor=pointer]:
+              - /url: /tools/timestamp
+              - generic [ref=f4e192]:
+                - heading "时间戳转换" [level=3] [ref=f4e193]
+                - paragraph [ref=f4e194]: 时间戳与日期格式转换
+              - strong [ref=f4e195]: 使用
+            - link [ref=f4e196] [cursor=pointer]:
+              - /url: /tools/jwt
+              - generic [ref=f4e201]:
+                - heading "JWT 解析器" [level=3] [ref=f4e202]
+                - paragraph [ref=f4e203]: 解码 Token 并检查 Claims
+              - strong [ref=f4e204]: 使用
+        - complementary [ref=f4e205]:
+          - paragraph [ref=f4e211]: 技术的深度决定了你能走多远，技术的广度决定了你能看到多大世界。
+          - generic [ref=f4e212]: —— 持续学习，持续成长
+      - generic [ref=f4e213]:
+        - generic [ref=f4e214]:
+          - link "Vie 首页" [ref=f4e215] [cursor=pointer]:
+            - /url: /
+            - generic [ref=f4e217]: V
+            - generic [ref=f4e218]: ie
+          - paragraph [ref=f4e219]: 记录技术、分享经验、创造价值
+          - generic [ref=f4e220]: © 2026 Vie. All rights reserved.
+        - navigation "底部导航" [ref=f4e221]:
+          - strong [ref=f4e222]: 导航
+          - link "首页" [ref=f4e223] [cursor=pointer]:
+            - /url: /
+          - link "文章" [ref=f4e224] [cursor=pointer]:
+            - /url: /articles/
+          - link "项目" [ref=f4e225] [cursor=pointer]:
+            - /url: /projects
+          - link "工具" [ref=f4e226] [cursor=pointer]:
+            - /url: "#utilities"
+          - link "关于" [ref=f4e227] [cursor=pointer]:
+            - /url: "#about"
+        - navigation "文章分类" [ref=f4e228]:
+          - strong [ref=f4e229]: 分类
+          - link "后端开发" [ref=f4e230] [cursor=pointer]:
+            - /url: /articles/#backend
+          - link "前端" [ref=f4e231] [cursor=pointer]:
+            - /url: /articles/#frontend
+          - link "部署运维" [ref=f4e232] [cursor=pointer]:
+            - /url: /articles/#devops
+          - link "AI 工程" [ref=f4e233] [cursor=pointer]:
+            - /url: /articles/#ai
+          - link "建站" [ref=f4e234] [cursor=pointer]:
+            - /url: /articles/#meta
+          - link "笔记" [ref=f4e235] [cursor=pointer]:
+            - /url: /articles/#notes
+        - navigation "联系方式" [ref=f4e236]:
+          - strong [ref=f4e237]: 联系
+          - link "GitHub" [ref=f4e238] [cursor=pointer]:
+            - /url: https://github.com/creatawork
+          - link "邮箱" [ref=f4e243] [cursor=pointer]:
+            - /url: mailto:hello@vie.dev
+        - link "回到顶部" [ref=f4e244] [cursor=pointer]:
+          - /url: "#"
+          - text: ↑

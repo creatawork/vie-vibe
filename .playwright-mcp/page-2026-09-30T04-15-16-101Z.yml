@@ -1,0 +1,202 @@
+- generic [ref=f2e4]:
+  - banner [ref=f2e5]:
+    - generic [ref=f2e6]:
+      - link "Vie 首页" [ref=f2e7] [cursor=pointer]:
+        - /url: /
+        - generic [ref=f2e9]: V
+        - generic [ref=f2e10]: ie
+      - navigation "主导航" [ref=f2e11]:
+        - link "首页" [ref=f2e12] [cursor=pointer]:
+          - /url: /
+        - link "文章" [ref=f2e13] [cursor=pointer]:
+          - /url: /articles/
+        - link "项目" [ref=f2e14] [cursor=pointer]:
+          - /url: /projects
+        - link "工具" [ref=f2e15] [cursor=pointer]:
+          - /url: /tools
+        - link "关于" [ref=f2e16] [cursor=pointer]:
+          - /url: /#about
+      - generic [ref=f2e17]:
+        - button "搜索文章" [ref=f2e18] [cursor=pointer]:
+          - generic [ref=f2e22]: 搜索
+        - link "GitHub 主页" [ref=f2e23] [cursor=pointer]:
+          - /url: https://github.com/creatawork
+          - generic [ref=f2e24]: V
+  - link "Skip to content" [ref=f2e25] [cursor=pointer]:
+    - /url: "#VPContent"
+  - text: Ctrl
+  - generic [ref=f2e30]:
+    - main [ref=f2e31]:
+      - generic [ref=f2e34]:
+        - generic [ref=f2e35]:
+          - generic [aria-hidden] [ref=f2e36]:
+            - generic [ref=f2e37]: < VieNotes />
+            - generic [ref=f2e38]: articles/
+          - heading "文章" [level=1] [ref=f2e39]
+          - paragraph [ref=f2e40]: 记录成长系统，分享开发经验
+        - generic [ref=f2e42]:
+          - complementary [ref=f2e43]:
+            - link "ai 1" [ref=f2e44] [cursor=pointer]:
+              - /url: "#ai"
+              - generic [ref=f2e45]: ai
+              - generic [ref=f2e46]: "1"
+            - link "meta 2" [ref=f2e47] [cursor=pointer]:
+              - /url: "#meta"
+              - generic [ref=f2e48]: meta
+              - generic [ref=f2e49]: "2"
+            - link "backend 2" [ref=f2e50] [cursor=pointer]:
+              - /url: "#backend"
+              - generic [ref=f2e51]: backend
+              - generic [ref=f2e52]: "2"
+            - link "frontend 1" [ref=f2e53] [cursor=pointer]:
+              - /url: "#frontend"
+              - generic [ref=f2e54]: frontend
+              - generic [ref=f2e55]: "1"
+            - link "devops 2" [ref=f2e56] [cursor=pointer]:
+              - /url: "#devops"
+              - generic [ref=f2e57]: devops
+              - generic [ref=f2e58]: "2"
+            - link "notes 1" [ref=f2e59] [cursor=pointer]:
+              - /url: "#notes"
+              - generic [ref=f2e60]: notes
+              - generic [ref=f2e61]: "1"
+          - region "文章列表" [ref=f2e62]:
+            - article [ref=f2e63]:
+              - link [ref=f2e64] [cursor=pointer]:
+                - /url: /articles/ai/handwritten-agent-loop
+                - strong [ref=f2e65]: ai
+              - generic [ref=f2e66]:
+                - link [ref=f2e67] [cursor=pointer]:
+                  - /url: /articles/ai/handwritten-agent-loop
+                  - heading "手写 Agent Loop：从一次 API 调用到多步任务" [level=2] [ref=f2e68]
+                - paragraph [ref=f2e69]: 从一次流式 API 调用开始手写 agent loop：事件模型、工具循环、防死循环、错误回填、并行调用、上下文压缩与可回放 trace，看清框架替你做了什么。
+                - generic [ref=f2e70]:
+                  - generic [ref=f2e71]: Agent
+                  - generic [ref=f2e72]: LLM
+                  - time [ref=f2e73]: 2026-09-30
+                  - generic [ref=f2e74]: 约 1 分钟
+              - generic [aria-hidden] [ref=f2e75]: "01"
+            - article [ref=f2e76]:
+              - link [ref=f2e77] [cursor=pointer]:
+                - /url: /articles/meta/how-this-site-works
+                - strong [ref=f2e78]: meta
+              - generic [ref=f2e79]:
+                - link [ref=f2e80] [cursor=pointer]:
+                  - /url: /articles/meta/how-this-site-works
+                  - heading "这个网站是怎么搭起来的" [level=2] [ref=f2e81]
+                - paragraph [ref=f2e82]: 为什么用 VitePress 静态站加同域 SpringBoot，而不是做成 SSR 应用。
+                - generic [ref=f2e83]:
+                  - generic [ref=f2e84]: vitepress
+                  - generic [ref=f2e85]: 建站
+                  - time [ref=f2e86]: 2026-08-25
+                  - generic [ref=f2e87]: 约 1 分钟
+              - generic [aria-hidden] [ref=f2e88]: "02"
+            - article [ref=f2e89]:
+              - link [ref=f2e90] [cursor=pointer]:
+                - /url: /articles/backend/springboot-stats-api
+                - strong [ref=f2e91]: backend
+              - generic [ref=f2e92]:
+                - link [ref=f2e93] [cursor=pointer]:
+                  - /url: /articles/backend/springboot-stats-api
+                  - heading "SpringBoot 统计接口怎么设计" [level=2] [ref=f2e94]
+                - paragraph [ref=f2e95]: 同域上报 PV、日盐哈希 UV、内存缓存汇总，口令接口与页面写入分离。
+                - generic [ref=f2e96]:
+                  - generic [ref=f2e97]: springboot
+                  - generic [ref=f2e98]: api
+                  - time [ref=f2e99]: 2026-08-20
+                  - generic [ref=f2e100]: 约 1 分钟
+              - generic [aria-hidden] [ref=f2e101]: "03"
+            - article [ref=f2e102]:
+              - link [ref=f2e103] [cursor=pointer]:
+                - /url: /articles/frontend/vitepress-theme
+                - strong [ref=f2e104]: frontend
+              - generic [ref=f2e105]:
+                - link [ref=f2e106] [cursor=pointer]:
+                  - /url: /articles/frontend/vitepress-theme
+                  - heading "VitePress 主题定制与 vibe 布局" [level=2] [ref=f2e107]
+                - paragraph [ref=f2e108]: 用 Layout 插槽和 Bento 首页换掉默认 Hero，样式拆成 token 与磁贴两层。
+                - generic [ref=f2e109]:
+                  - generic [ref=f2e110]: vitepress
+                  - generic [ref=f2e111]: vue
+                  - time [ref=f2e112]: 2026-08-18
+                  - generic [ref=f2e113]: 约 1 分钟
+              - generic [aria-hidden] [ref=f2e114]: "04"
+            - article [ref=f2e115]:
+              - link [ref=f2e116] [cursor=pointer]:
+                - /url: /articles/devops/github-actions-deploy
+                - strong [ref=f2e117]: devops
+              - generic [ref=f2e118]:
+                - link [ref=f2e119] [cursor=pointer]:
+                  - /url: /articles/devops/github-actions-deploy
+                  - heading "GitHub Actions 自动发布到 VPS" [level=2] [ref=f2e120]
+                - paragraph [ref=f2e121]: site 与 server 分成两个 job，静态目录先写新再切，失败时旧 dist 仍可服务。
+                - generic [ref=f2e122]:
+                  - generic [ref=f2e123]: github-actions
+                  - generic [ref=f2e124]: deploy
+                  - time [ref=f2e125]: 2026-08-15
+                  - generic [ref=f2e126]: 约 1 分钟
+              - generic [aria-hidden] [ref=f2e127]: "05"
+            - article [ref=f2e128]:
+              - link [ref=f2e129] [cursor=pointer]:
+                - /url: /articles/meta/reading-time-wordcount
+                - strong [ref=f2e130]: meta
+              - generic [ref=f2e131]:
+                - link [ref=f2e132] [cursor=pointer]:
+                  - /url: /articles/meta/reading-time-wordcount
+                  - heading "阅读时长与字数怎么算" [level=2] [ref=f2e133]
+                - paragraph [ref=f2e134]: 列表用构建期去掉 YAML 后的字符数，正文页用浏览器对 .vp-doc 再数一遍。
+                - generic [ref=f2e135]:
+                  - generic [ref=f2e136]: vitepress
+                  - generic [ref=f2e137]: meta
+                  - time [ref=f2e138]: 2026-08-12
+                  - generic [ref=f2e139]: 约 1 分钟
+              - generic [aria-hidden] [ref=f2e140]: "06"
+            - article [ref=f2e141]:
+              - link [ref=f2e142] [cursor=pointer]:
+                - /url: /articles/backend/dto-vs-entity
+                - strong [ref=f2e143]: backend
+              - generic [ref=f2e144]:
+                - link [ref=f2e145] [cursor=pointer]:
+                  - /url: /articles/backend/dto-vs-entity
+                  - heading "DTO 和 Entity 什么时候拆" [level=2] [ref=f2e146]
+                - paragraph [ref=f2e147]: 统计 API 把上报入参、表实体和汇总 VO 分开，避免把表字段直接暴露给页面。
+                - generic [ref=f2e148]:
+                  - generic [ref=f2e149]: springboot
+                  - generic [ref=f2e150]: design
+                  - time [ref=f2e151]: 2026-08-10
+                  - generic [ref=f2e152]: 约 1 分钟
+              - generic [aria-hidden] [ref=f2e153]: "07"
+            - article [ref=f2e154]:
+              - link [ref=f2e155] [cursor=pointer]:
+                - /url: /articles/notes/redis-cache-pattern
+                - strong [ref=f2e156]: notes
+              - generic [ref=f2e157]:
+                - link [ref=f2e158] [cursor=pointer]:
+                  - /url: /articles/notes/redis-cache-pattern
+                  - heading "本地缓存 vs Redis：个人项目怎么选" [level=2] [ref=f2e159]
+                - paragraph [ref=f2e160]: 单实例汇总接口用 60 秒内存缓存；没有多进程共享需求时不引入 Redis。
+                - generic [ref=f2e161]:
+                  - generic [ref=f2e162]: redis
+                  - generic [ref=f2e163]: cache
+                  - time [ref=f2e164]: 2026-08-08
+                  - generic [ref=f2e165]: 约 1 分钟
+              - generic [aria-hidden] [ref=f2e166]: "08"
+            - article [ref=f2e167]:
+              - link [ref=f2e168] [cursor=pointer]:
+                - /url: /articles/devops/caddy-reverse-proxy
+                - strong [ref=f2e169]: devops
+              - generic [ref=f2e170]:
+                - link [ref=f2e171] [cursor=pointer]:
+                  - /url: /articles/devops/caddy-reverse-proxy
+                  - heading "Caddy 反代静态站与 API" [level=2] [ref=f2e172]
+                - paragraph [ref=f2e173]: 同域根路径走静态文件，/api 反代 app 容器，顺带自动 HTTPS 与安全头。
+                - generic [ref=f2e174]:
+                  - generic [ref=f2e175]: caddy
+                  - generic [ref=f2e176]: docker
+                  - time [ref=f2e177]: 2026-08-05
+                  - generic [ref=f2e178]: 约 1 分钟
+              - generic [aria-hidden] [ref=f2e179]: "09"
+    - contentinfo [ref=f2e180]:
+      - paragraph [ref=f2e183]:
+        - text: "最后更新:"
+        - time [ref=f2e184]: 2026/9/24 14:02

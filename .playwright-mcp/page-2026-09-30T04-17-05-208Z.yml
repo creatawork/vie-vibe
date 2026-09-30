@@ -1,0 +1,366 @@
+- generic [ref=f5e4]:
+  - banner [ref=f5e5]:
+    - generic [ref=f5e6]:
+      - link "Vie 首页" [ref=f5e7] [cursor=pointer]:
+        - /url: /
+        - generic [ref=f5e9]: V
+        - generic [ref=f5e10]: ie
+      - navigation "主导航" [ref=f5e11]:
+        - link "首页" [ref=f5e12] [cursor=pointer]:
+          - /url: /
+        - link "文章" [ref=f5e13] [cursor=pointer]:
+          - /url: /articles/
+        - link "项目" [ref=f5e14] [cursor=pointer]:
+          - /url: /projects
+        - link "工具" [ref=f5e15] [cursor=pointer]:
+          - /url: /tools
+        - link "关于" [ref=f5e16] [cursor=pointer]:
+          - /url: /#about
+      - generic [ref=f5e17]:
+        - button "搜索文章" [ref=f5e18] [cursor=pointer]:
+          - generic [ref=f5e22]: 搜索
+        - link "GitHub 主页" [ref=f5e23] [cursor=pointer]:
+          - /url: https://github.com/creatawork
+          - generic [ref=f5e24]: V
+  - link "Skip to content" [ref=f5e25] [cursor=pointer]:
+    - /url: "#VPContent"
+  - text: Ctrl
+  - generic [ref=f5e30]:
+    - main [ref=f5e31]:
+      - generic [ref=f5e35]:
+        - navigation "本页目录" [ref=f5e36]:
+          - paragraph [aria-hidden] [ref=f5e37]: // 目录
+          - list [ref=f5e38]:
+            - listitem [ref=f5e39]:
+              - link "项目概览" [ref=f5e40] [cursor=pointer]:
+                - /url: "#overview"
+            - listitem [ref=f5e41]:
+              - link "产品体验" [ref=f5e42] [cursor=pointer]:
+                - /url: "#experience"
+            - listitem [ref=f5e43]:
+              - link "核心能力" [ref=f5e44] [cursor=pointer]:
+                - /url: "#capabilities"
+            - listitem [ref=f5e45]:
+              - link "系统实现" [ref=f5e46] [cursor=pointer]:
+                - /url: "#architecture"
+            - listitem [ref=f5e47]:
+              - link "验证与结果" [ref=f5e48] [cursor=pointer]:
+                - /url: "#validation"
+            - listitem [ref=f5e49]:
+              - link "开发日志" [ref=f5e50] [cursor=pointer]:
+                - /url: "#devlog"
+              - list [ref=f5e51]:
+                - listitem [ref=f5e52]:
+                  - link "12 品牌站模板体系全链路落地" [ref=f5e53] [cursor=pointer]:
+                    - /url: "#log-12"
+                    - generic [ref=f5e54]: "12"
+                    - generic [ref=f5e55]: 品牌站模板体系全链路落地
+                - listitem [ref=f5e56]:
+                  - link "11 viewer 氛围渲染升级与 admin 图库工作区增强" [ref=f5e57] [cursor=pointer]:
+                    - /url: "#log-11"
+                    - generic [ref=f5e58]: "11"
+                    - generic [ref=f5e59]: viewer 氛围渲染升级与 admin 图库工作区增强
+                - listitem [ref=f5e60]:
+                  - link "10 分享支持微信 / QQ 传播" [ref=f5e61] [cursor=pointer]:
+                    - /url: "#log-10"
+                    - generic [ref=f5e62]: "10"
+                    - generic [ref=f5e63]: 分享支持微信 / QQ 传播
+                - listitem [ref=f5e64]:
+                  - link "09 短链生成与 token 轮换，部署迁移冲突修复" [ref=f5e65] [cursor=pointer]:
+                    - /url: "#log-09"
+                    - generic [ref=f5e66]: "09"
+                    - generic [ref=f5e67]: 短链生成与 token 轮换，部署迁移冲突修复
+                - listitem [ref=f5e68]:
+                  - link "08 短链接功能实现与 admin 动效打磨" [ref=f5e69] [cursor=pointer]:
+                    - /url: "#log-08"
+                    - generic [ref=f5e70]: "08"
+                    - generic [ref=f5e71]: 短链接功能实现与 admin 动效打磨
+                - listitem [ref=f5e72]:
+                  - link "07 分享海报生成全链路完成（WP-12.1）" [ref=f5e73] [cursor=pointer]:
+                    - /url: "#log-07"
+                    - generic [ref=f5e74]: "07"
+                    - generic [ref=f5e75]: 分享海报生成全链路完成（WP-12.1）
+                - listitem [ref=f5e76]:
+                  - link "06 生产存储切换阿里云 OSS 并加密 API 数据" [ref=f5e77] [cursor=pointer]:
+                    - /url: "#log-06"
+                    - generic [ref=f5e78]: "06"
+                    - generic [ref=f5e79]: 生产存储切换阿里云 OSS 并加密 API 数据
+                - listitem [ref=f5e80]:
+                  - link "05 生产部署链路落地：Docker 化与 CI/CD" [ref=f5e81] [cursor=pointer]:
+                    - /url: "#log-05"
+                    - generic [ref=f5e82]: "05"
+                    - generic [ref=f5e83]: 生产部署链路落地：Docker 化与 CI/CD
+                - listitem [ref=f5e84]:
+                  - link "04 Week 1 交付：viewer 渲染增强（WP-10）" [ref=f5e85] [cursor=pointer]:
+                    - /url: "#log-04"
+                    - generic [ref=f5e86]: "04"
+                    - generic [ref=f5e87]: Week 1 交付：viewer 渲染增强（WP-10）
+                - listitem [ref=f5e88]:
+                  - link "03 修复分享链接主机栏与用户菜单点击失效" [ref=f5e89] [cursor=pointer]:
+                    - /url: "#log-03"
+                    - generic [ref=f5e90]: "03"
+                    - generic [ref=f5e91]: 修复分享链接主机栏与用户菜单点击失效
+                - listitem [ref=f5e92]:
+                  - link "02 admin 请求超时与创建弹窗交互加固" [ref=f5e93] [cursor=pointer]:
+                    - /url: "#log-02"
+                    - generic [ref=f5e94]: "02"
+                    - generic [ref=f5e95]: admin 请求超时与创建弹窗交互加固
+                - listitem [ref=f5e96]:
+                  - link "01 V1 签收：个人相册 V1 Ready 验收通过" [ref=f5e97] [cursor=pointer]:
+                    - /url: "#log-01"
+                    - generic [ref=f5e98]: "01"
+                    - generic [ref=f5e99]: V1 签收：个人相册 V1 Ready 验收通过
+        - article [ref=f5e100]:
+          - navigation "面包屑" [ref=f5e101]:
+            - link "项目" [ref=f5e102] [cursor=pointer]:
+              - /url: /projects
+            - generic [aria-hidden] [ref=f5e103]: /
+            - generic [ref=f5e104]: VIE Gallery
+          - generic [ref=f5e105]:
+            - generic [ref=f5e106]:
+              - heading "VIE Gallery" [level=1] [ref=f5e107]
+              - generic [ref=f5e108]: V1 已验收 · 持续迭代
+            - paragraph [ref=f5e109]: 把私人影像整理成可长期保存、自然浏览、受控分享的个人空间。
+            - paragraph [ref=f5e110]: 个人相册产品：admin + viewer 双端。原图保存、相册整理、2D/3D 空间展示、受控链接分享。
+            - generic [ref=f5e111]:
+              - link "查看产品体验" [ref=f5e112] [cursor=pointer]:
+                - /url: "#experience"
+              - link "跳到开发日志" [ref=f5e113] [cursor=pointer]:
+                - /url: "#devlog"
+          - region "产品界面" [ref=f5e114]:
+            - generic [ref=f5e115]:
+              - figure "Admin · 展厅工作台" [ref=f5e116]:
+                - img "VIE Gallery 管理端的展厅工作台界面，包含照片管理、发布中心与发布流程" [ref=f5e117]
+              - figure "Admin · 受控分享配置" [ref=f5e119]:
+                - img "VIE Gallery 的展厅分享与交付配置界面，可设置访问模式、下载权限与有效期" [ref=f5e120]
+              - figure "Viewer · 3D 空间浏览" [ref=f5e122]:
+                - img "VIE Gallery 访客端的 3D 空间浏览界面，照片悬浮在星空场景中" [ref=f5e123]
+          - generic [ref=f5e125]:
+            - heading "项目概览" [level=2] [ref=f5e126]
+            - generic [ref=f5e127]:
+              - generic [ref=f5e128]:
+                - term [ref=f5e129]: 问题
+                - definition [ref=f5e130]: 私人照片散落在聊天记录和网盘里，长期保存、整理和分享都受制于人。
+              - generic [ref=f5e131]:
+                - term [ref=f5e132]: 对象
+                - definition [ref=f5e133]: 管理相册的内容创作者，以及通过受控链接访问的受邀访客。
+              - generic [ref=f5e134]:
+                - term [ref=f5e135]: 范围
+                - definition [ref=f5e136]: admin 管理端 + viewer 浏览端，双端产品。
+          - generic [ref=f5e137]:
+            - heading "产品体验" [level=2] [ref=f5e138]
+            - generic [ref=f5e139]:
+              - generic [ref=f5e140]:
+                - heading "管理流程" [level=3] [ref=f5e141]
+                - list [ref=f5e142]:
+                  - listitem [ref=f5e143]: 上传照片，原图直接入库保存
+                  - listitem [ref=f5e144]: 在展厅工作台配置氛围、封面与排序
+                  - listitem [ref=f5e145]: 发布展厅，进入访客可见状态
+                  - listitem [ref=f5e146]: 生成带访问模式与有效期的受控分享链接
+              - generic [ref=f5e147]:
+                - heading "浏览流程" [level=3] [ref=f5e148]
+                - list [ref=f5e149]:
+                  - listitem [ref=f5e150]: 打开受控链接进入展厅
+                  - listitem [ref=f5e151]: 在经典网格与 3D 空间之间自由切换
+                  - listitem [ref=f5e152]: 通过系统分享或复制链接转发给朋友
+          - generic [ref=f5e153]:
+            - heading "核心能力" [level=2] [ref=f5e154]
+            - list [ref=f5e155]:
+              - listitem [ref=f5e156]:
+                - generic [ref=f5e157]:
+                  - heading "原图留存" [level=3] [ref=f5e158]
+                  - paragraph [ref=f5e159]: 上传即保存原图，照片长期留存不受展示压缩影响。
+              - listitem [ref=f5e160]:
+                - generic [ref=f5e161]:
+                  - heading "相册整理" [level=3] [ref=f5e162]
+                  - paragraph [ref=f5e163]: 上传、封面、排序与标题修改在展厅工作台一次完成。
+              - listitem [ref=f5e164]:
+                - generic [ref=f5e165]:
+                  - heading "2D / 3D 浏览" [level=3] [ref=f5e166]
+                  - paragraph [ref=f5e167]: 经典网格与 3D 空间两种浏览方式，访客可自由切换。
+              - listitem [ref=f5e168]:
+                - generic [ref=f5e169]:
+                  - heading "受控分享" [level=3] [ref=f5e170]
+                  - paragraph [ref=f5e171]: 分享链接支持访问模式与有效期配置，默认禁止访客下载。
+          - generic [ref=f5e172]:
+            - heading "系统实现" [level=2] [ref=f5e173]
+            - paragraph [ref=f5e174]: 前端使用 Vue 3 与 Three.js 构建 admin 工作台与 viewer 的 3D 空间浏览；后端由 Spring Boot 与 MyBatis-Plus 提供服务；Docker 承担本机部署与自动化门禁。
+            - generic [ref=f5e175]:
+              - generic [ref=f5e176]: Vue 3
+              - generic [ref=f5e177]: Three.js
+              - generic [ref=f5e178]: Spring Boot
+              - generic [ref=f5e179]: MyBatis-Plus
+              - generic [ref=f5e180]: Docker
+          - generic [ref=f5e181]:
+            - heading "验证与结果" [level=2] [ref=f5e182]
+            - list [ref=f5e183]:
+              - listitem [ref=f5e184]: ✓ 2026-09-12：双端达到 V1 Ready，验收通过。
+              - listitem [ref=f5e185]: ✓ M7.5 综合回归在本机 Docker + 自动化门禁下通过。
+          - generic [ref=f5e186]:
+            - heading "开发日志" [level=2] [ref=f5e187]
+            - list [ref=f5e188]:
+              - listitem [ref=f5e189]:
+                - generic [ref=f5e194]:
+                  - generic [ref=f5e195]:
+                    - time [ref=f5e196]: 2026-09-29
+                    - generic [aria-hidden] [ref=f5e197]: "12"
+                  - heading "品牌站模板体系全链路落地" [level=3] [ref=f5e198]
+                  - paragraph [ref=f5e199]: 5 套品牌站模板在渲染端、后端与 admin 工作区全链路打通；修复 demo 图片在 /site/ 部署路径下的 404（补齐 base 前缀）与暗房区块标题样式。
+                  - generic [ref=f5e200]:
+                    - generic [ref=f5e201]: Vue 3
+                    - generic [ref=f5e202]: Spring Boot
+              - listitem [ref=f5e203]:
+                - generic [ref=f5e208]:
+                  - generic [ref=f5e209]:
+                    - time [ref=f5e210]: 2026-09-27
+                    - generic [aria-hidden] [ref=f5e211]: "11"
+                  - heading "viewer 氛围渲染升级与 admin 图库工作区增强" [level=3] [ref=f5e212]
+                  - paragraph [ref=f5e213]: viewer 新增萤火虫/流星粒子、星迹拖尾与开场电影运镜及光照时段配置，配置中心支持下发相机自转与主题点缀色并实时预览，移除冗余的空间背景主题配置；admin 图库工作台支持拖拽排序、上传进度与原图查看；修复生产形态下预览 iframe 端口丢失导致握手失败。
+                  - generic [ref=f5e214]:
+                    - generic [ref=f5e215]: Three.js
+                    - generic [ref=f5e216]: Vue 3
+              - listitem [ref=f5e217]:
+                - generic [ref=f5e222]:
+                  - generic [ref=f5e223]:
+                    - time [ref=f5e224]: 2026-09-24
+                    - generic [aria-hidden] [ref=f5e225]: "10"
+                  - heading "分享支持微信 / QQ 传播" [level=3] [ref=f5e226]
+                  - paragraph [ref=f5e227]: 分享链接支持微信扫码与 QQ 一键分享，修复微信/QQ 分享卡片与访客端转发引导；清理赛博朋克残留外壳样式与未引用遗留组件；compose 传入本地安全密钥环境变量修复 API 启动。
+                  - generic [ref=f5e228]:
+                    - generic [ref=f5e229]: Vue 3
+                    - generic [ref=f5e230]: Docker
+              - listitem [ref=f5e231]:
+                - generic [ref=f5e235]:
+                  - generic [ref=f5e236]:
+                    - time [ref=f5e237]: 2026-09-23
+                    - generic [aria-hidden] [ref=f5e238]: "09"
+                  - heading "短链生成与 token 轮换，部署迁移冲突修复" [level=3] [ref=f5e239]
+                  - paragraph [ref=f5e240]: 分享链接支持短链生成与历史链接 token 轮换，短链公开路由放行与配置容错；定位并解决 V14/V15 Flyway 迁移冲突，API 健康检查失败可诊断。
+                  - generic [ref=f5e241]:
+                    - generic [ref=f5e242]: Spring Boot
+                    - generic [ref=f5e243]: Docker
+              - listitem [ref=f5e244]:
+                - generic [ref=f5e249]:
+                  - generic [ref=f5e250]:
+                    - time [ref=f5e251]: 2026-09-22
+                    - generic [aria-hidden] [ref=f5e252]: "08"
+                  - heading "短链接功能实现与 admin 动效打磨" [level=3] [ref=f5e253]
+                  - paragraph [ref=f5e254]: API 实现分享短链接，修复海报预签名 URL 超出 OSS 7 天上限与 CJK 字体缺失；admin 批量卡片倾斜逻辑简化、界面视觉与交互动效增强；部署链路补齐 raw_token 迁移与 API 健康诊断。
+                  - generic [ref=f5e255]:
+                    - generic [ref=f5e256]: Spring Boot
+                    - generic [ref=f5e257]: Vue 3
+                    - generic [ref=f5e258]: Docker
+              - listitem [ref=f5e259]:
+                - generic [ref=f5e264]:
+                  - generic [ref=f5e265]:
+                    - time [ref=f5e266]: 2026-09-21
+                    - generic [aria-hidden] [ref=f5e267]: "07"
+                  - heading "分享海报生成全链路完成（WP-12.1）" [level=3] [ref=f5e268]
+                  - paragraph [ref=f5e269]: admin 新增海报生成入口，API 完成海报生成：取真实照片 URL、跨平台字体与详细错误处理；OSS 预签名 URL 设置 Content-Type / Content-Disposition 支持浏览器直览，上传超时放宽至 120s，部署切换 SSL nginx 并消除周期性 502。
+                  - generic [ref=f5e270]:
+                    - generic [ref=f5e271]: Spring Boot
+                    - generic [ref=f5e272]: Vue 3
+                    - generic [ref=f5e273]: Docker
+              - listitem [ref=f5e274]:
+                - generic [ref=f5e279]:
+                  - generic [ref=f5e280]:
+                    - time [ref=f5e281]: 2026-09-20
+                    - generic [aria-hidden] [ref=f5e282]: "06"
+                  - heading "生产存储切换阿里云 OSS 并加密 API 数据" [level=3] [ref=f5e283]
+                  - paragraph [ref=f5e284]: 生产环境接入阿里云 OSS 对象存储与安全环境变量，API 实现数据加密，预签名 URL 修复双重签名并显式指定 GET；沉淀部署排障指南与一键 502 修复脚本；回退未完成的 URL 存储特性。
+                  - generic [ref=f5e285]:
+                    - generic [ref=f5e286]: Spring Boot
+                    - generic [ref=f5e287]: 阿里云 OSS
+                    - generic [ref=f5e288]: Docker
+              - listitem [ref=f5e289]:
+                - generic [ref=f5e294]:
+                  - generic [ref=f5e295]:
+                    - time [ref=f5e296]: 2026-09-18
+                    - generic [aria-hidden] [ref=f5e297]: "05"
+                  - heading "生产部署链路落地：Docker 化与 CI/CD" [level=3] [ref=f5e298]
+                  - paragraph [ref=f5e299]: 新增部署配置、CI/CD workflow 与生产环境模板；修复 Maven 多模块镜像构建、MinIO 镜像源、容器卷路径与 admin/viewer 静态资源代理规则。
+                  - generic [ref=f5e300]:
+                    - generic [ref=f5e301]: Docker
+                    - generic [ref=f5e302]: Spring Boot
+              - listitem [ref=f5e303]:
+                - generic [ref=f5e307]:
+                  - generic [ref=f5e308]:
+                    - time [ref=f5e309]: 2026-09-17
+                    - generic [aria-hidden] [ref=f5e310]: "04"
+                  - heading "Week 1 交付：viewer 渲染增强（WP-10）" [level=3] [ref=f5e311]
+                  - paragraph [ref=f5e312]: 动态光照、照片过渡动画、粒子性能优化与 Bloom / Fog 艺术调校（WP-10.1~10.4）完成，Week 1 以 demo 模式实测验收收尾；配置面板按反馈重构并加入点击涟漪，修复全屏预览 iframe 未铺满与无效纹理配置。
+                  - generic [ref=f5e313]:
+                    - generic [ref=f5e314]: Three.js
+                    - generic [ref=f5e315]: Vue 3
+              - listitem [ref=f5e316]:
+                - generic [ref=f5e320]:
+                  - generic [ref=f5e321]:
+                    - time [ref=f5e322]: 2026-09-16
+                    - generic [aria-hidden] [ref=f5e323]: "03"
+                  - heading "修复分享链接主机栏与用户菜单点击失效" [level=3] [ref=f5e324]
+                  - paragraph [ref=f5e325]: viewer 分享链接主机栏与用户菜单恢复可点击。
+                  - generic [ref=f5e326]: Vue 3
+              - listitem [ref=f5e328]:
+                - generic [ref=f5e332]:
+                  - generic [ref=f5e333]:
+                    - time [ref=f5e334]: 2026-09-15
+                    - generic [aria-hidden] [ref=f5e335]: "02"
+                  - heading "admin 请求超时与创建弹窗交互加固" [level=3] [ref=f5e336]
+                  - paragraph [ref=f5e337]: gallery-admin 加固请求超时处理与创建弹窗交互。
+                  - generic [ref=f5e338]: Vue 3
+              - listitem [ref=f5e340]:
+                - generic [ref=f5e344]:
+                  - generic [ref=f5e345]:
+                    - time [ref=f5e346]: 2026-09-12
+                    - generic [aria-hidden] [ref=f5e347]: "01"
+                  - heading "V1 签收：个人相册 V1 Ready 验收通过" [level=3] [ref=f5e348]
+                  - paragraph [ref=f5e349]: 双端（admin 工作台 / viewer）达到 V1 Ready：原图保存、相册管理、2D/3D 展示、受控链接分享、上传任务中心、配置版本化与资源变体通过真实环境验收；M7.5 综合回归在本机 Docker + 自动化门禁下通过。
+                  - generic [ref=f5e350]:
+                    - generic [ref=f5e351]: Vue 3
+                    - generic [ref=f5e352]: Three.js
+                    - generic [ref=f5e353]: Spring Boot
+                    - generic [ref=f5e354]: MyBatis-Plus
+                    - generic [ref=f5e355]: Docker
+    - contentinfo
+  - contentinfo [ref=f5e356]:
+    - generic [ref=f5e357]:
+      - generic [ref=f5e358]:
+        - link "Vie 首页" [ref=f5e359] [cursor=pointer]:
+          - /url: /
+          - generic [ref=f5e361]: V
+          - generic [ref=f5e362]: ie
+        - paragraph [ref=f5e363]: 记录技术、分享经验、创造价值
+        - generic [ref=f5e364]: © 2026 Vie. All rights reserved.
+      - navigation "底部导航" [ref=f5e365]:
+        - strong [ref=f5e366]: 导航
+        - link "首页" [ref=f5e367] [cursor=pointer]:
+          - /url: /
+        - link "文章" [ref=f5e368] [cursor=pointer]:
+          - /url: /articles/
+        - link "项目" [ref=f5e369] [cursor=pointer]:
+          - /url: /projects
+        - link "系列" [ref=f5e370] [cursor=pointer]:
+          - /url: /series/
+      - navigation "分类" [ref=f5e371]:
+        - strong [ref=f5e372]: 分类
+        - link "后端开发" [ref=f5e373] [cursor=pointer]:
+          - /url: /articles/#backend
+        - link "前端" [ref=f5e374] [cursor=pointer]:
+          - /url: /articles/#frontend
+        - link "部署运维" [ref=f5e375] [cursor=pointer]:
+          - /url: /articles/#devops
+        - link "AI 工程" [ref=f5e376] [cursor=pointer]:
+          - /url: /articles/#ai
+        - link "建站" [ref=f5e377] [cursor=pointer]:
+          - /url: /articles/#meta
+        - link "笔记" [ref=f5e378] [cursor=pointer]:
+          - /url: /articles/#notes
+      - navigation "联系" [ref=f5e379]:
+        - strong [ref=f5e380]: 联系
+        - link "GitHub" [ref=f5e381] [cursor=pointer]:
+          - /url: https://github.com/creatawork
+        - link "站点说明" [ref=f5e382] [cursor=pointer]:
+          - /url: /articles/meta/how-this-site-works
+    - link "回到顶部" [ref=f5e383] [cursor=pointer]:
+      - /url: "#"
+      - text: ↑

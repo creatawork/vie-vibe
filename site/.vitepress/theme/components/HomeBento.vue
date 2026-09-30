@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {
   ArrowRight,
+  Bot,
   Braces,
   ChartNoAxesColumnIncreasing,
   Code2,
@@ -36,6 +37,7 @@ const categoryArt: Record<string, { icon: any; tone: string }> = {
   backend: { icon: Database, tone: 'backend' },
   frontend: { icon: Code2, tone: 'frontend' },
   devops: { icon: Server, tone: 'devops' },
+  ai: { icon: Bot, tone: 'ai' },
   meta: { icon: Braces, tone: 'meta' },
   notes: { icon: FileText, tone: 'notes' },
 }
@@ -165,7 +167,7 @@ const featuredProject = computed(() => projects.find((p) => p.featured))
         <small>© 2026 Vie. All rights reserved.</small>
       </div>
       <nav aria-label="底部导航"><strong>导航</strong><a href="/">首页</a><a href="/articles/">文章</a><a href="/projects">项目</a><a href="#utilities">工具</a><a href="#about">关于</a></nav>
-      <nav aria-label="文章分类"><strong>分类</strong><a href="/articles/#backend">后端开发</a><a href="/articles/#frontend">前端</a><a href="/articles/#devops">部署运维</a><a href="/articles/#meta">建站</a><a href="/articles/#notes">笔记</a></nav>
+      <nav aria-label="文章分类"><strong>分类</strong><a href="/articles/#backend">后端开发</a><a href="/articles/#frontend">前端</a><a href="/articles/#devops">部署运维</a><a href="/articles/#ai">AI 工程</a><a href="/articles/#meta">建站</a><a href="/articles/#notes">笔记</a></nav>
       <nav aria-label="联系方式"><strong>联系</strong><a href="https://github.com/creatawork"><Code2 :size="15" /> GitHub</a><a href="mailto:hello@vie.dev">邮箱</a></nav>
       <a class="dn-backtop" href="#" aria-label="回到顶部">↑</a>
     </footer>

@@ -221,6 +221,47 @@
   font-weight: 600;
 }
 
+/* /projects other-projects row ---------------------------------------------- */
+.vie-more {
+  display: grid;
+  gap: 18px;
+  margin-top: 24px;
+  padding: 24px 28px 26px;
+  border: 1px solid var(--vie-line);
+  border-radius: var(--vie-radius);
+  background: var(--vie-panel);
+  box-shadow: var(--vie-shadow-soft);
+}
+
+.vp-doc .vie-more__title {
+  margin: 0;
+  padding-top: 0;
+  border-top: 0;
+  font-family: var(--vie-font-display);
+  font-size: 1.3rem;
+  letter-spacing: -0.02em;
+  color: var(--vie-ink);
+}
+
+.vie-more__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+.vie-more__grid .vie-spotlight {
+  padding: 18px 20px;
+  border: 1px solid var(--vie-line);
+  border-radius: var(--vie-radius-sm);
+  background: var(--vie-panel-soft);
+}
+
+@media (max-width: 720px) {
+  .vie-more {
+    padding: 18px 16px 20px;
+  }
+}
+
 @media (max-width: 1023px) {
   .vie-flagship__top {
     grid-template-columns: 1fr;

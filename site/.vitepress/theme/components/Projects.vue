@@ -7,6 +7,7 @@ import ProjectCapabilityList from './ProjectCapabilityList.vue'
 import ProjectMediaStrip from './ProjectMediaStrip.vue'
 
 const flagship = computed(() => projects.find((p) => p.featured) ?? projects[0])
+const others = computed(() => projects.filter((p) => p !== flagship.value))
 const latest = computed(() => flagship.value?.log?.[0])
 </script>
 
@@ -41,5 +42,28 @@ const latest = computed(() => flagship.value?.log?.[0])
       </footer>
     </section>
     <p v-else class="vie-empty vie-mono">// no flagship project yet</p>
+
+    <section v-if="others.length" class="vie-more" aria-labelledby="vie-more-title">
+      <h2 id="vie-more-title" class="vie-more__title">其他项目</h2>
+      <div class="vie-more__grid">
+        <ProjectSpotlight
+          v-for="p in others"
+          :key="p.slug ?? p.name"
+          :project="p"
+          title-tag="h3"
+          compact
+        >
+          <template #secondary>
+            <a
+              v-if="p.github"
+              class="vie-cta vie-cta--ghost"
+              :href="p.github"
+              target="_blank"
+              rel="noopener"
+            >GitHub</a>
+          </template>
+        </ProjectSpotlight>
+      </div>
+    </section>
   </VieShell>
 </template>
