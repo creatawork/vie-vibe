@@ -78,7 +78,7 @@ export const projectsSource: Project[] = [
     description:
       '个人相册产品：admin + viewer 双端。原图保存、相册整理、2D/3D 空间展示、受控链接分享。',
     proposition: '把私人影像整理成可长期保存、自然浏览、受控分享的个人空间。',
-    updatedAt: '2026-09-29',
+    updatedAt: '2026-09-30',
     image: '/images/projects/vie-gallery-viewer.png',
     tags: ['Vue 3', 'Three.js', 'Spring Boot', 'MyBatis-Plus', 'Docker'],
     featured: true,
@@ -166,6 +166,14 @@ export const projectsSource: Project[] = [
       'M7.5 综合回归在本机 Docker + 自动化门禁下通过。',
     ],
     log: [
+      {
+        date: '2026-09-30',
+        title: '查看器新增照片墙视图，照片标题搜索与筛选安全优化',
+        detail:
+          'viewer 新增照片墙浏览视图，灯箱弹窗与查看器引擎、布局插件同步重构；admin 图库工作台支持照片标题搜索与状态筛选并做安全优化；两端补充 e2e 验证。',
+        type: 'feature',
+        tech: ['Vue 3', 'Three.js'],
+      },
       {
         date: '2026-09-29',
         title: '品牌站模板体系全链路落地',
