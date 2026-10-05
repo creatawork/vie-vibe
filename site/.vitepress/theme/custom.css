@@ -52,6 +52,8 @@
 
 html {
   scroll-behavior: smooth;
+  /* The custom sticky nav (76px) replaces VPNav; keep anchor targets below it. */
+  scroll-padding-top: 92px;
 }
 
 body {
@@ -400,12 +402,10 @@ body {
 .vie-section,
 .vie-quote,
 .vie-panel,
-.vie-list-card,
 .vie-project-tile,
 .vie-mini-project,
 .vie-tool-card,
 .vie-metric-card,
-.vie-category-panel,
 .vie-series-nav,
 .vie-site-footer {
   background: var(--vie-panel);
@@ -807,23 +807,6 @@ body {
   font-size: 0.92rem;
 }
 
-.vie-card-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 12px;
-  margin-top: 12px;
-  font-size: 0.75rem;
-  color: var(--vie-ink-soft);
-}
-
-.vie-card-meta span,
-.vie-card-meta time,
-.vie-card-meta small {
-  padding: 3px 8px;
-  border-radius: 999px;
-  background: #f4f7fb;
-}
-
 .vie-project-strip,
 .vie-tool-grid {
   display: grid;
@@ -910,83 +893,356 @@ body {
   color: var(--vie-ink-soft);
 }
 
-.vie-category-panel {
-  display: grid;
-  gap: 10px;
-  padding: 16px;
-  align-self: start;
+/* ------------------------------------------------------------------ */
+/* Articles hub: category-filtered index                               */
+/* (signature: sticky tone-dotted chip bar; /articles/#<slug> hashes   */
+/*  from the footer and home land pre-filtered. Cards stay quiet —     */
+/*  tone speaks on hover and on the featured post only.)               */
+/* ------------------------------------------------------------------ */
+
+/* The hub is an index, not an article: give it the same 1240px canvas
+   the project dossier uses instead of VPDoc's 784px reading column. */
+.vie-vibe:not(.vie-page-home) .VPDoc .container:has(.hub-index),
+.vie-vibe:not(.vie-page-home) .VPDoc .content:has(.hub-index),
+.vie-vibe:not(.vie-page-home) .VPDoc .content-container:has(.hub-index) {
+  display: block;
+  max-width: min(1240px, 100%);
 }
 
-.vie-category-item {
+.vie-vibe:not(.vie-page-home) .VPDoc .content:has(.hub-index) {
+  padding: 0;
+}
+
+.vie-vibe:not(.vie-page-home) .vp-doc:has(.hub-index) {
+  max-width: none;
+}
+
+.vp-doc .hub-chip.tone-backend,
+.vp-doc .hub-card.tone-backend,
+.vp-doc .hub-cathead.tone-backend { --tone: #3f6ce0; --tone-soft: #eef3ff; }
+.vp-doc .hub-chip.tone-frontend,
+.vp-doc .hub-card.tone-frontend,
+.vp-doc .hub-cathead.tone-frontend { --tone: #0e9db1; --tone-soft: #e9f9fb; }
+.vp-doc .hub-chip.tone-devops,
+.vp-doc .hub-card.tone-devops,
+.vp-doc .hub-cathead.tone-devops { --tone: #569431; --tone-soft: #f2f9e7; }
+.vp-doc .hub-chip.tone-ai,
+.vp-doc .hub-card.tone-ai,
+.vp-doc .hub-cathead.tone-ai { --tone: #5f66e8; --tone-soft: #eef0ff; }
+.vp-doc .hub-chip.tone-meta,
+.vp-doc .hub-card.tone-meta,
+.vp-doc .hub-cathead.tone-meta { --tone: #d97c22; --tone-soft: #fff4ea; }
+.vp-doc .hub-chip.tone-notes,
+.vp-doc .hub-card.tone-notes,
+.vp-doc .hub-cathead.tone-notes { --tone: #a355e0; --tone-soft: #f7f0fe; }
+
+/* hub-index sits in a grid (vie-page-body): opt out of the automatic
+   min-content minimum so narrow viewports can shrink the column and
+   the chip bar scrolls instead of pushing the page wide. */
+.vp-doc .hub-index {
+  min-width: 0;
+}
+
+.vp-doc .hub-toolbar {
   display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
   justify-content: space-between;
+  gap: 8px 20px;
+  margin-bottom: 10px;
+}
+
+.vp-doc .hub-toolbar__stats {
+  margin: 0;
+  color: #8a97a5;
+  font-size: 0.78rem;
+}
+
+.vp-doc .hub-toolbar__rss {
+  color: var(--vie-green-action);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.vp-doc .hub-toolbar__rss:hover {
+  text-decoration: underline;
+}
+
+/* Filter bar: sticks under the global nav so categories stay reachable
+   while the grid scrolls. Scrolls horizontally on narrow screens. */
+.vp-doc .hub-filter {
+  position: sticky;
+  top: 75px;
+  z-index: 20;
+  display: flex;
   align-items: center;
-  padding: 10px 12px;
-  border-radius: 10px;
-  background: var(--vie-panel-soft);
+  gap: 8px;
+  margin: 0 -2px;
+  padding: 10px 2px 12px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  background: linear-gradient(rgba(246, 248, 251, 0.99), rgba(246, 248, 251, 0.97));
+}
+
+.vp-doc .hub-filter::-webkit-scrollbar {
+  display: none;
+}
+
+.vp-doc .hub-chip {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border: 1px solid var(--vie-line);
+  border-radius: 999px;
+  background: var(--vie-panel);
+  color: var(--vie-ink);
+  font-family: var(--vie-font-display);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1;
+  cursor: pointer;
+  transition: border-color 140ms ease, background-color 140ms ease,
+    color 140ms ease, transform 140ms ease;
+}
+
+.vp-doc .hub-chip:hover {
+  border-color: var(--vie-line-strong);
+  transform: translateY(-1px);
+}
+
+.vp-doc .hub-chip__dot {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--tone, var(--vie-green));
+}
+
+.vp-doc .hub-chip__count {
+  color: #8a97a5;
+  font-size: 0.72rem;
+  font-weight: 500;
+}
+
+.vp-doc .hub-chip[aria-pressed='true'] {
+  border-color: var(--vie-ink);
+  background: var(--vie-ink);
+  color: #fff;
+}
+
+.vp-doc .hub-chip[aria-pressed='true'] .hub-chip__count {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.vp-doc .hub-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.vp-doc .hub-cathead {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 2px 0 12px;
+}
+
+.vp-doc .hub-cathead__dot {
+  align-self: center;
+  flex: none;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--tone);
+}
+
+.vp-doc .hub-cathead__label {
+  margin: 0;
+  border: 0;
+  padding: 0;
+  color: var(--vie-ink);
+  font-family: var(--vie-font-display);
+  font-size: 1.02rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.vp-doc .hub-cathead__sub {
+  margin-left: auto;
+  color: #8a97a5;
+  font-size: 0.74rem;
+  font-weight: 500;
+}
+
+.vp-doc .hub-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+
+@media (min-width: 721px) {
+  .vp-doc .hub-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.vp-doc .hub-card {
+  min-width: 0;
+  border: 1px solid var(--vie-line);
+  border-radius: var(--vie-radius);
+  background: var(--vie-panel);
+  transition: border-color 160ms ease, box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+.vp-doc .hub-card:hover {
+  border-color: color-mix(in srgb, var(--tone) 45%, var(--vie-line));
+  box-shadow: var(--vie-shadow-soft);
+  transform: translateY(-2px);
+}
+
+.vp-doc .hub-card__link {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 20px 22px 18px;
+  border-radius: inherit;
   color: inherit;
   text-decoration: none;
-  border: 1px solid transparent;
 }
 
-.vie-category-item:hover {
-  border-color: var(--vie-line-strong);
+.vp-doc .hub-card__link:focus-visible {
+  outline-offset: -3px;
 }
 
-.vie-article-index {
-  display: grid;
-  grid-template-columns: 220px minmax(0, 1fr);
-  gap: 16px;
-}
-
-.vie-article-stack {
-  display: grid;
+.vp-doc .hub-card__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   gap: 12px;
 }
 
-.vie-list-card {
-  display: grid;
-  grid-template-columns: 130px minmax(0, 1fr) auto;
-  gap: 16px;
-  padding: 12px;
+.vp-doc .hub-card__cat {
+  display: inline-flex;
   align-items: center;
-}
-
-.vie-list-thumb {
-  display: grid;
-  place-items: center;
-  min-height: 92px;
-  border-radius: 12px;
-  text-decoration: none;
-  color: inherit;
-}
-
-.vie-list-thumb.tone-backend { background: linear-gradient(135deg, #edf3ff, #fff); }
-.vie-list-thumb.tone-devops { background: linear-gradient(135deg, #f4faee, #fff); }
-.vie-list-thumb.tone-frontend { background: linear-gradient(135deg, #edfdf7, #fff); }
-.vie-list-thumb.tone-ai { background: linear-gradient(135deg, #eaedff, #fff); }
-.vie-list-thumb.tone-meta { background: linear-gradient(135deg, #fff3ea, #fff); }
-.vie-list-thumb.tone-notes { background: linear-gradient(135deg, #f8f3ff, #fff); }
-
-.vie-list-thumb strong {
+  gap: 7px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--tone-soft);
+  color: var(--tone);
   font-family: var(--vie-font-display);
-  font-size: 1rem;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
 }
 
-.vie-list-card__body a {
-  color: inherit;
-  text-decoration: none;
+.vp-doc .hub-card__cat::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--tone);
 }
 
-.vie-list-card__body h2 {
+.vp-doc .hub-card__date {
+  flex: none;
+  color: #9aa7b3;
+  font-size: 0.74rem;
+}
+
+.vp-doc .hub-card__title {
+  margin: 13px 0 0;
+  border: 0;
+  padding: 0;
+  color: var(--vie-ink);
+  font-family: var(--vie-font-display);
+  font-size: 1.06rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.45;
+  transition: color 140ms ease;
+}
+
+.vp-doc .hub-card__link:hover .hub-card__title {
+  color: var(--tone);
+}
+
+.vp-doc .hub-card__desc {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  margin: 7px 0 0;
+  color: #5a6b7b;
+  font-size: 0.87rem;
+  line-height: 1.75;
+}
+
+.vp-doc .hub-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 12px;
   margin: 0;
-  font-family: var(--vie-font-display);
-  font-size: 1.02rem;
+  margin-top: auto;
+  padding-top: 14px;
+  color: #8a97a5;
+  font-size: 0.72rem;
 }
 
-.vie-list-eye {
-  color: var(--vie-ink-soft);
-  font-size: 0.76rem;
+.vp-doc .hub-card__tag {
+  color: #7a8896;
+}
+
+.vp-doc .hub-card__arrow {
+  margin-left: auto;
+  color: #b6c2cd;
+  font-size: 0.9rem;
+  transition: transform 160ms ease, color 160ms ease;
+}
+
+.vp-doc .hub-card__link:hover .hub-card__arrow {
+  transform: translateX(3px);
+  color: var(--tone);
+}
+
+/* The newest post leads 全部 as a full-width feature with a tone wash. */
+.vp-doc .hub-card--featured {
+  grid-column: 1 / -1;
+  background:
+    linear-gradient(115deg, var(--tone-soft) 0%, rgba(255, 255, 255, 0) 55%),
+    var(--vie-panel);
+}
+
+.vp-doc .hub-card--featured .hub-card__title {
+  font-size: 1.3rem;
+}
+
+.vp-doc .hub-card--featured .hub-card__desc {
+  font-size: 0.92rem;
+}
+
+.vp-doc:has(.hub-index) footer.VPDocFooter {
+  margin-top: 2.5em;
+  padding-top: 14px;
+  border-top: 1px solid var(--vie-line);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .vp-doc .hub-card {
+    animation: vie-rise 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: calc(var(--i, 0) * 40ms);
+  }
 }
 
 .vie-badge {
@@ -1193,6 +1449,9 @@ body {
 .vie-footer-brand {
   display: grid;
   gap: 10px;
+  /* Keep short columns (联系 only has two links) from stretching rows to
+     match the tallest column. */
+  align-content: start;
 }
 
 .vie-footer-inner strong {
@@ -1235,11 +1494,6 @@ body {
 /* Hub components render inside .vp-doc, where the default theme underlines
    every anchor. These are UI links, not prose — restate their intended
    color and drop the underline at matching specificity. */
-.vp-doc .vie-category-item {
-  color: inherit;
-  text-decoration: none;
-}
-
 .vp-doc .vie-feed a {
   color: var(--vie-ink);
   text-decoration: none;
@@ -1263,47 +1517,9 @@ body {
   text-decoration: none;
 }
 
-.vp-doc a.vie-list-thumb {
-  color: inherit;
-  text-decoration: none;
-}
-
 .vp-doc a.vie-back-top {
   color: var(--vie-green-action);
   text-decoration: none;
-}
-
-.post-head {
-  margin-bottom: 20px;
-  padding-top: 6px;
-}
-
-.post-title {
-  margin: 0 0 12px;
-  font-family: var(--vie-font-display);
-  font-size: clamp(1.55rem, 3.6vw, 1.95rem);
-  line-height: 1.3;
-  letter-spacing: -0.03em;
-}
-
-.post-meta {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 4px 10px;
-  margin: 0;
-  color: var(--vie-ink-soft);
-  font-size: 0.78rem;
-}
-
-.post-meta__series {
-  color: var(--vie-green-action);
-  font-weight: 600;
-  text-decoration: none;
-}
-
-.post-meta__series:hover {
-  text-decoration: underline;
 }
 
 .vie-vibe:not(.vie-page-home) .VPDoc .content-container {
@@ -1378,10 +1594,6 @@ body {
   .vie-article-cards,
   .vie-project-strip,
   .vie-tool-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .vie-article-index {
     grid-template-columns: 1fr;
   }
 
@@ -1489,12 +1701,34 @@ body {
     grid-column: 1 / -1;
   }
 
-  .vie-list-card {
-    grid-template-columns: 1fr;
+  .vp-doc .hub-filter {
+    top: 63px;
+    gap: 6px;
   }
 
-  .vie-list-eye {
-    justify-self: end;
+  .vp-doc .hub-chip {
+    padding: 7px 12px;
+    font-size: 0.78rem;
+  }
+
+  .vp-doc .hub-card__link {
+    padding: 17px 18px 15px;
+  }
+
+  .vp-doc .hub-card__title {
+    font-size: 1rem;
+  }
+
+  .vp-doc .hub-card--featured .hub-card__title {
+    font-size: 1.18rem;
+  }
+
+  .vp-doc .hub-card__meta {
+    gap: 4px 10px;
+  }
+
+  .vp-doc .hub-card__arrow {
+    display: none;
   }
 }
 
@@ -1547,7 +1781,23 @@ body {
 }
 
 * {
-  scrollbar-color: var(--vie-green) #edf3f7;
+  scrollbar-width: thin;
+  scrollbar-color: #c3d3cb #edf2f6;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c3d3cb;
+  border: 2px solid #edf2f6;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -9,12 +9,34 @@ import { renderMermaidBlocks } from './mermaid'
 import { sendTrack } from './track'
 
 const { Layout } = DefaultTheme
-const { frontmatter } = useData()
+const { frontmatter, page } = useData()
 const route = useRoute()
 
 const isHome = computed(() => route.path === '/' || route.path === '/index.html')
 const isHub = computed(() => route.path === '/articles/' || route.path === '/projects' || route.path === '/tools' || route.path.startsWith('/tools/'))
 const isTools = computed(() => route.path === '/tools' || route.path.startsWith('/tools/'))
+const isPost = computed(() => Boolean(frontmatter.value.date))
+
+const CATEGORY_LABELS: Record<string, string> = {
+  backend: '后端开发',
+  frontend: '前端',
+  devops: '部署运维',
+  ai: 'AI 工程',
+  meta: '建站',
+  notes: '笔记',
+}
+
+const postCategory = computed(() => {
+  // Posts live at articles/<category>/<slug>.md; root-level pages have none.
+  const parts = page.value.relativePath.split('/')
+  if (parts[0] !== 'articles' || parts.length < 3) return ''
+  return CATEGORY_LABELS[parts[1]] ?? ''
+})
+
+const postTags = computed(() => {
+  const tags = frontmatter.value.tags
+  return Array.isArray(tags) ? tags.slice(0, 6) : []
+})
 
 const wordCount = ref(0)
 const readingTime = ref(0)
@@ -63,7 +85,9 @@ onMounted(() => {
       FORM: user-pinned reference image, rebuilt as a multi-surface portfolio notebook; seed image-reference-20260830.
       FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance.
     -->
-    <Layout :class="['vie-vibe', isHome && 'vie-page-home', isHub && 'vie-page-hub', isTools && 'vie-page-tools']">
+    <Layout
+      :class="['vie-vibe', isHome && 'vie-page-home', isHub && 'vie-page-hub', isTools && 'vie-page-tools', isPost && 'vie-page-post']"
+    >
     <template #layout-top>
       <VieGlobalNav />
     </template>
@@ -75,14 +99,30 @@ onMounted(() => {
 
     <template #doc-before>
       <div v-if="frontmatter.date" class="post-head">
+        <p class="post-kicker">
+          <span v-if="postCategory" class="post-kicker__cat">{{ postCategory }}</span>
+          <a v-if="frontmatter.series" class="post-kicker__series" :href="'/series/' + encodeURIComponent(frontmatter.series)">{{ frontmatter.series }}</a>
+        </p>
         <h1 class="post-title">{{ frontmatter.title }}</h1>
+        <p v-if="frontmatter.description" class="post-lede">{{ frontmatter.description }}</p>
         <p class="post-meta">
           <time class="vie-mono">{{ postDate }}</time>
-          <span v-if="readingTime" class="vie-mono">· 约 {{ readingTime }} 分钟 · {{ wordCount }} 字</span>
-          <a v-if="frontmatter.series" class="post-meta__series vie-mono" :href="'/series/' + encodeURIComponent(frontmatter.series)">{{ frontmatter.series }}</a>
+          <template v-if="readingTime">
+            <span class="post-meta__dot" aria-hidden="true">·</span>
+            <span class="vie-mono">约 {{ readingTime }} 分钟</span>
+            <span class="post-meta__dot vie-mono" aria-hidden="true">·</span>
+            <span class="vie-mono">{{ wordCount }} 字</span>
+          </template>
+          <span v-for="tag in postTags" :key="tag" class="post-tag vie-mono"># {{ tag }}</span>
         </p>
       </div>
       <SeriesNav v-if="frontmatter.series" />
+    </template>
+    <template #doc-after>
+      <div v-if="frontmatter.date" class="post-end">
+        <span class="post-end__mark" aria-hidden="true">V</span>
+        <p class="post-end__text vie-mono">写清楚每一个技术决策</p>
+      </div>
     </template>
     <template #layout-bottom>
       <footer v-if="!isHome && !isHub" class="vie-site-footer">
