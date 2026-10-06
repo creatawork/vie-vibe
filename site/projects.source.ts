@@ -78,7 +78,7 @@ export const projectsSource: Project[] = [
     description:
       '个人相册产品：admin + viewer 双端。原图保存、相册整理、2D/3D 空间展示、受控链接分享。',
     proposition: '把私人影像整理成可长期保存、自然浏览、受控分享的个人空间。',
-    updatedAt: '2026-10-05',
+    updatedAt: '2026-10-06',
     image: '/images/projects/vie-gallery-viewer.png',
     tags: ['Vue 3', 'Three.js', 'Spring Boot', 'MyBatis-Plus', 'Docker'],
     featured: true,
@@ -166,6 +166,14 @@ export const projectsSource: Project[] = [
       'M7.5 综合回归在本机 Docker + 自动化门禁下通过。',
     ],
     log: [
+      {
+        date: '2026-10-06',
+        title: '场景背景分层加载、启动提速与投影修复',
+        detail:
+          'viewer 场景背景支持半分辨率变体与缩略图分层加载，素材带版本参数防旧缓存，舞台画廊与实时预览启动提速；修复全景投影与旋转恢复、旧版背景 schema 兼容、背景请求竞态与纹理释放、admin 配置侧板还原，并补背景旋转 e2e 验收；移除品牌站特性（admin 视图与后端配置一并下线）。',
+        type: 'feature',
+        tech: ['Three.js', 'Vue 3'],
+      },
       {
         date: '2026-10-05',
         title: 'viewer 内置 8 套场景背景，配置面板支持预览选用',
