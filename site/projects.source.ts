@@ -310,7 +310,7 @@ export const projectsSource: Project[] = [
       '会请示的 ERP 智能体：agent 应用开发求职作品集项目。运行在 mini-ERP（商品 / 库存 / 订单）上，FastMCP 工具层 + 分级人工审批（HITL）+ 全程评测驱动。',
     proposition:
       '只读操作自动执行，低风险操作批量确认，资金相关操作单笔审批——动账动货的事，必须请示东家。',
-    updatedAt: '2026-09-30',
+    updatedAt: '2026-10-15',
     tags: ['Python 3.12', 'FastAPI', 'FastMCP', 'LangGraph', 'React'],
     featured: false,
     github: 'https://github.com/creatawork/Erpilot',
@@ -375,8 +375,17 @@ export const projectsSource: Project[] = [
       '2026-09-29：M1 第 1–3 周真实链路验收通过——单工具任务 2 步收口，多步任务 3 步完成（第 2 轮模型自发并行调用两工具），成本约 ¥0.0003。',
       '44 项单元测试走传输层 mock，不消耗 token；ruff / pytest / tsc + vite build 进 CI 门禁。',
       'trace 覆盖成功与异常路径：上游端点故障（APIError / 502 upstream_error）均被 run_error 完整留痕。',
+      '2026-10-08：崩溃恢复矩阵 R01–R06 在隔离 PostgreSQL 库全部通过；写可靠性 live 基线 35 条记录 34 通过、write/approval 6/6（edge-08 失败如实保留）。',
     ],
     log: [
+      {
+        date: '2026-10-15',
+        title: 'M4 写审批链与崩溃恢复收口，政策 RAG 接入并通过真实验收',
+        detail:
+          '汇总 2026-10-05～10-09 批次（44 项提交、29 项实质）：M4 写操作+HITL 落地挂起式审批事件协议与三端审批交互，LangGraph HITL 完成 PostgreSQL 持久化，凭 mutation token 对账与 durable cursor 重放补齐崩溃恢复，恢复矩阵 R01–R06 在隔离库全通过；新增 packages/rag 政策检索引擎并经 search_policy 只读工具接入 loop，政策检索通过真实链路验收，多供应商 provider 配置（zhipu/deepseek/qwen）同步落地；评测体系扩至 35 条固定基线（scorer v2.4、注入对抗用例、版本化趋势与报告完整性修复），离线单测峰值 152 项全绿。',
+        type: 'milestone',
+        tech: ['Python', 'LangGraph', 'PostgreSQL', 'FastMCP', 'React'],
+      },
       {
         date: '2026-09-30',
         title: 'M1 收口：本地 trace + 三条入口 + 首篇文章发布',
