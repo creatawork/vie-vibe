@@ -78,7 +78,7 @@ export const projectsSource: Project[] = [
     description:
       '个人相册产品：admin + viewer 双端。原图保存、相册整理、2D/3D 空间展示、受控链接分享。',
     proposition: '把私人影像整理成可长期保存、自然浏览、受控分享的个人空间。',
-    updatedAt: '2026-10-14',
+    updatedAt: '2026-10-15',
     image: '/images/projects/vie-gallery-viewer.png',
     tags: ['Vue 3', 'Three.js', 'Spring Boot', 'MyBatis-Plus', 'Docker'],
     featured: true,
@@ -166,6 +166,14 @@ export const projectsSource: Project[] = [
       'M7.5 综合回归在本机 Docker + 自动化门禁下通过。',
     ],
     log: [
+      {
+        date: '2026-10-15',
+        title: '观展体验重塑：精选画廊空间导航与全流程打磨',
+        detail:
+          '精选画廊重塑：螺旋/环绕/波浪视图聚焦大图、共享导航与响应式相机取景，保留 reduced-motion 与平面画廊回退，风格选择与发布统一；创建到观展全流程视觉系统统一（登录、创作工作区、配置、发布、访客端），强制发布就绪与访问密码边界；修复空间舞台更新、嵌入动效与自适应纹理质量，120 项单测与多端浏览器验收通过。',
+        type: 'feature',
+        tech: ['Vue 3', 'Three.js'],
+      },
       {
         date: '2026-10-14',
         title: '照片剧场播放器、配置版本管理与预览提速（10.08–10.12）',
