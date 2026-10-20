@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import DefaultTheme from 'vitepress/theme'
 import { useData, useRoute } from 'vitepress'
-import { computed, onMounted, ref, watch, nextTick } from 'vue'
+import { computed, onMounted, watch, nextTick } from 'vue'
 import SeriesNav from './components/SeriesNav.vue'
 import VieWordmark from './components/VieWordmark.vue'
 import VieGlobalNav from './components/VieGlobalNav.vue'
 import { renderMermaidBlocks } from './mermaid'
 import { sendTrack } from './track'
+import { data as posts } from '../../articles.data'
 
 const { Layout } = DefaultTheme
 const { frontmatter, page } = useData()
@@ -38,8 +39,9 @@ const postTags = computed(() => {
   return Array.isArray(tags) ? tags.slice(0, 6) : []
 })
 
-const wordCount = ref(0)
-const readingTime = ref(0)
+const currentPost = computed(() => posts.find((post) => post.url === route.path.replace(/\.html$/, '').replace(/\/$/, '')))
+const wordCount = computed(() => currentPost.value?.wordCount ?? 0)
+const readingTime = computed(() => currentPost.value?.readingTime ?? 0)
 
 const postDate = computed(() => {
   const raw = frontmatter.value.date
@@ -48,27 +50,11 @@ const postDate = computed(() => {
   return Number.isNaN(+date) ? String(raw) : date.toISOString().slice(0, 10)
 })
 
-function recount() {
-  nextTick(() => {
-    const el = document.querySelector('.vp-doc')
-    if (!el) {
-      wordCount.value = 0
-      readingTime.value = 0
-      return
-    }
-    const n = (el.textContent ?? '').replace(/\s/g, '').length
-    wordCount.value = n
-    readingTime.value = Math.max(1, Math.ceil(n / 400))
-  })
-}
-
 onMounted(() => {
   sendTrack()
-  recount()
   renderMermaidBlocks()
   watch(() => route.path, () => {
     sendTrack()
-    recount()
     nextTick(renderMermaidBlocks)
   })
 })
@@ -76,15 +62,6 @@ onMounted(() => {
 
 <template>
   <div class="vie-app">
-    <!--
-      VIE visual contract (code-led)
-      THESIS: Vie becomes a bright DevNotes-style technical notebook, refusing the old dark terminal canvas.
-      OWN-WORLD: warm white app shell, mint green primary actions, soft cyan/blue/orange icon wells, airy cards, rounded 10-14px surfaces, Inter/Noto Sans SC with small mono details.
-      STORY: Interviewers land, identify Vie, scan proof through latest articles, projects, tools, and open the route that answers their question.
-      FIRST VIEWPORT: sticky rounded nav, left greeting and CTAs, right isometric coding desk, four metric cards just below the hero.
-      FORM: user-pinned reference image, rebuilt as a multi-surface portfolio notebook; seed image-reference-20260830.
-      FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance.
-    -->
     <Layout
       :class="['vie-vibe', isHome && 'vie-page-home', isHub && 'vie-page-hub', isTools && 'vie-page-tools', isPost && 'vie-page-post']"
     >
@@ -103,10 +80,10 @@ onMounted(() => {
           <span v-if="postCategory" class="post-kicker__cat">{{ postCategory }}</span>
           <a v-if="frontmatter.series" class="post-kicker__series" :href="'/series/' + encodeURIComponent(frontmatter.series)">{{ frontmatter.series }}</a>
         </p>
-        <h1 class="post-title">{{ frontmatter.title }}</h1>
+        <h1 id="post-title" class="post-title">{{ frontmatter.title }}</h1>
         <p v-if="frontmatter.description" class="post-lede">{{ frontmatter.description }}</p>
         <p class="post-meta">
-          <time class="vie-mono">{{ postDate }}</time>
+          <time class="vie-mono" :datetime="postDate">{{ postDate }}</time>
           <template v-if="readingTime">
             <span class="post-meta__dot" aria-hidden="true">·</span>
             <span class="vie-mono">约 {{ readingTime }} 分钟</span>

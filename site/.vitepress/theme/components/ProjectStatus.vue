@@ -5,5 +5,5 @@ defineProps<{ status: ProjectStatus }>()
 </script>
 
 <template>
-  <span class="vie-badge">{{ projectStatusLabel[status] }}</span>
+  <span class="vie-badge" :class="'is-' + status">{{ projectStatusLabel[status] }}</span>
 </template>

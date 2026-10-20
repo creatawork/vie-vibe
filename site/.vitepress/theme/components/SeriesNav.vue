@@ -24,27 +24,29 @@ const nav = computed(() => {
 </script>
 
 <template>
-  <nav v-if="nav" class="vie-series-nav" aria-label="系列导航">
-    <p class="vie-series-nav__meta vie-mono">
-      part {{ nav.index }} of {{ nav.total }} ·
+  <nav v-if="nav" class="vie-series-nav" :aria-label="`${nav.name} 系列导航`">
+    <p class="vie-series-nav__meta">
+      <span>第 {{ nav.index }} / {{ nav.total }} 篇</span>
       <a :href="`/series/${encodeURIComponent(nav.name)}`">{{ nav.name }}</a>
     </p>
-    <div class="vie-series-nav__links">
+    <div v-if="nav.prev || nav.next" class="vie-series-nav__links">
       <a
         v-if="nav.prev"
         class="vie-series-nav__link"
         :href="nav.prev.url"
+        rel="prev"
       >
-        <span class="vie-mono vie-syntax-fn">←</span>
-        {{ nav.prev.title }}
+        <span class="vie-series-nav__direction">← 上一篇</span>
+        <strong>{{ nav.prev.title }}</strong>
       </a>
       <a
         v-if="nav.next"
         class="vie-series-nav__link vie-series-nav__link--next"
         :href="nav.next.url"
+        rel="next"
       >
-        {{ nav.next.title }}
-        <span class="vie-mono vie-syntax-fn">→</span>
+        <span class="vie-series-nav__direction">下一篇 →</span>
+        <strong>{{ nav.next.title }}</strong>
       </a>
     </div>
   </nav>

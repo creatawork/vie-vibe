@@ -1,0 +1,72 @@
+/* Shared presentation tokens; component workbenches keep their own semantics. */
+:root {
+  color-scheme: light;
+  --vie-ink: #1a2923;
+  --vie-ink-soft: #53635b;
+  --vie-paper: #f5f7f4;
+  --vie-panel-soft: #f8faf7;
+  --vie-shadow: none;
+  --vie-shadow-soft: none;
+  --vie-green: #15734f;
+  --vie-green-soft: #e3efe7;
+  --vie-green-action: #0b6547;
+  --vie-font-display: 'Noto Sans SC', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --vie-font-sans: var(--vie-font-body);
+  --vp-c-bg: var(--vie-paper);
+  --vp-c-text-3: #63716a;
+}
+body { background: var(--vie-paper); text-rendering: optimizeLegibility; }
+.vie-mono { font-family: var(--vie-font-body); font-variant-numeric: tabular-nums; }
+.vie-global-nav { background: #fff; border: 0; box-shadow: none; backdrop-filter: none; } /* taste-skill-ignore: removes inherited shadow and glass */
+.vie-global-nav__inner { width: min(1240px, calc(100% - 64px)); grid-template-columns: auto minmax(0, 1fr) auto; gap: 32px; }
+.vie-global-nav__links { gap: 30px; }
+.vie-global-nav__links a { font-size: 15px; color: var(--vie-ink-soft); }
+.vie-global-nav__links a.is-active::after { height: 3px; background: var(--vie-green-action); }
+.vie-global-nav__actions { gap: 16px; }
+.vie-global-nav__search { height: 44px; min-width: 146px; padding: 0 12px; color: var(--vie-ink-soft); border-radius: 4px; background: #f1f4f0; }
+.vie-global-nav__search kbd { margin-left: auto; font: 12px/1 var(--vie-font-body); color: #647269; white-space: nowrap; }
+.vie-global-nav__github { width: auto; height: 44px; min-width: 44px; color: var(--vie-ink); background: transparent; border: 0; border-radius: 4px; font: 600 14px/1 var(--vie-font-body); }
+.vie-global-nav__github svg { display: block; }
+.vie-global-nav__github:hover { color: var(--vie-green-action); background: #edf4ee; transform: none; }
+.vie-wordmark { gap: 7px; }
+.vie-wordmark-mark { background: var(--vie-green-action); border: 0; box-shadow: none; border-radius: 4px; font-family: var(--vie-font-body); } /* taste-skill-ignore: removes inherited shadow */
+.vie-wordmark-name { letter-spacing: -0.06em; }
+.vie-page-header { gap: 12px; margin-bottom: 28px; }
+.vie-page-header h1 { font-size: clamp(28px, 3.4vw, 42px); line-height: 1.4; }
+.vie-page-header p { max-width: 65ch; font-size: 16px; line-height: 1.8; }
+.vie-page-crumb { gap: 16px; flex-wrap: wrap; font-size: 13px; line-height: 1.7; }
+.vie-page-body { min-width: 0; }
+.vie-page-body > *, .VPDoc .content, .VPDoc .content-container { min-width: 0; }
+.vie-vibe:not(.vie-page-home) .vp-doc img { box-shadow: none; } /* taste-skill-ignore: removes inherited shadow */
+.vie-vibe.vie-page-tools .VPContent, .vie-vibe.vie-page-tools .VPDoc { padding-top: 0; }
+.vie-run-btn { box-shadow: none; } /* taste-skill-ignore: removes inherited shadow */
+.vie-site-footer { box-shadow: none; } /* taste-skill-ignore: removes inherited shadow */
+.vie-footer-inner nav a { min-height: 36px; display: inline-flex; align-items: center; }
+.vie-footer-brand p, .vie-footer-brand small { color: var(--vie-ink-soft); }
+.vp-doc :where(h1, h2, h3, h4) { overflow-wrap: anywhere; }
+.vp-doc .header-anchor:focus-visible { opacity: 1; }
+.vp-doc .vie-mermaid { max-width: 100%; overflow: auto; }
+.VPSkipLink a { z-index: 100; }
+/* Content stays readable when a browser throttles animation frames. */
+@keyframes vie-rise { from { transform: translateY(10px); } to { transform: none; } }
+@media (max-width: 1000px) {
+  .vie-global-nav__inner { gap: 22px; }
+  .vie-global-nav__links { gap: 24px; }
+  .vie-global-nav__search { min-width: 110px; }
+  .vie-global-nav__search kbd { display: none; }
+  .vie-global-nav__actions { gap: 10px; }
+}
+@media (max-width: 760px) {
+  .vie-global-nav__inner { width: calc(100% - 40px); grid-template-columns: 1fr auto; min-height: 64px; gap: 16px; }
+  .vie-global-nav__links { display: none; }
+  .vie-global-nav__search { width: 44px; min-width: 44px; padding: 0; justify-content: center; }
+  .vie-global-nav__search span, .vie-global-nav__github { display: none; }
+  .vie-global-nav__menu { display: inline-flex; width: 44px; height: 44px; justify-content: center; align-items: center; }
+  .vie-global-nav__mobile { position: absolute; top: 100%; left: 0; width: 100%; display: grid; gap: 4px; padding: 12px 20px 20px; margin: 0; background: #fff; box-shadow: 0 16px 24px rgb(21 43 30 / 10%); border: 0; } /* taste-skill-ignore: real floating navigation overlay */
+  .vie-global-nav__mobile a, .vie-global-nav__mobile button { display: flex; min-height: 48px; align-items: center; gap: 8px; padding: 10px 14px; border: 0; border-radius: 4px; background: #fff; color: var(--vie-ink); text-align: left; font: 500 16px/1.5 var(--vie-font-body); text-decoration: none; }
+  .vie-global-nav__mobile a.is-active, .vie-global-nav__mobile a:hover { background: #e7f0e9; color: var(--vie-green-action); }
+  .vie-page-header { margin-bottom: 22px; }
+  .vie-page-crumb { font-size: 12px; }
+  .vie-page-header p { font-size: 15px; }
+  html { scroll-padding-top: 84px; }
+}

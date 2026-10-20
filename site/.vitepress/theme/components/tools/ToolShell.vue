@@ -15,7 +15,7 @@ defineProps<{
     <header class="tool-topbar">
       <a class="tool-back" href="/tools"><ArrowLeft :size="16" /> 工具</a>
       <nav class="tool-switcher" aria-label="工具导航">
-        <a v-for="tool in tools" :key="tool.id" :href="tool.href" :class="{ 'is-active': active === tool.id }">
+        <a v-for="tool in tools" :key="tool.id" :href="tool.href" :class="{ 'is-active': active === tool.id }" :aria-current="active === tool.id ? 'page' : undefined">
           <Braces v-if="tool.icon === 'braces'" :size="15" />
           <Timer v-else-if="tool.icon === 'timer'" :size="15" />
           <KeyRound v-else :size="15" />

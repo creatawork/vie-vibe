@@ -1,64 +1,99 @@
-﻿# Design System — VIE
+# Design System — Vie
 
 <!-- impeccable:design-schema 1 -->
 
 ## Direction
 
-**Vibe Bento** personal tech site: dark dot-grid canvas, Bento home tiles with file-tab chrome and syntax-colored thesis. Personality from Vie wordmark, JetBrains Mono meta, and IDE-adjacent rhythm — not a full terminal costume.
+An editorial engineering portfolio: large, direct type introduces the author’s
+point of view; actual project interfaces provide the visual evidence; articles
+explain the decisions behind the work. The current UI is light. Older dark
+terminal and illustrated desktop directions have been superseded.
 
-Articles render on a dark **reading panel** (`vie-surface`) over the dot-grid chrome.
+The homepage follows **Type and nothing else**, seed `1637983323`, adapted to
+the existing Vie identity and real content. Its opening statement is
+“写清楚每一个技术决策”. It continues with project evidence, recent writing,
+browser tools, and a forest-green closing field. The existing global navigation
+is retained so every content area remains reachable.
 
-## Palette
+## Tokens
 
-| Token | Hex | Role |
-|---|---|---|
-| paper | `#09090B` | Site ground (dot grid) |
-| paper-deep | `#14141A` | Tile surfaces |
-| mist | `#2E2E3A` | Borders |
-| ink | `#ECECF1` | Primary text on dark |
-| ink-soft | `#9CA3AF` | Secondary on dark |
-| mute | `#6B7280` | Meta / comments |
-| signal | `#7DD3FC` | Strings / links |
-| fn | `#4ADE80` | Functions / primary CTA / Vie V |
-| kw | `#C084FC` | Keywords / tags |
-| ember | `#F472B6` | Operators / accents |
-| read-panel | `#F4F4F6` | Article body surface |
+| Role | Value |
+|---|---|
+| Ground | `#F5F7F4` |
+| Content surface | `#FFFFFF` |
+| Primary ink | `#1A2923` |
+| Secondary ink | `#53635B` |
+| Action green | `#0B6547` |
+| Soft green | `#E3EFE7` |
+| Footer field | `#133D30` |
+| Keyboard focus | `#1D5FD0` |
+
+Shared tokens and final navigation styles live in `visual-polish.css`, imported
+after the base component styles. Content-specific refinements follow in
+`content-polish.css`. Quiet surfaces use tone changes; the shared shadow tokens
+are `none`. Floating mobile navigation keeps an overlay shadow.
 
 ## Typography
 
-- **Display:** Syne (tile titles, section heads)
-- **Body:** Noto Sans SC + system UI
-- **Mono:** JetBrains Mono (nav, meta, tabs, terminal block, wordmark)
-- Loaded via Google Fonts with `display=swap`
+- Titles and body: Noto Sans SC, then system UI fonts. No new font dependency.
+- Code, structured tool output, and input: JetBrains Mono, then system monospace.
+- Metadata: the body face with tabular numerals.
+- Home display: two authored lines, fluid 38–104px; the first line stays intact
+  at phone widths. Section headings are 25–38px.
+- Main reading text: 16–17px with generous line height. Long code and tables
+  scroll inside their own region; long URLs and identifiers wrap where needed.
 
-## Layout
+## Navigation and layout
 
-- **Shell:** single column; no asymmetric masthead. Top nav + `VieShell` page chrome on list/hub pages.
-- **Home:** `<HomeBento />` — hero (greeting, PRODUCT.md positioning line 写清楚每一个技术决策, isometric desk art), real metrics, the three latest real posts from `articles.data` (category-toned covers, reading time, no view counts), featured project via `ProjectSpotlight`, three tool links, quote, home footer with real category anchors. Metrics and 当前项目 read real site data (`articles.data` / `projects.data`).
-- **Project pages (2026-09-24):** `/projects` is a single-project flagship dossier (`Projects.vue` + `ProjectSpotlight` / `ProjectMediaStrip` / `ProjectCapabilityList`); `/projects/vie-gallery` is a case-study page (`ProjectDetail.vue` + `ProjectMilestoneList` timeline + sticky left TOC rail `ProjectToc` with scrollspy, ≥1101px), H1 = project name. The site itself is no longer listed as a project. (2026-09-30) `Projects.vue` gains an 其他项目 row under the flagship for non-featured projects; `ProjectDetail` sections render per-project data (`overview` / `flows` / `architecture` / `validation` in `projects.source.ts`) instead of hardcoded copy.
-- **Project tokens:** `--vie-green-action` `#0B6B4B` (text links / buttons, WCAG AA on white) and `--vie-focus` `#1D5FD0` (unified `:focus-visible` ring) extend the light `--vie-*` palette; project component CSS lives in `project-flagship.css` + `project-log.css`.
-- **Hub pages:** `ArticleList`, `Projects`, `ProjectDetail`, `SeriesIndex`, `SeriesPage`, `StatsView` use `VieShell` + `vie-panel` / `vie-tile` / `vie-feed`. `ArticleList` (2026-10-05, 2nd pass) is a category-filtered index: the hub escapes VPDoc's 784px reading column (`:has(.hub-index)` → 1240px canvas), a toolbar carries stats + RSS, and a sticky tone-dotted chip bar (全部 + per-category counts, `aria-pressed`) filters a 2-column card grid (`min-width: 0` against the `vie-page-body` grid; newest post spans full width with a tone wash under 全部; filtered views get a slim tone cathead). `/articles/#<slug>` hashes from the footer/home category anchors land pre-filtered via `hashchange`; chips `history.replaceState` the hash. Tone stays off the resting cards — it appears on hover (border/title/arrow) and the featured card only.
-- **Tools:** `/tools` is a focused tool index; `/tools/json`, `/tools/timestamp`, and `/tools/jwt` use a shared `ToolShell` with browser-only processing, explicit error states, and responsive workbenches.
-- **Articles (2026-10-05):** frontmatter-dated pages get `.vie-page-post` — a white reading panel card (880px column, rounded 20px) on the site canvas; post head = category chip (`articles/<category>/` folder) + series chip, display title, `description` lede, mono meta with tag chips; compact series strip (part x/y + prev/next); dark IDE code surfaces (built-in shiki dark palette via `--shiki-dark`); bottom outline TOC; closing V mark after `VPDocFooter`. Styles in `article.css`, scoped so hubs/projects keep their look.
-- **Mermaid:** fenced `mermaid` blocks render as build-time placeholders and hydrate on demand (`theme/mermaid.ts`); pages without a block never load the diagram runtime.
+- One shared sticky navigation: 首页、文章、项目、工具、系列. Active routes
+  receive `aria-current`. Search opens VitePress local search. GitHub has an
+  explicit label. On phones the menu closes after navigation, outside click,
+  or Escape; Escape returns focus to the trigger.
+- Local search includes article titles and descriptions from frontmatter,
+  matching the visible Layout heading. Section results show their parent article
+  and title-only results link to the real `#post-title` anchor.
+- Main home and navigation align on a 1240px canvas with 32px outer gutters,
+  reduced to 20px on phones. Homepage sections have distinct compositions:
+  statement / project with screenshot gallery / article rows / split tools /
+  green footer.
+- Site content counts come from the actual articles, projects, and tool
+  registry. Reading times and word counts share the build-time article source;
+  both article and series loaders include Markdown source.
+- Articles: combined title/summary/tag search and category filtering; category
+  hashes remain linkable. Visible results and empty-state recovery are clear.
+  Article bodies keep their white reading panel and dark syntax-highlighted code.
+- Series: whole-card entries, reading-order directory, one H1, and accessible
+  previous/next article controls.
+- Projects: actual images with captions, thumbnails, previous/next controls,
+  image count, and original-image links. Every gallery instance has unique IDs.
+  Project details retain sticky desktop TOC, collapsible phone TOC, filtered
+  milestones, and per-entry deep links. Filtered-out entries are restored before
+  a TOC jump.
+- Tools: browser-only JSON, timestamp, and JWT processing; stacked workbenches on
+  phones, 16px mobile inputs, clear error/output states, keyboard shortcuts, and
+  visible clipboard-failure feedback. Timezone options load after mount while
+  keeping the SSR first render deterministic.
 
-## Motion
+## Motion and accessibility
 
-- `vie-rise` on content and staggered tiles when `prefers-reduced-motion: no-preference`.
-- Blinking cursor on home thesis only; disabled under reduced motion.
-- `prefers-reduced-motion: reduce` disables animation, transition, smooth scroll.
+Motion uses small transforms and control feedback. Homepage text stays visible
+throughout entrance animations, including when frame delivery is throttled.
+`prefers-reduced-motion` removes animation, transitions, and smooth scrolling.
+Interactive controls retain visible keyboard focus. Meaningful screenshots have
+alt text; decorative icons are hidden from assistive technology.
 
-## Browser chrome
+## Imagery provenance
 
-- Scrollbar thumb: signal on paper-deep.
-- `::selection`: signal tint.
+All homepage imagery is existing project evidence under `site/public/images/projects/`:
+the 2026-10-17 visitor and creator interfaces and the 2026-10-16 photo-effects
+comparison. They remain captioned as local examples. No stock imagery, fabricated
+customer proof, generated product screenshots, or sample project data was added.
 
-## Provenance
+## History
 
-- Vibe Bento + vibe-coding theme, 2026-08-26.
-- Project experience redesign (flagship dossier + case-study detail, on-demand Mermaid, hydration fix), 2026-09-24.
-- Frontend experience polish, 2026-09-27: real home articles replace seeded fakes, article pages gain H1 + formatted dates, hub/tool UI links reset against `.vp-doc a` underline, Mermaid themed to the site palette (base theme), nav wordmark legibility (decorations hidden below mast size), tightened hub top spacing, series-nav ghost copy removed, unique category anchors.
-- Erpilot project mount + first series article, 2026-09-30: `ai` category tone (Bot icon, indigo tint on covers/thumbs), footer category anchors gain AI 工程, `/projects` 其他项目 card row, per-project `ProjectDetail` data, Erpilot case page `/projects/erpilot` and article `/articles/ai/handwritten-agent-loop` (series Erpilot 开发实录).
-- Article reading redesign, 2026-10-05: reading panel card + restructured post head (category/series chips, description lede, tag chips), compact series strip, dark code blocks on the bright page, softened scrollbar, footer `align-content: start` fix, `scroll-padding-top` for sticky-nav anchor jumps, closing end-mark; new `article.css`, `Layout.vue` post slots.
-- Articles hub redesign, 2026-10-05: color-keyed notebook index — per-category tone as rail dots + row spines, card list replaced by hairline rows in one panel (title/date head, clamped description, mono meta with tone-colored category), sticky Chinese-label rail with counts + RSS note, mobile collapses to a pill row; `ArticleList.vue` rewritten, dead `vie-list-*` / `vie-category-*` styles removed. Same day, layout pass: the rail was dropped because the whole page sat in VPDoc's 784px column; the hub now takes the 1240px canvas with a category bento grid (tone head panels, recency-ordered, auto-fill 460px columns) and a full-width stats/RSS toolbar.
-- Articles hub 2nd pass, 2026-10-05: bento replaced by a filter-driven index after feedback (categories should be navigation, page should read modern) — sticky chip filter bar (tone dot + label + mono count, active = ink pill, hash-synced with footer/home category anchors), unified 2-col card grid with the newest post as a full-width tone-washed feature card, slim tone cathead on filtered views, cards quiet at rest with tone surfacing on hover; `min-width: 0` fixes for the `vie-page-body` grid so mobile shrinks instead of overflowing (chips scroll horizontally); JS `<Transition>` swap dropped in favor of keyed remount + staggered `vie-rise` (frame-throttled environments could stall out-in transitions).
+- 2026-08–09: Bento and illustrated technical notebook explorations.
+- 2026-09-24: project case studies, timeline, TOC, and on-demand Mermaid.
+- 2026-09-30: Erpilot project and series introduced.
+- 2026-10-05: article reading panel and category-filtered index.
+- 2026-10-20: coordinated home, navigation, article/series, project, and tools
+  display pass; reading-time data consistency and mobile interaction fixes.

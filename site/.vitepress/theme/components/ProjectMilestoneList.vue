@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Flag, GitBranch, Sparkles, Wrench } from '@lucide/vue'
+import { Flag, GitBranch, Link, Sparkles, Wrench } from '@lucide/vue'
 import { computed } from 'vue'
 import type { LogEntryType, ProjectLogEntry } from '../../../projects.source'
 import { logAnchorId } from './logAnchor'
@@ -25,18 +25,20 @@ const typeIcon = {
 </script>
 
 <template>
-  <div class="vie-log-controls" role="group" aria-label="按日志类型筛选">
-    <button
-      v-for="item in filters"
-      :key="item.value"
-      type="button"
-      :aria-pressed="filter === item.value"
-      @click="filter = item.value"
-    >
-      {{ item.label }}<span>{{ item.count }}</span>
-    </button>
+  <div class="vie-log-toolbar">
+    <div class="vie-log-controls" role="group" aria-label="按日志类型筛选">
+      <button
+        v-for="item in filters"
+        :key="item.value"
+        type="button"
+        :aria-pressed="filter === item.value"
+        @click="filter = item.value"
+      >
+        {{ item.label }}<span>{{ item.count }}</span>
+      </button>
+    </div>
+    <p class="vie-log-results" role="status" aria-live="polite">{{ filter === 'all' ? '全部' : typeLabel[filter] }} · {{ visibleCount }} 篇记录<span>由新到旧</span></p>
   </div>
-  <p class="vie-log-results" role="status" aria-live="polite">共 {{ visibleCount }} 篇记录<span>按时间倒序</span></p>
   <ol class="vie-timeline-list" role="list">
     <li
       v-for="(e, i) in entries"
@@ -53,12 +55,15 @@ const typeIcon = {
         </span>
       </div>
       <div class="vie-timeline-card">
-        <h3>{{ e.title }}</h3>
+        <div class="vie-timeline-title">
+          <h3>{{ e.title }}</h3>
+          <a class="vie-timeline-anchor" :href="'#' + logAnchorId(entries.length, i)" :aria-label="'这条记录的链接：' + e.title"><Link :size="16" aria-hidden="true" /></a>
+        </div>
         <p v-if="e.detail" class="vie-timeline-desc">{{ e.detail }}</p>
         <img
           v-if="e.image"
           :src="e.image"
-          alt=""
+          :alt="e.title + '的界面记录'"
           class="vie-timeline-img"
           loading="lazy"
           decoding="async"

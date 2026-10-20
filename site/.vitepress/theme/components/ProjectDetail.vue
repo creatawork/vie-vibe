@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { data as projects } from '../../../projects.data'
 import type { LogEntryType } from '../../../projects.source'
 import ProjectStatus from './ProjectStatus.vue'
@@ -13,6 +13,7 @@ const props = defineProps<{ slug: string }>()
 const project = computed(() => projects.find((p) => p.slug === props.slug))
 const entries = computed(() => project.value?.log ?? [])
 const logFilter = ref<LogEntryType | 'all'>('all')
+watch(() => props.slug, () => { logFilter.value = 'all' })
 const nextProject = computed(() => projects.find((p) => p.slug && p.slug !== props.slug))
 
 const tocSections: { id: string; label: string }[] = [

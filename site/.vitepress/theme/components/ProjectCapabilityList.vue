@@ -17,13 +17,9 @@ withDefaults(
     :class="[`is-${variant}`, { 'has-media': showImages }]"
   >
     <li v-for="c in capabilities" :key="c.title" class="vie-capability">
-      <img
-        v-if="showImages && c.image"
-        :src="c.image"
-        alt=""
-        loading="lazy"
-        decoding="async"
-      />
+      <a v-if="showImages && c.image" class="vie-capability__media" :href="c.image" target="_blank" rel="noopener" :aria-label="'查看' + c.title + '的完整截图'">
+        <img :src="c.image" :alt="c.title + '的产品截图'" loading="lazy" decoding="async" />
+      </a>
       <div class="vie-capability__body">
         <h3>{{ c.title }}</h3>
         <p>{{ c.description }}</p>

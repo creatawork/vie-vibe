@@ -38,7 +38,7 @@ const updatedAt = computed(() => projects.map((p) => p.updatedAt).sort().at(-1))
       </div>
       <footer v-if="latest" class="vie-flagship__milestone">
         <span class="vie-flagship__milestone-label">最新进展<time :datetime="latest.date">{{ latest.date }}</time></span>
-        <a :href="`/projects/${flagship.slug}#devlog`">{{ latest.title }}<span aria-hidden="true">↗</span></a>
+        <a :href="`/projects/${flagship.slug}#${logAnchorId(flagship.log?.length ?? 0, 0)}`">{{ latest.title }}<span aria-hidden="true">↗</span></a>
       </footer>
     </section>
     <p v-else class="vie-empty">项目正在整理中。</p>

@@ -54,9 +54,22 @@ export default defineConfig({
     search: {
       provider: 'local',
       options: {
+        _render(src, env, md) {
+          const html = md.render(src, env)
+          if (env.frontmatter?.search === false) return ''
+          // Article H1s are supplied by Layout.vue, outside Markdown. Include
+          // that same title in the search index so section hits have context.
+          if (env.frontmatter?.date && typeof env.frontmatter.title === 'string') {
+            const description = typeof env.frontmatter.description === 'string' ? env.frontmatter.description : ''
+            return `<h1>${md.utils.escapeHtml(env.frontmatter.title)}<a href="#post-title"></a></h1>\n<p>${md.utils.escapeHtml(description)}</p>\n${html}`
+          }
+          return html
+        },
         translations: {
           button: { buttonText: '搜索', buttonAriaLabel: '搜索文章' },
           modal: {
+            displayDetails: '显示结果摘要',
+            backButtonTitle: '关闭搜索',
             noResultsText: '没有找到',
             resetButtonTitle: '清除',
             footer: {

@@ -15,7 +15,7 @@ const title = computed(() => {
 })
 
 const subtitle = computed(() => {
-  if (props.path.startsWith('articles')) return '记录成长系统，分享开发经验'
+  if (props.path.startsWith('articles')) return '记录技术实践，解释实现与取舍。'
   if (props.path.startsWith('projects'))
     return '不追求数量，记录真正做完、跑通并持续迭代的产品。'
   if (props.path.startsWith('series')) return '按主题串起完整的技术决策链'

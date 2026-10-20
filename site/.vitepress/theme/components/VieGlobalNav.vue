@@ -1,18 +1,20 @@
 <script setup lang="ts">
-import { Menu, Search, X } from '@lucide/vue'
-import { computed, ref, watch } from 'vue'
+import { ArrowUpRight, Menu, Search, X } from '@lucide/vue'
+import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRoute } from 'vitepress'
 import VieWordmark from './VieWordmark.vue'
 
 const route = useRoute()
 const menuOpen = ref(false)
+const menuButton = ref<HTMLButtonElement>()
+const header = ref<HTMLElement>()
 
 const navItems = [
   { label: '首页', href: '/' },
   { label: '文章', href: '/articles/' },
   { label: '项目', href: '/projects' },
   { label: '工具', href: '/tools' },
-  { label: '关于', href: '/#about' },
+  { label: '系列', href: '/series/' },
 ]
 
 const activeLabel = computed(() => {
@@ -21,6 +23,7 @@ const activeLabel = computed(() => {
   if (path.startsWith('/articles')) return '文章'
   if (path.startsWith('/projects')) return '项目'
   if (path.startsWith('/tools')) return '工具'
+  if (path.startsWith('/series')) return '系列'
   return ''
 })
 
@@ -28,13 +31,15 @@ function isActive(label: string) {
   return activeLabel.value === label
 }
 
-function openSearch() {
+async function openSearch() {
+  closeMenu()
+  await nextTick()
   const searchButton = document.querySelector<HTMLButtonElement>('.DocSearch-Button')
   if (searchButton) {
     searchButton.click()
     return
   }
-  window.location.href = '/articles/'
+  window.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', ctrlKey: true, bubbles: true }))
 }
 
 function closeMenu() {
@@ -42,10 +47,29 @@ function closeMenu() {
 }
 
 watch(() => route.path, closeMenu)
+
+function onEscape(event: KeyboardEvent) {
+  if (event.key !== 'Escape' || !menuOpen.value) return
+  closeMenu()
+  menuButton.value?.focus()
+}
+
+function onOutsideClick(event: PointerEvent) {
+  if (menuOpen.value && event.target instanceof Node && !header.value?.contains(event.target)) closeMenu()
+}
+
+onMounted(() => {
+  document.addEventListener('keydown', onEscape)
+  document.addEventListener('pointerdown', onOutsideClick)
+})
+onUnmounted(() => {
+  document.removeEventListener('keydown', onEscape)
+  document.removeEventListener('pointerdown', onOutsideClick)
+})
 </script>
 
 <template>
-  <header class="vie-global-nav">
+  <header ref="header" class="vie-global-nav">
     <div class="vie-global-nav__inner">
       <VieWordmark to="/" size="nav" />
 
@@ -63,12 +87,14 @@ watch(() => route.path, closeMenu)
         <button class="vie-global-nav__search" type="button" aria-label="搜索文章" @click="openSearch">
           <Search :size="17" aria-hidden="true" />
           <span>搜索</span>
+          <kbd aria-hidden="true">Ctrl K</kbd>
         </button>
         <a class="vie-global-nav__github" href="https://github.com/creatawork" target="_blank" rel="noopener" aria-label="GitHub 主页">
-          <span>V</span>
+          <span>GitHub</span><ArrowUpRight :size="16" aria-hidden="true" />
         </a>
         <button
           class="vie-global-nav__menu"
+          ref="menuButton"
           type="button"
           :aria-expanded="menuOpen"
           aria-controls="vie-mobile-nav"

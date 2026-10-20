@@ -5,6 +5,7 @@ declare const data: Post[]
 export { data }
 
 export default createContentLoader('articles/**/*.md', {
+  includeSrc: true,
   transform(raw): Post[] {
     return raw
       .map(toPost)

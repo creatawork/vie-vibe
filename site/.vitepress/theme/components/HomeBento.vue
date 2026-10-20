@@ -1,176 +1,97 @@
 <script setup lang="ts">
-import {
-  ArrowRight,
-  Bot,
-  Braces,
-  ChartNoAxesColumnIncreasing,
-  Code2,
-  Database,
-  FileText,
-  FolderKanban,
-  KeyRound,
-  Server,
-  Tag,
-  Timer,
-  Wrench,
-} from '@lucide/vue'
+import { ArrowDown, ArrowRight, ArrowUpRight } from '@lucide/vue'
 import { computed } from 'vue'
 import { data as posts } from '../../../articles.data'
 import { data as projects } from '../../../projects.data'
 import { tools } from '../../../tools.registry'
-import ProjectSpotlight from './ProjectSpotlight.vue'
+import ProjectMediaStrip from './ProjectMediaStrip.vue'
 import VieWordmark from './VieWordmark.vue'
 
-const toolIcons = { braces: Braces, timer: Timer, 'key-round': KeyRound }
-const utilities = tools.map((tool) => ({ ...tool, icon: toolIcons[tool.icon] }))
-
-const metrics = computed(() => [
-  { label: '文章', value: String(posts.length), unit: '篇', icon: FileText, tone: 'blue' },
-  { label: '项目', value: String(projects.length), unit: '个', icon: FolderKanban, tone: 'orange' },
-  { label: '工具', value: String(utilities.length), unit: '个', icon: Wrench, tone: 'green' },
-  { label: '标签', value: String(new Set(posts.flatMap((p) => p.tags)).size), unit: '个', icon: Tag, tone: 'slate' },
-])
-
-const categoryArt: Record<string, { icon: any; tone: string }> = {
-  backend: { icon: Database, tone: 'backend' },
-  frontend: { icon: Code2, tone: 'frontend' },
-  devops: { icon: Server, tone: 'devops' },
-  ai: { icon: Bot, tone: 'ai' },
-  meta: { icon: Braces, tone: 'meta' },
-  notes: { icon: FileText, tone: 'notes' },
+const categoryLabels: Record<string, string> = {
+  backend: '后端开发', frontend: '前端', devops: '部署运维',
+  ai: 'AI 工程', meta: '建站', notes: '笔记',
 }
-
-const latestPosts = computed(() =>
-  posts.slice(0, 3).map((p) => ({
-    title: p.title,
-    description: p.description,
-    tags: p.tags,
-    date: p.date.slice(0, 10),
-    url: p.url,
-    readingTime: p.readingTime,
-    ...(categoryArt[p.category] ?? { icon: FileText, tone: 'notes' }),
-  })),
-)
-
+const latestPosts = computed(() => posts.slice(0, 3))
 const featuredProject = computed(() => projects.find((p) => p.featured) ?? projects[0])
+const otherProjects = computed(() => projects.filter((p) => p !== featuredProject.value))
+const projectHref = computed(() => featuredProject.value?.slug ? `/projects/${featuredProject.value.slug}` : '/projects')
 </script>
 
 <template>
   <div class="dn-page">
-    <main>
+    <div class="dn-home-content">
       <section class="dn-hero" aria-labelledby="dn-title">
-        <div class="dn-hero-copy">
-          <h1 id="dn-title">你好，我是 <span>Vie</span></h1>
-          <p class="dn-role">写清楚每一个技术决策</p>
-          <p class="dn-intro">热爱技术，喜欢探索和分享。<br>这里记录我的学习心得、开发经验和有趣的技术实践。</p>
+        <h1 id="dn-title" aria-label="写清楚每一个技术决策"><span>写清楚每一个</span><span>技术决策</span></h1>
+        <div class="dn-hero-bottom">
+          <div class="dn-hero-intro">
+            <p>我是 Vie，全栈开发者。</p>
+            <p>把项目做出来，把实现讲清楚。这里记录产品实践、工程取舍，以及每一次迭代背后的思考。</p>
+          </div>
           <div class="dn-hero-actions">
-            <a class="dn-primary-btn" href="/articles/">阅读文章</a>
-            <a class="dn-secondary-btn" href="/projects">探索项目</a>
+            <a class="dn-primary-btn" href="/projects">查看项目 <ArrowUpRight :size="19" aria-hidden="true" /></a>
+            <a class="dn-text-link" href="/articles/">阅读文章 <ArrowRight :size="18" aria-hidden="true" /></a>
           </div>
         </div>
-
-        <div class="dn-hero-visual" aria-label="编程工作台插画" role="img">
-          <div class="dn-visual-glow"></div>
-          <div class="dn-float dn-float-ai">AI</div>
-          <div class="dn-float dn-float-chart"><ChartNoAxesColumnIncreasing :size="32" /></div>
-          <div class="dn-float dn-float-code"><Code2 :size="25" /></div>
-          <div class="dn-isometric-desk">
-            <div class="dn-screen">
-              <div class="dn-screen-dots"><i></i><i></i><i></i></div>
-              <span class="code-green">const</span> dev = {<br>
-              &nbsp;&nbsp;focus: <span class="code-aqua">'build'</span>,<br>
-              &nbsp;&nbsp;status: <span class="code-aqua">'learning'</span><br>
-              }
-            </div>
-            <div class="dn-screen-neck"></div>
-            <div class="dn-screen-base"></div>
-            <div class="dn-keyboard-lines"><i></i><i></i><i></i><i></i></div>
-            <div class="dn-mouse"></div>
-            <div class="dn-cup"></div>
-            <div class="dn-plant"><i></i><i></i><i></i><b></b></div>
-          </div>
+        <div class="dn-hero-foot">
+          <dl class="dn-counts" aria-label="站点内容">
+            <div><dt>技术文章</dt><dd>{{ posts.length }} <span>篇</span></dd></div>
+            <div><dt>实践项目</dt><dd>{{ projects.length }} <span>个</span></dd></div>
+            <div><dt>开发工具</dt><dd>{{ tools.length }} <span>个</span></dd></div>
+          </dl>
+          <a class="dn-scroll-link" href="#selected-work">向下探索 <ArrowDown :size="16" aria-hidden="true" /></a>
         </div>
       </section>
 
-      <section class="dn-metrics" aria-label="站点数据">
-        <article v-for="item in metrics" :key="item.label" :class="`tone-${item.tone}`">
-          <span class="dn-icon-well"><component :is="item.icon" :size="22" /></span>
-          <div><p>{{ item.label }}</p><strong>{{ item.value }}</strong> <small>{{ item.unit }}</small></div>
-        </article>
-      </section>
-
-      <section class="dn-section" aria-labelledby="latest-title">
+      <section v-if="featuredProject" id="selected-work" class="dn-work dn-section" aria-labelledby="projects-title">
         <div class="dn-section-head">
-          <h2 id="latest-title">最新文章</h2>
-          <a href="/articles/">查看全部 <ArrowRight :size="16" /></a>
+          <h2 id="projects-title">在真实项目中实践</h2>
+          <a class="dn-text-link" href="/projects">全部项目 <ArrowRight :size="18" aria-hidden="true" /></a>
         </div>
-        <div v-if="latestPosts.length" class="dn-article-grid">
-          <a v-for="(item, i) in latestPosts" :key="item.url" :href="item.url" class="dn-article-card">
-            <div :class="`dn-cover tone-${item.tone}`">
-              <span v-if="i === 0" class="dn-recommend">最新</span>
-              <component :is="item.icon" :size="56" stroke-width="1.35" />
+        <div class="dn-work-layout">
+          <div class="dn-work-copy">
+            <a :href="projectHref" class="dn-project-title"><h3>{{ featuredProject.name }}</h3><ArrowUpRight :size="25" aria-hidden="true" /></a>
+            <p class="dn-project-prop">{{ featuredProject.proposition }}</p>
+            <p class="dn-project-summary">{{ featuredProject.description }}</p>
+            <p class="dn-project-tech">{{ featuredProject.tags.slice(0, 4).join(' / ') }}</p>
+            <a class="dn-text-link" :href="projectHref">查看实现与迭代 <ArrowRight :size="18" aria-hidden="true" /></a>
+            <div v-for="project in otherProjects" :key="project.name" class="dn-other-project">
+              <a :href="`/projects/${project.slug}`"><span>{{ project.name }}</span><ArrowUpRight :size="18" aria-hidden="true" /></a>
+              <p>{{ project.proposition }}</p>
             </div>
-            <div class="dn-card-body">
-              <h3>{{ item.title }}</h3>
-              <p>{{ item.description }}</p>
-              <div class="dn-meta">
-                <span class="dn-tags"><i v-for="tagName in item.tags.slice(0, 2)" :key="tagName">{{ tagName }}</i></span>
-                <time>{{ item.date }}</time>
-                <span class="vie-mono">约 {{ item.readingTime }} 分钟</span>
-              </div>
-            </div>
+          </div>
+          <ProjectMediaStrip v-if="featuredProject.media?.length" :media="featuredProject.media" variant="flagship" />
+          <a v-else-if="featuredProject.image" :href="projectHref" class="dn-project-image"><img :src="featuredProject.image" :alt="featuredProject.name + ' 项目界面'" width="1101" height="892" loading="lazy" /></a>
+        </div>
+      </section>
+
+      <section class="dn-writing dn-section" aria-labelledby="latest-title">
+        <div class="dn-section-head">
+          <div><h2 id="latest-title">最近写下的思考</h2><p>从问题出发，留下可追溯的实现过程。</p></div>
+          <a class="dn-text-link" href="/articles/">全部文章 <ArrowRight :size="18" aria-hidden="true" /></a>
+        </div>
+        <div v-if="latestPosts.length" class="dn-post-list">
+          <a v-for="item in latestPosts" :key="item.url" :href="item.url" class="dn-post">
+            <div class="dn-post-meta"><time :datetime="item.date.slice(0, 10)">{{ item.date.slice(0, 10) }}</time><span>{{ categoryLabels[item.category] ?? item.category }} · {{ item.readingTime }} 分钟</span></div>
+            <div class="dn-post-copy"><h3>{{ item.title }}</h3><p>{{ item.description }}</p></div>
+            <ArrowUpRight :size="23" aria-hidden="true" />
           </a>
         </div>
         <p v-else class="vie-empty">暂无已发布文章。</p>
+        <a class="dn-series-link" href="/series/"><span>想沿着一个主题读下去？<strong>浏览系列文章</strong></span><ArrowRight :size="20" aria-hidden="true" /></a>
       </section>
 
-      <section class="dn-section" aria-labelledby="projects-title">
-        <div class="dn-section-head">
-          <h2 id="projects-title">当前项目</h2>
-          <a href="/projects">查看全部项目 <ArrowRight :size="16" /></a>
+      <section id="utilities" class="dn-utilities dn-section" aria-labelledby="tools-title">
+        <div class="dn-tools-intro"><h2 id="tools-title">顺手的开发工具</h2><p>处理开发中的小问题。<br>数据在浏览器内完成处理。</p><a class="dn-text-link" href="/tools">打开工具箱 <ArrowRight :size="18" aria-hidden="true" /></a></div>
+        <div class="dn-tool-list">
+          <a v-for="tool in tools" :key="tool.href" :href="tool.href" class="dn-tool"><div><h3>{{ tool.name }}</h3><p>{{ tool.description }}</p></div><ArrowUpRight :size="22" aria-hidden="true" /></a>
         </div>
-        <div v-if="featuredProject" class="dn-project-feature">
-          <ProjectSpotlight :project="featuredProject" title-tag="h3" compact>
-            <template #secondary>
-              <a class="dn-secondary-btn" href="/projects">项目页</a>
-            </template>
-          </ProjectSpotlight>
-        </div>
-        <p v-else class="vie-empty">暂无项目记录。</p>
       </section>
-
-      <section id="utilities" class="dn-section" aria-labelledby="tools-title">
-        <div class="dn-section-head">
-          <h2 id="tools-title">实用工具</h2>
-          <a href="/tools">查看全部 <ArrowRight :size="16" /></a>
-        </div>
-        <div v-if="utilities.length" class="dn-tool-grid">
-          <a v-for="item in utilities" :key="item.name" :href="item.href" :class="`dn-tool tone-${item.tone}`">
-            <span><component :is="item.icon" :size="23" /></span>
-            <div><h3>{{ item.name }}</h3><p>{{ item.description }}</p></div>
-            <strong>使用</strong>
-          </a>
-        </div>
-        <p v-else class="vie-empty">暂无可用工具。</p>
-      </section>
-
-      <aside class="dn-quote">
-        <span><Code2 :size="21" /></span>
-        <p>技术的深度决定了你能走多远，技术的广度决定了你能看到多大世界。</p>
-        <small>—— 持续学习，持续成长</small>
-      </aside>
-    </main>
+    </div>
 
     <footer id="about" class="dn-footer">
-      <div class="dn-footer-brand">
-        <VieWordmark to="/" size="nav" />
-        <p>记录技术、分享经验、创造价值</p>
-        <small>© 2026 Vie. All rights reserved.</small>
-      </div>
-      <nav aria-label="底部导航"><strong>导航</strong><a href="/">首页</a><a href="/articles/">文章</a><a href="/projects">项目</a><a href="#utilities">工具</a><a href="#about">关于</a></nav>
-      <nav aria-label="文章分类"><strong>分类</strong><a href="/articles/#backend">后端开发</a><a href="/articles/#frontend">前端</a><a href="/articles/#devops">部署运维</a><a href="/articles/#ai">AI 工程</a><a href="/articles/#meta">建站</a><a href="/articles/#notes">笔记</a></nav>
-      <nav aria-label="联系方式"><strong>联系</strong><a href="https://github.com/creatawork"><Code2 :size="15" /> GitHub</a><a href="/articles/meta/how-this-site-works">站点说明</a></nav>
-      <a class="dn-backtop" href="#" aria-label="回到顶部">↑</a>
+      <div class="dn-footer-top"><VieWordmark to="/" size="nav" /><a href="#dn-title">回到顶部 ↑</a></div>
+      <p class="dn-footer-statement">让实现，<br>经得起追问。</p>
+      <div class="dn-footer-bottom"><p>全栈开发 · 技术实现细节与思路<br><small>© {{ new Date().getFullYear() }} Vie</small></p><nav aria-label="底部导航"><a href="https://github.com/creatawork" target="_blank" rel="noopener noreferrer">GitHub <ArrowUpRight :size="16" aria-hidden="true" /></a><a href="/feed.xml">RSS 订阅</a><a href="/articles/meta/how-this-site-works">站点说明</a></nav></div>
     </footer>
   </div>
 </template>

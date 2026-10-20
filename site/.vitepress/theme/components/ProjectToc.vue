@@ -13,7 +13,25 @@ const props = defineProps<{
   entries: ProjectLogEntry[]
   filter?: LogEntryType | 'all'
 }>()
-defineEmits<{ 'select-log': [] }>()
+const emit = defineEmits<{ 'select-log': [] }>()
+const mobileMenu = ref<HTMLDetailsElement>()
+
+async function navigate(event: MouseEvent, id: string) {
+  if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
+  if (mobileMenu.value) mobileMenu.value.open = false
+  if (id === 'devlog' || id.startsWith('log-')) emit('select-log')
+  // A filtered entry is hidden until Vue has rendered the reset. Native
+  // fragment navigation would otherwise run before that entry has a box.
+  if (id.startsWith('log-') && props.filter !== 'all') {
+    event.preventDefault()
+    await nextTick()
+    const target = document.getElementById(id)
+    if (!target) return
+    window.history.pushState(null, '', '#' + id)
+    target.scrollIntoView({ behavior: 'instant', block: 'start' })
+    queueMeasure()
+  }
+}
 
 const entryItems = computed(() =>
   props.entries.map((e, i) => ({
@@ -49,9 +67,13 @@ const measure = () => {
     return
   }
   let current = ''
+  const toolbar = document.querySelector('.vie-log-toolbar')?.getBoundingClientRect()
   for (const id of ids) {
     const el = document.getElementById(id)
-    if (el && el.getBoundingClientRect().top <= 160) current = id
+    const band = id.startsWith('log-') && toolbar && toolbar.top <= 110
+      ? Math.max(220, toolbar.bottom + 24)
+      : 220
+    if (el && el.getBoundingClientRect().top <= band) current = id
   }
   activeId.value = current || ids[0]
 }
@@ -60,7 +82,7 @@ const queueMeasure = () => {
   if (!rafId) rafId = requestAnimationFrame(measure)
 }
 
-watch(() => props.filter, () => nextTick(queueMeasure))
+watch(() => [props.filter, props.entries], () => nextTick(queueMeasure))
 
 onMounted(() => {
   measure()
@@ -83,7 +105,7 @@ const sectionState = (id: string): '' | 'active' | 'parent' => {
 
 <template>
   <nav class="vie-detail-toc" aria-label="本页目录">
-    <details class="vie-toc-mobile">
+    <details ref="mobileMenu" class="vie-toc-mobile">
       <summary>本页目录 <span>{{ activeSectionLabel }}</span></summary>
       <ul class="vie-toc-list" role="list">
         <li v-for="s in sections" :key="s.id">
@@ -92,7 +114,7 @@ const sectionState = (id: string): '' | 'active' | 'parent' => {
             class="vie-toc-link"
             :class="{ 'is-active': sectionState(s.id) !== '' }"
             :aria-current="sectionState(s.id) === 'active' ? 'location' : undefined"
-            @click="s.id === 'devlog' && $emit('select-log')"
+            @click="navigate($event, s.id)"
           >{{ s.label }}</a>
         </li>
       </ul>
@@ -109,7 +131,7 @@ const sectionState = (id: string): '' | 'active' | 'parent' => {
               'is-parent': sectionState(s.id) === 'parent',
             }"
             :aria-current="sectionState(s.id) === 'active' ? 'location' : undefined"
-            @click="s.id === 'devlog' && $emit('select-log')"
+            @click="navigate($event, s.id)"
           >{{ s.label }}</a>
         </li>
       </ul>
@@ -123,7 +145,7 @@ const sectionState = (id: string): '' | 'active' | 'parent' => {
               :class="{ 'is-active': activeId === e.id }"
               :aria-current="activeId === e.id ? 'location' : undefined"
               :title="e.label"
-              @click="$emit('select-log')"
+              @click="navigate($event, e.id)"
             >
               <span class="vie-toc-entry__date">{{ e.date }}</span>
               <span class="vie-toc-entry__title">{{ e.label }}</span>

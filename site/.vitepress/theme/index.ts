@@ -26,6 +26,8 @@ import './home-reference.css'
 import './tools.css'
 import './project-log.css'
 import './project-flagship.css'
+import './visual-polish.css'
+import './content-polish.css'
 
 export default {
   extends: DefaultTheme,

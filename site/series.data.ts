@@ -5,6 +5,7 @@ declare const data: SeriesGroup[]
 export { data }
 
 export default createContentLoader('articles/**/*.md', {
+  includeSrc: true,
   transform(raw): SeriesGroup[] {
     const posts = raw
       .map(toPost)
