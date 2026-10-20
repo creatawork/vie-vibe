@@ -57,7 +57,10 @@ const projectOverview = computed(() => featuredProject.value?.capabilities?.find
             <p class="dn-project-prop">{{ featuredProject.proposition }}</p>
             <p class="dn-project-summary">{{ featuredProject.description }}</p>
             <p class="dn-project-tech">{{ featuredProject.tags.slice(0, 4).join(' / ') }}</p>
-            <a class="dn-text-link" :href="projectHref">查看实现与迭代 <ArrowRight :size="18" aria-hidden="true" /></a>
+            <div class="dn-project-links">
+              <a class="dn-text-link" :href="projectHref">查看实现与迭代 <ArrowRight :size="18" aria-hidden="true" /></a>
+              <a v-if="featuredProject.demo" class="dn-text-link" :href="featuredProject.demo" :aria-label="`访问 ${featuredProject.name} 线上环境（新窗口打开）`" target="_blank" rel="noopener noreferrer">线上体验 <ArrowUpRight :size="18" aria-hidden="true" /></a>
+            </div>
             <div v-for="project in otherProjects" :key="project.name" class="dn-other-project">
               <a :href="`/projects/${project.slug}`"><span>{{ project.name }}</span><ArrowUpRight :size="18" aria-hidden="true" /></a>
               <p>{{ project.proposition }}</p>

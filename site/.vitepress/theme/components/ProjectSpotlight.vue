@@ -35,6 +35,14 @@ const detailHref = computed(() =>
         :href="detailHref"
         :aria-label="`查看 ${project.name} 项目案例`"
       >查看项目案例</a>
+      <a
+        v-if="project.demo"
+        class="vie-cta vie-cta--ghost"
+        :href="project.demo"
+        :aria-label="`访问 ${project.name} 线上环境（新窗口打开）`"
+        target="_blank"
+        rel="noopener noreferrer"
+      >线上体验 ↗</a>
       <slot name="secondary" />
     </div>
   </article>

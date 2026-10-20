@@ -51,6 +51,14 @@ const tocSections: { id: string; label: string }[] = [
           <div class="vie-detail-actions">
             <a class="vie-cta vie-cta--primary" href="#experience">查看产品体验</a>
             <a
+              v-if="project.demo"
+              class="vie-cta vie-cta--ghost"
+              :href="project.demo"
+              :aria-label="`访问 ${project.name} 线上环境（新窗口打开）`"
+              target="_blank"
+              rel="noopener noreferrer"
+            >线上体验 ↗</a>
+            <a
               v-if="project.github"
               class="vie-cta vie-cta--ghost"
               :href="project.github"

@@ -83,6 +83,7 @@ export const projectsSource: Project[] = [
     tags: ['Vue 3', 'Three.js', 'GLSL', 'Spring Boot', 'MyBatis-Plus', 'Docker'],
     featured: true,
     github: 'https://github.com/creatawork/vie-gallery',
+    demo: 'https://gallery.vie-vibe.cn/app/',
     capabilities: [
       {
         title: '原图保存与作品整理',
@@ -139,7 +140,7 @@ export const projectsSource: Project[] = [
       },
       {
         term: '范围',
-        text: '创作者管理端与访客浏览端，仓库名保留 vie-gallery。V1 已有本机验收；最新效果与交互证据来自本地构建和示例 API，不代表已完成公网部署或真实低端手机 GPU 验收。',
+        text: '创作者管理端与访客浏览端，仓库名保留 vie-gallery。V1 已有本机验收；最新效果与交互证据来自本地构建和示例 API，不代表线上环境已逐项验收，也不代表真实低端手机 GPU 验收。',
       },
     ],
     flows: [
