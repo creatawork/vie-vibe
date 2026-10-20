@@ -163,6 +163,16 @@
   background: #fff;
 }
 
+.vie-media__link {
+  display: block;
+  cursor: zoom-in;
+}
+
+.vie-media__link:focus-visible {
+  outline: 3px solid var(--vie-focus);
+  outline-offset: 4px;
+}
+
 .vie-media figcaption {
   color: var(--vie-ink-soft);
   font-size: 0.76rem;

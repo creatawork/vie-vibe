@@ -44,10 +44,7 @@ for (const file of walkMd(articlesDir)) {
 }
 
 const projectsSrc = fs.readFileSync(path.join(siteRoot, 'projects.source.ts'), 'utf8')
-const galleryNames = projectsSrc.match(/name: 'VIE Gallery'/g) || []
-if (galleryNames.length !== 1) {
-  errors.push(`projects.source.ts: expected exactly one name: 'VIE Gallery', got ${galleryNames.length}`)
-}
+// The stable project identity is its slug; the product's display name may change.
 const slugNames = projectsSrc.match(/slug: 'vie-gallery'/g) || []
 if (slugNames.length !== 1) {
   errors.push(`projects.source.ts: expected exactly one slug: 'vie-gallery', got ${slugNames.length}`)
