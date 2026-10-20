@@ -68,7 +68,7 @@ const projectOverview = computed(() => featuredProject.value?.capabilities?.find
           </div>
           <figure v-if="projectOverview?.image || featuredProject.image" class="dn-project-evidence">
             <a :href="projectHref" class="dn-project-image"><img :src="projectOverview?.image || featuredProject.image" :alt="projectOverview ? '阳光明媚创作者的空间概览，展示相册封面、作品整理与发布状态' : featuredProject.name + ' 项目界面'" width="1270" height="882" loading="lazy" decoding="async" /></a>
-            <figcaption>创作者空间 · 从整理作品到发布分享（本地示例）</figcaption>
+            <figcaption>创作者空间 · 从整理作品到发布分享</figcaption>
           </figure>
         </div>
       </section>
