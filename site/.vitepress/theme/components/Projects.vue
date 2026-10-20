@@ -18,7 +18,7 @@ const updatedAt = computed(() => projects.map((p) => p.updatedAt).sort().at(-1))
         <h1>项目</h1>
         <p>从想法到实现，记录产品，也记录每一次迭代。</p>
       </div>
-      <p class="vie-projects-heading__meta">{{ projects.length }} 个项目<span aria-hidden="true"> · </span>更新于 <time :datetime="updatedAt">{{ updatedAt }}</time></p>
+      <p class="vie-projects-heading__meta">{{ projects.length }} 个项目<template v-if="updatedAt"><span aria-hidden="true"> · </span>更新于 <time :datetime="updatedAt">{{ updatedAt }}</time></template></p>
     </header>
     <section v-if="flagship" class="vie-flagship">
       <div class="vie-flagship__top">

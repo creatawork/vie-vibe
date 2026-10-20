@@ -1,14 +1,13 @@
 <script setup lang="ts">
-import { AlertTriangle, CheckCircle2, Clipboard, Clock3, FileKey2, ShieldAlert } from '@lucide/vue'
+import { AlertTriangle, CheckCircle2, Clipboard, Clock3, ShieldAlert } from '@lucide/vue'
 import { computed, ref } from 'vue'
 import CopyButton from './CopyButton.vue'
-import { createSampleJwt, parseJwt, type JwtResult } from '../../tools/jwt'
+import { parseJwt, type JwtResult } from '../../tools/jwt'
 
 const token = ref('')
 const result = ref<JwtResult | null>(null)
 const error = ref('')
 const activePart = ref<'header' | 'payload'>('payload')
-const sample = createSampleJwt()
 const currentJson = computed(() => result.value ? JSON.stringify(result.value[activePart.value], null, 2) : '')
 
 function decode() {
@@ -20,18 +19,13 @@ function decode() {
     error.value = reason instanceof Error ? reason.message : '无法解析这个 JWT'
   }
 }
-
-function loadSample() {
-  token.value = sample
-  decode()
-}
 </script>
 
 <template>
   <section class="tool-workbench tool-jwt-workbench" aria-label="JWT 解析器">
     <article class="tool-panel tool-jwt-input-panel">
-      <header class="tool-panel-head"><div><span class="tool-panel-label">TOKEN</span><strong>粘贴 JWT</strong></div><button type="button" class="tool-text-button" @click="loadSample"><FileKey2 :size="15" /> 加载示例</button></header>
-      <textarea v-model="token" class="tool-code-input tool-token-input" spellcheck="false" aria-label="JWT 输入" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." @input="result = null; error = ''"></textarea>
+      <header class="tool-panel-head"><div><span class="tool-panel-label">TOKEN</span><strong>粘贴 JWT</strong></div></header>
+      <textarea v-model="token" class="tool-code-input tool-token-input" spellcheck="false" aria-label="JWT 输入" placeholder="在这里粘贴要解析的 JWT" @input="result = null; error = ''"></textarea>
       <div class="tool-jwt-segments" aria-hidden="true"><span>Header</span><i>.</i><span>Payload</span><i>.</i><span>Signature</span></div>
       <button type="button" class="tool-primary-button tool-wide-button" @click="decode"><ShieldAlert :size="16" /> 解析 Token</button>
       <p v-if="error" class="tool-diagnostic" role="alert">{{ error }}</p>

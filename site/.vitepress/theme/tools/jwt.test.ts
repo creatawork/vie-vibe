@@ -1,12 +1,19 @@
 import { describe, expect, it } from 'vitest'
-import { createSampleJwt, encodeBase64Url, parseJwt } from './jwt'
+import { parseJwt } from './jwt'
+
+function encodeBase64Url(value: string): string {
+  return Buffer.from(value, 'utf8').toString('base64url')
+}
 
 describe('jwt tools', () => {
   it('decodes header, payload, and standard time claims', () => {
     const now = Date.parse('2026-08-30T04:00:00Z')
-    const result = parseJwt(createSampleJwt(now), now)
+    const issuedAt = Math.floor(now / 1000)
+    const header = encodeBase64Url(JSON.stringify({ alg: 'HS256', typ: 'JWT' }))
+    const payload = encodeBase64Url(JSON.stringify({ sub: 'test-user', iat: issuedAt, exp: issuedAt + 3600 }))
+    const result = parseJwt(`${header}.${payload}.signature`, now)
     expect(result.header.alg).toBe('HS256')
-    expect(result.payload.sub).toBe('vie-demo')
+    expect(result.payload.sub).toBe('test-user')
     expect(result.timeStatuses.find((item) => item.claim === 'exp')?.message).toBe('尚未过期')
     expect(result.algorithmState).toBe('warning')
   })

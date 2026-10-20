@@ -17,19 +17,6 @@ export interface JwtResult {
   timeStatuses: JwtTimeStatus[]
 }
 
-function bytesToBase64(bytes: Uint8Array): string {
-  let binary = ''
-  for (const byte of bytes) binary += String.fromCharCode(byte)
-  return btoa(binary)
-}
-
-export function encodeBase64Url(value: string): string {
-  return bytesToBase64(new TextEncoder().encode(value))
-    .replace(/=/g, '')
-    .replace(/\+/g, '-')
-    .replace(/\//g, '_')
-}
-
 function decodeBase64Url(segment: string): string {
   if (!segment || !/^[A-Za-z0-9_-]+$/.test(segment)) {
     throw new Error('Token 包含无效的 Base64URL 片段')
@@ -128,16 +115,4 @@ export function parseJwt(token: string, now = Date.now()): JwtResult {
     ...algorithmState(algorithm),
     timeStatuses: statuses,
   }
-}
-
-export function createSampleJwt(now = Date.now()): string {
-  const issuedAt = Math.floor(now / 1000)
-  const header = { alg: 'HS256', typ: 'JWT' }
-  const payload = {
-    sub: 'vie-demo',
-    name: 'Vie 工具示例',
-    iat: issuedAt,
-    exp: issuedAt + 3600,
-  }
-  return `${encodeBase64Url(JSON.stringify(header))}.${encodeBase64Url(JSON.stringify(payload))}.${encodeBase64Url('demo-signature')}`
 }

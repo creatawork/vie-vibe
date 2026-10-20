@@ -79,7 +79,7 @@ const maxPv = computed(() =>
 
       <section class="vie-panel">
         <h2 class="vie-feed-label">近 30 天趋势</h2>
-        <div class="vie-trend" role="img" aria-label="近 30 天 PV 趋势">
+        <div v-if="data.trend.some((d) => d.pv > 0)" class="vie-trend" role="img" aria-label="近 30 天 PV 趋势">
           <div
             v-for="d in data.trend"
             :key="d.date"
@@ -88,11 +88,12 @@ const maxPv = computed(() =>
             :style="{ height: (d.pv / maxPv * 100) + '%' }"
           />
         </div>
+        <p v-else class="vie-empty">近 30 天暂无访问记录。</p>
       </section>
 
       <section class="vie-panel">
         <h2 class="vie-feed-label">Top Pages</h2>
-        <div class="vie-table-wrap">
+        <div v-if="data.topPages.length" class="vie-table-wrap">
           <table class="vie-table">
             <thead>
               <tr><th>path</th><th>pv</th></tr>
@@ -105,11 +106,12 @@ const maxPv = computed(() =>
             </tbody>
           </table>
         </div>
+        <p v-else class="vie-empty">暂无页面访问记录。</p>
       </section>
 
       <section class="vie-panel">
         <h2 class="vie-feed-label">Sources</h2>
-        <div class="vie-table-wrap">
+        <div v-if="data.sources.length" class="vie-table-wrap">
           <table class="vie-table">
             <thead>
               <tr><th>source</th><th>pv</th></tr>
@@ -122,6 +124,7 @@ const maxPv = computed(() =>
             </tbody>
           </table>
         </div>
+        <p v-else class="vie-empty">暂无访问来源记录。</p>
       </section>
     </template>
   </VieShell>

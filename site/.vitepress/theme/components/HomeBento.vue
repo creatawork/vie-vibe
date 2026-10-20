@@ -17,14 +17,12 @@ import {
 import { computed } from 'vue'
 import { data as posts } from '../../../articles.data'
 import { data as projects } from '../../../projects.data'
+import { tools } from '../../../tools.registry'
 import ProjectSpotlight from './ProjectSpotlight.vue'
 import VieWordmark from './VieWordmark.vue'
 
-const utilities = [
-  { name: 'JSON 工作台', description: '校验、格式化和压缩 JSON', href: '/tools/json', icon: Braces, tone: 'pink' },
-  { name: '时间戳转换', description: '时间戳与日期格式转换', href: '/tools/timestamp', icon: Timer, tone: 'cyan' },
-  { name: 'JWT 解析器', description: '解码 Token 并检查 Claims', href: '/tools/jwt', icon: KeyRound, tone: 'blue' },
-]
+const toolIcons = { braces: Braces, timer: Timer, 'key-round': KeyRound }
+const utilities = tools.map((tool) => ({ ...tool, icon: toolIcons[tool.icon] }))
 
 const metrics = computed(() => [
   { label: '文章', value: String(posts.length), unit: '篇', icon: FileText, tone: 'blue' },
@@ -54,7 +52,7 @@ const latestPosts = computed(() =>
   })),
 )
 
-const featuredProject = computed(() => projects.find((p) => p.featured))
+const featuredProject = computed(() => projects.find((p) => p.featured) ?? projects[0])
 </script>
 
 <template>
@@ -106,7 +104,7 @@ const featuredProject = computed(() => projects.find((p) => p.featured))
           <h2 id="latest-title">最新文章</h2>
           <a href="/articles/">查看全部 <ArrowRight :size="16" /></a>
         </div>
-        <div class="dn-article-grid">
+        <div v-if="latestPosts.length" class="dn-article-grid">
           <a v-for="(item, i) in latestPosts" :key="item.url" :href="item.url" class="dn-article-card">
             <div :class="`dn-cover tone-${item.tone}`">
               <span v-if="i === 0" class="dn-recommend">最新</span>
@@ -123,6 +121,7 @@ const featuredProject = computed(() => projects.find((p) => p.featured))
             </div>
           </a>
         </div>
+        <p v-else class="vie-empty">暂无已发布文章。</p>
       </section>
 
       <section class="dn-section" aria-labelledby="projects-title">
@@ -137,6 +136,7 @@ const featuredProject = computed(() => projects.find((p) => p.featured))
             </template>
           </ProjectSpotlight>
         </div>
+        <p v-else class="vie-empty">暂无项目记录。</p>
       </section>
 
       <section id="utilities" class="dn-section" aria-labelledby="tools-title">
@@ -144,13 +144,14 @@ const featuredProject = computed(() => projects.find((p) => p.featured))
           <h2 id="tools-title">实用工具</h2>
           <a href="/tools">查看全部 <ArrowRight :size="16" /></a>
         </div>
-        <div class="dn-tool-grid">
+        <div v-if="utilities.length" class="dn-tool-grid">
           <a v-for="item in utilities" :key="item.name" :href="item.href" :class="`dn-tool tone-${item.tone}`">
             <span><component :is="item.icon" :size="23" /></span>
             <div><h3>{{ item.name }}</h3><p>{{ item.description }}</p></div>
             <strong>使用</strong>
           </a>
         </div>
+        <p v-else class="vie-empty">暂无可用工具。</p>
       </section>
 
       <aside class="dn-quote">
@@ -168,7 +169,7 @@ const featuredProject = computed(() => projects.find((p) => p.featured))
       </div>
       <nav aria-label="底部导航"><strong>导航</strong><a href="/">首页</a><a href="/articles/">文章</a><a href="/projects">项目</a><a href="#utilities">工具</a><a href="#about">关于</a></nav>
       <nav aria-label="文章分类"><strong>分类</strong><a href="/articles/#backend">后端开发</a><a href="/articles/#frontend">前端</a><a href="/articles/#devops">部署运维</a><a href="/articles/#ai">AI 工程</a><a href="/articles/#meta">建站</a><a href="/articles/#notes">笔记</a></nav>
-      <nav aria-label="联系方式"><strong>联系</strong><a href="https://github.com/creatawork"><Code2 :size="15" /> GitHub</a><a href="mailto:hello@vie.dev">邮箱</a></nav>
+      <nav aria-label="联系方式"><strong>联系</strong><a href="https://github.com/creatawork"><Code2 :size="15" /> GitHub</a><a href="/articles/meta/how-this-site-works">站点说明</a></nav>
       <a class="dn-backtop" href="#" aria-label="回到顶部">↑</a>
     </footer>
   </div>

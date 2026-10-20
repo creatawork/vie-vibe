@@ -4,14 +4,14 @@ import { computed, ref } from 'vue'
 import CopyButton from './CopyButton.vue'
 import { formatJson, jsonStats, minifyJson, validateJson, type JsonDiagnostic } from '../../tools/json'
 
-const initial = '{\n  "name": "Vie",\n  "stack": ["VitePress", "Vue 3"],\n  "published": true\n}'
-const source = ref(initial)
+const source = ref('')
 const output = ref('')
 const diagnostic = ref<JsonDiagnostic | null>(null)
 const mode = ref<'format' | 'minify'>('format')
 const notice = ref('')
 
 const inputStats = computed(() => jsonStats(source.value))
+const inputIsValid = computed(() => source.value.trim() !== '' && validateJson(source.value) === null)
 const outputStats = computed(() => output.value ? jsonStats(output.value) : null)
 
 function run(nextMode: 'format' | 'minify' = mode.value) {
@@ -67,7 +67,7 @@ function download() {
           <div class="tool-panel-actions"><button type="button" class="tool-text-button" @click="paste"><Clipboard :size="15" /> 粘贴</button><button type="button" class="tool-icon-button" title="清空" aria-label="清空输入" @click="clear"><Trash2 :size="16" /></button></div>
         </header>
         <textarea v-model="source" class="tool-code-input" spellcheck="false" aria-label="JSON 输入" placeholder="在这里粘贴 JSON..." @input="diagnostic = null; notice = ''"></textarea>
-        <footer class="tool-panel-foot"><span>{{ inputStats.characters }} 字符 · {{ inputStats.bytes }} B · {{ inputStats.lines }} 行</span><span v-if="diagnostic" class="tool-error"><span class="tool-status-dot is-error"></span> 第 {{ diagnostic.line }} 行，第 {{ diagnostic.column }} 列</span><span v-else-if="source" class="tool-valid"><CheckCircle2 :size="14" /> JSON 有效</span></footer>
+        <footer class="tool-panel-foot"><span>{{ inputStats.characters }} 字符 · {{ inputStats.bytes }} B · {{ inputStats.lines }} 行</span><span v-if="diagnostic" class="tool-error"><span class="tool-status-dot is-error"></span> 第 {{ diagnostic.line }} 行，第 {{ diagnostic.column }} 列</span><span v-else-if="inputIsValid" class="tool-valid"><CheckCircle2 :size="14" /> JSON 有效</span></footer>
         <p v-if="diagnostic" class="tool-diagnostic" role="alert">{{ diagnostic.message }}。修改后重新处理。</p>
       </article>
 

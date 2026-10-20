@@ -37,7 +37,7 @@ function useNow() {
     <article class="tool-panel tool-time-input-panel">
       <header class="tool-panel-head"><div><span class="tool-panel-label">INPUT</span><strong>输入时间</strong></div><button type="button" class="tool-text-button" @click="useNow"><Clock3 :size="15" /> 使用当前时间</button></header>
       <label class="tool-field-label" for="timestamp-input">时间戳或 ISO 8601</label>
-      <input id="timestamp-input" v-model="input" class="tool-text-input" placeholder="例如 1725004800 或 2026-08-30T12:00:00+08:00" @keydown.enter="convert">
+      <input id="timestamp-input" v-model="input" class="tool-text-input" placeholder="输入 Unix 时间戳或 ISO 8601 日期" @keydown.enter="convert">
       <div class="tool-segmented" role="group" aria-label="时间戳单位">
         <button v-for="item in [['auto', '自动识别'], ['seconds', 'Unix 秒'], ['milliseconds', 'Unix 毫秒']] as const" :key="item[0]" type="button" :class="{ 'is-active': mode === item[0] }" @click="mode = item[0]">{{ item[1] }}</button>
       </div>
