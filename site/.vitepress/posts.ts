@@ -7,6 +7,7 @@ export interface Post {
   description: string
   tags: string[]
   series?: string
+  seriesOrder?: number
   category: string
   wordCount: number
   readingTime: number
@@ -23,7 +24,14 @@ export function groupBySeries(posts: Post[]): SeriesGroup[] {
     if (!p.series) continue
     map.set(p.series, [...(map.get(p.series) ?? []), p])
   }
-  return [...map.entries()].map(([name, posts]) => ({ name, posts }))
+  return [...map.entries()].map(([name, posts]) => ({
+    name,
+    posts: posts.sort((a, b) =>
+      (a.seriesOrder ?? Infinity) - (b.seriesOrder ?? Infinity) ||
+      +new Date(a.date) - +new Date(b.date) ||
+      a.url.localeCompare(b.url),
+    ),
+  }))
 }
 
 export function toPost(p: ContentData): Post | null {
@@ -34,10 +42,13 @@ export function toPost(p: ContentData): Post | null {
   return {
     title: fm.title,
     url: p.url.replace(/\.html$/, ''),
-    date: fm.date,
+    date: fm.date instanceof Date ? fm.date.toISOString() : fm.date,
     description: fm.description ?? '',
     tags: fm.tags ?? [],
     series: fm.series,
+    seriesOrder: Number.isInteger(fm.seriesOrder) && fm.seriesOrder > 0
+      ? fm.seriesOrder
+      : undefined,
     category: p.url.split('/')[2] ?? 'misc',
     wordCount,
     readingTime: Math.max(1, Math.ceil(wordCount / 400)),

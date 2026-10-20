@@ -1,0 +1,70 @@
+# ADR-0006：审批从同步回调升级为挂起式待审批事件
+
+- 状态：已接受
+- 日期：2026-10-05
+
+## 背景
+
+ADR-0005 落地了审批门的原型形态：`guarded()` 在工具层包门，handler 内同步
+调用 `gate.review()` 拿决策。这在评测环境（AutoDenyGate/AutoApproveGate）
+够用，但真人审批意味着**会话挂起等待**——决策不是毫秒级的函数返回，而是
+分钟级的人类交互。同步回调形态下，真人审批有两个死结：
+
+1. **事件流感知不到等待**：CLI/API/前端消费 agent 事件流，但"正在等审批"
+   发生在工具 handler 内部，事件流上没有任何痕迹——前端无法渲染审批卡片，
+   trace 里也查不到是谁在等谁批准；
+2. **人的思考时间烧掉工具超时**：`review()` 挂在 handler 里，被
+   `asyncio.wait_for(tool_timeout)` 包住——审批人想 2 分钟，工具就"超时"
+   2 分钟，还触发瞬态重试把审批人问第二遍。
+
+## 决策
+
+1. **控制流信号**：挂起式门的守门 handler 不再等待，而是抛出
+   `ApprovalSuspended`（携带待审批请求 + resume 闭包）。resume 闭包封装
+   "决策到达后的续段"——批准则执行真 handler，拒绝则回填结构化"未执行"
+   结果。异常即控制流：handler 在 `wait_for` 内部抛出，信号穿透超时保护
+   到达 loop 层，等待发生在超时保护**之外**。
+2. **loop 转译为事件**：AgentLoop 的工具执行阶段捕获该信号，转成
+   `ApprovalPending`（call_id/pending_id/tool/risk/arguments）与
+   `ApprovalResolved` 两个事件进事件流——trace JSONL、SSE、前端审批卡片
+   三端同源；`run()` 在 `await 决策 future` 处挂起，其余并行工具调用
+   照常完成，不互相阻塞。
+3. **门形态按能力分派**：`guarded()` 检查 gate 是否实现 `suspend()`——
+   同步回调门（评测/自动化）与挂起式事件门（真人）共存，工具层包装、
+   无 gate 无写工具两条 ADR-0005 不变量不动。决策回填凭据是门生成的
+   `pending_id`，消费方经 `gate.respond(pending_id, decision)` 落定。
+4. **超时语义修正**：续段执行（resume）重新进入 `wait_for + 瞬态重试`
+   保护，超时只计量真正的执行段——人的思考时间不再烧 tool_timeout。
+5. **消费方各自实现交互**：CLI 在事件循环里弹终端确认（rich Panel 展示
+   工具/风险/参数 + y/n）；API 新增 `POST /api/chat/approve`，SSE 流在
+   approval_pending 处挂起、决策回填后继续推进；前端审批卡片带批准/拒绝
+   按钮，按 call_id 挂到对应工具调用上。
+
+## 理由
+
+- 信号从工具层抛出而不是 loop 层拦截（对比"loop 发现 risk 工具就先问审批"
+  的方案）：审批语义必须只有一份，且在工具层——loop 层拦截会让"无 gate
+  也能执行写工具"重新变得可能，破坏 ADR-0005 的结构性保证；loop 在本
+  设计里只做**传输**（转译信号为事件），对审批语义零知识。
+- 异常作控制流而不是让 handler 返回"挂起中"标记：handler 的返回值协议是
+  "工具结果"，塞进控制流标记会污染所有调用方；异常天然穿透 `wait_for`
+  且不需要 handler 之外任何一层配合。
+- `pending_id`（门生成）与 `call_id`（loop 回填）分离：前者是决策回填的
+  凭据，后者是事件流配对的键——门不知道 ToolCall.id，保持门对 loop 的
+  零依赖。
+
+## 后果
+
+- 事件协议 v1 扩展两个事件（SSE/trace 记录模型各加两行），前端 protocol.ts
+  镜像同步；旧消费方不受影响（事件流是增量扩展）。
+- SSE 挂起意味着 HTTP 连接在等待审批期间保持打开——单用户 demo 无碍，
+  多用户/长等待场景的连接占用与断线恢复（重连后重新拿 pending）留给 M6
+  LangGraph interrupt + Postgres checkpointer 的持久化方案。
+- 评测侧新增脚本化策略门（`ScriptedPolicyGate`，同步 review）：
+  "该批的批、不该批的拒"有了可程序化复核的口径（app-01… 独立成集）。
+  策略门首日即抓到一个第 1 周真实缺陷：桥接层调用 handler 固定
+  `include_writes=False`，写工具"能发现不能调用"——AutoDeny 评测永远到
+  不了执行段所以无感，放行路径一跑即现。
+- 挂起期间消费方断连：API 侧 run 被取消时 loop 取消决策 future 并清理
+  waiter（不留悬空字典项）；"断线后重新拿 pending"的会话恢复语义推迟到
+  M6 持久化。

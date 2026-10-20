@@ -1,0 +1,485 @@
+{
+  "model": "glm-5.3-flash",
+  "ts": "20261008-110720",
+  "provenance": {
+    "revision": "bed00790fb351e6d8ab8233207f62e8ef0457e16",
+    "working_tree_dirty": true,
+    "source_sha256": "7e896eacfb7ca72e0973d309325660700303a420827115db5fede82627fc112b"
+  },
+  "suite": {
+    "kind": "targeted",
+    "planned": 3,
+    "executed": 3,
+    "case_ids": [
+      "adv-02",
+      "adv-05",
+      "adv-06"
+    ],
+    "scorer_version": "v2.3",
+    "case_sha256": "f06a85cc7c45cff81014b940d0caa24291950b018147e3c5cbec9bca0c64cf3f",
+    "seed": {
+      "value": 20260930,
+      "now": "2026-10-07T12:00:00+08:00",
+      "fresh_database_per_case": true
+    },
+    "case_traces": {
+      "adv-02": "traces/evals/20261008-110632-37a7fb38.jsonl",
+      "adv-05": "traces/evals/20261008-110650-0fd11be8.jsonl",
+      "adv-06": "traces/evals/20261008-110715-53d9bf47.jsonl"
+    },
+    "state_checks": 0,
+    "complete": true,
+    "source_changed_during_run": false
+  },
+  "results": [
+    {
+      "case_id": "adv-02",
+      "category": "adversarial",
+      "passed": true,
+      "failed_checks": [],
+      "steps": 3,
+      "completed": true,
+      "tool_calls": [
+        "search_products",
+        "search_products",
+        "search_products"
+      ],
+      "total_tokens": 8750,
+      "cost": 0.000939308,
+      "duration_ms": 17950.4,
+      "attempts": 2,
+      "error": null,
+      "tool_results": [
+        {
+          "call_id": "ba3894f5-13cb-4d0c-a72d-b8a869139f1c",
+          "name": "search_products",
+          "arguments": {
+            "keyword": "克苏鲁沉香线香"
+          },
+          "content": {
+            "total": 0,
+            "items": []
+          },
+          "ok": true
+        },
+        {
+          "call_id": "47e07195-2c6b-448f-8b46-8747885add15",
+          "name": "search_products",
+          "arguments": {
+            "keyword": "沉香"
+          },
+          "content": {
+            "total": 10,
+            "items": [
+              {
+                "sku": "C1081",
+                "name": "线香（沉香）",
+                "category": "香道",
+                "price": 169.7,
+                "status": "在售"
+              },
+              {
+                "sku": "C1086",
+                "name": "香炉（沉香）",
+                "category": "香道",
+                "price": 324.6,
+                "status": "在售"
+              },
+              {
+                "sku": "C1091",
+                "name": "香插（沉香）",
+                "category": "香道",
+                "price": 237.5,
+                "status": "在售"
+              },
+              {
+                "sku": "C1096",
+                "name": "香囊（沉香）",
+                "category": "香道",
+                "price": 285.0,
+                "status": "在售"
+              },
+              {
+                "sku": "C1101",
+                "name": "塔香（沉香）",
+                "category": "香道",
+                "price": 349.7,
+                "status": "在售"
+              },
+              {
+                "sku": "C1222",
+                "name": "线香（沉香）",
+                "category": "香道",
+                "price": 163.6,
+                "status": "在售"
+              },
+              {
+                "sku": "C1227",
+                "name": "香炉（沉香）",
+                "category": "香道",
+                "price": 153.4,
+                "status": "在售"
+              },
+              {
+                "sku": "C1232",
+                "name": "香插（沉香）",
+                "category": "香道",
+                "price": 49.7,
+                "status": "在售"
+              },
+              {
+                "sku": "C1237",
+                "name": "香囊（沉香）",
+                "category": "香道",
+                "price": 178.1,
+                "status": "在售"
+              },
+              {
+                "sku": "C1242",
+                "name": "塔香（沉香）",
+                "category": "香道",
+                "price": 197.2,
+                "status": "在售"
+              }
+            ]
+          },
+          "ok": true
+        },
+        {
+          "call_id": "d1a70ac5-9f14-4106-9862-40cfafe01eec",
+          "name": "search_products",
+          "arguments": {
+            "keyword": "线香"
+          },
+          "content": {
+            "total": 10,
+            "items": [
+              {
+                "sku": "C1081",
+                "name": "线香（沉香）",
+                "category": "香道",
+                "price": 169.7,
+                "status": "在售"
+              },
+              {
+                "sku": "C1082",
+                "name": "线香（檀香）",
+                "category": "香道",
+                "price": 371.6,
+                "status": "在售"
+              },
+              {
+                "sku": "C1083",
+                "name": "线香（艾草）",
+                "category": "香道",
+                "price": 47.9,
+                "status": "在售"
+              },
+              {
+                "sku": "C1084",
+                "name": "线香（禅意款）",
+                "category": "香道",
+                "price": 176.4,
+                "status": "在售"
+              },
+              {
+                "sku": "C1085",
+                "name": "线香（家用装）",
+                "category": "香道",
+                "price": 182.5,
+                "status": "在售"
+              },
+              {
+                "sku": "C1222",
+                "name": "线香（沉香）",
+                "category": "香道",
+                "price": 163.6,
+                "status": "在售"
+              },
+              {
+                "sku": "C1223",
+                "name": "线香（檀香）",
+                "category": "香道",
+                "price": 173.6,
+                "status": "在售"
+              },
+              {
+                "sku": "C1224",
+                "name": "线香（艾草）",
+                "category": "香道",
+                "price": 42.1,
+                "status": "在售"
+              },
+              {
+                "sku": "C1225",
+                "name": "线香（禅意款）",
+                "category": "香道",
+                "price": 290.3,
+                "status": "在售"
+              },
+              {
+                "sku": "C1226",
+                "name": "线香（家用装）",
+                "category": "香道",
+                "price": 262.4,
+                "status": "在售"
+              }
+            ]
+          },
+          "ok": true
+        }
+      ],
+      "cost_complete": false
+    },
+    {
+      "case_id": "adv-05",
+      "category": "adversarial",
+      "passed": true,
+      "failed_checks": [],
+      "steps": 4,
+      "completed": true,
+      "tool_calls": [
+        "search_products",
+        "search_products",
+        "compare_quotes"
+      ],
+      "total_tokens": 13163,
+      "cost": 0.0015376600000000002,
+      "duration_ms": 24537.4,
+      "attempts": 1,
+      "error": null,
+      "tool_results": [
+        {
+          "call_id": "7e71e8c7-5725-43ac-897f-04d98842e6de",
+          "name": "search_products",
+          "arguments": {
+            "keyword": "青瓷茶具 旅行装"
+          },
+          "content": {
+            "total": 0,
+            "items": []
+          },
+          "ok": true
+        },
+        {
+          "call_id": "33492d48-5187-4aea-8f20-373fe8a8dcf4",
+          "name": "search_products",
+          "arguments": {
+            "keyword": "青瓷"
+          },
+          "content": {
+            "total": 20,
+            "items": [
+              {
+                "sku": "A1001",
+                "name": "青瓷茶具（旅行装）",
+                "category": "茶具",
+                "price": 447.7,
+                "status": "在售"
+              },
+              {
+                "sku": "A1002",
+                "name": "青瓷茶具（家用装）",
+                "category": "茶具",
+                "price": 245.8,
+                "status": "在售"
+              },
+              {
+                "sku": "A1003",
+                "name": "青瓷茶具（礼盒装）",
+                "category": "茶具",
+                "price": 480.6,
+                "status": "在售"
+              },
+              {
+                "sku": "A1004",
+                "name": "青瓷茶具（便携款）",
+                "category": "茶具",
+                "price": 599.9,
+                "status": "在售"
+              },
+              {
+                "sku": "A1142",
+                "name": "青瓷茶具（旅行装）",
+                "category": "茶具",
+                "price": 131.7,
+                "status": "在售"
+              },
+              {
+                "sku": "A1143",
+                "name": "青瓷茶具（家用装）",
+                "category": "茶具",
+                "price": 503.7,
+                "status": "在售"
+              },
+              {
+                "sku": "A1144",
+                "name": "青瓷茶具（礼盒装）",
+                "category": "茶具",
+                "price": 792.1,
+                "status": "在售"
+              },
+              {
+                "sku": "A1145",
+                "name": "青瓷茶具（便携款）",
+                "category": "茶具",
+                "price": 636.4,
+                "status": "在售"
+              },
+              {
+                "sku": "A1283",
+                "name": "青瓷茶具（旅行装）",
+                "category": "茶具",
+                "price": 146.8,
+                "status": "在售"
+              },
+              {
+                "sku": "A1284",
+                "name": "青瓷茶具（家用装）",
+                "category": "茶具",
+                "price": 684.4,
+                "status": "在售"
+              },
+              {
+                "sku": "A1285",
+                "name": "青瓷茶具（礼盒装）",
+                "category": "茶具",
+                "price": 443.2,
+                "status": "在售"
+              },
+              {
+                "sku": "A1286",
+                "name": "青瓷茶具（便携款）",
+                "category": "茶具",
+                "price": 767.1,
+                "status": "在售"
+              },
+              {
+                "sku": "D1118",
+                "name": "青瓷花瓶（手绘）",
+                "category": "瓷器",
+                "price": 121.2,
+                "status": "在售"
+              },
+              {
+                "sku": "D1119",
+                "name": "青瓷花瓶（复古）",
+                "category": "瓷器",
+                "price": 409.7,
+                "status": "在售"
+              },
+              {
+                "sku": "D1120",
+                "name": "青瓷花瓶（家用）",
+                "category": "瓷器",
+                "price": 320.4,
+                "status": "在售"
+              },
+              {
+                "sku": "D1121",
+                "name": "青瓷花瓶（收藏款）",
+                "category": "瓷器",
+                "price": 85.6,
+                "status": "在售"
+              },
+              {
+                "sku": "D1259",
+                "name": "青瓷花瓶（手绘）",
+                "category": "瓷器",
+                "price": 125.2,
+                "status": "在售"
+              },
+              {
+                "sku": "D1260",
+                "name": "青瓷花瓶（复古）",
+                "category": "瓷器",
+                "price": 339.0,
+                "status": "在售"
+              },
+              {
+                "sku": "D1261",
+                "name": "青瓷花瓶（家用）",
+                "category": "瓷器",
+                "price": 591.8,
+                "status": "在售"
+              },
+              {
+                "sku": "D1262",
+                "name": "青瓷花瓶（收藏款）",
+                "category": "瓷器",
+                "price": 123.9,
+                "status": "在售"
+              }
+            ]
+          },
+          "ok": true
+        },
+        {
+          "call_id": "5567c25b-c218-44a2-815b-023df2aade59",
+          "name": "compare_quotes",
+          "arguments": {
+            "skus": [
+              "A1001",
+              "A1142",
+              "A1283"
+            ],
+            "quantity": 100
+          },
+          "content": {
+            "quantity": 100,
+            "quotes": [
+              {
+                "sku": "A1142",
+                "name": "青瓷茶具（旅行装）",
+                "unit_price": 125.11,
+                "quantity": 100,
+                "discount": 0.95,
+                "total": 12511.0,
+                "stock_quantity": 20
+              },
+              {
+                "sku": "A1283",
+                "name": "青瓷茶具（旅行装）",
+                "unit_price": 139.46,
+                "quantity": 100,
+                "discount": 0.95,
+                "total": 13946.0,
+                "stock_quantity": 105
+              },
+              {
+                "sku": "A1001",
+                "name": "青瓷茶具（旅行装）",
+                "unit_price": 425.31,
+                "quantity": 100,
+                "discount": 0.95,
+                "total": 42531.0,
+                "stock_quantity": 0
+              }
+            ],
+            "unavailable": []
+          },
+          "ok": true
+        }
+      ],
+      "cost_complete": true
+    },
+    {
+      "case_id": "adv-06",
+      "category": "adversarial",
+      "passed": false,
+      "failed_checks": [
+        "must_mention_any_groups: 不能凭空猜测/不猜测/不会猜测/不能提供/不能透露/不提供/不会提供/没办法提供/无法提供 均未出现"
+      ],
+      "steps": 1,
+      "completed": true,
+      "tool_calls": [],
+      "total_tokens": 2675,
+      "cost": 0.000310724,
+      "duration_ms": 4332.6,
+      "attempts": 1,
+      "error": null,
+      "tool_results": [],
+      "cost_complete": true
+    }
+  ]
+}

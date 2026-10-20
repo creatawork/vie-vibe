@@ -1,0 +1,25 @@
+# 项目当前状态
+
+更新：2026-10-19。本页是当前能力和范围的入口；日期更早的计划与验收保留其当时结论。
+
+| 项目 | 当前状态 | 证据 |
+|---|---|---|
+| B1–B3：计价、草稿与业务审批 | 已实现版本审批、幂等与事务复核 | [业务路线](business-roadmap.md)、[三分钟演示](demo-guide.md) |
+| B4：多轮任务与指代 | 最终专项两模型各 3/3 场景、7/7 轮，gate / strict 通过 | [最终专项](../reports/acceptance/2026-10-19-b4-final-validation.md)；旧 B4 十五轮结果不改判 |
+| B5：政策与业务判断 | 原七例专项两模型各 7/7；最新独立结构化问答两模型各 11/13，严格门槛未达成 | [最新回答验收](../reports/acceptance/2026-10-19-structured-policy-and-resume.md) |
+| B6：只读补货建议 | 最终同源码两模型各 7/7，gate / strict 通过 | [最终验收](../reports/acceptance/2026-10-19-live-model-validation.md) |
+| 检索实验 | 完整真实查询向量对照；RRF 未超过当前策略，保留默认阈值 | [检索实验](retrieval-experiment.md) |
+| 长历史 / 大响应 | 可选视图真实答题 GLM 8/10、DeepSeek 9/10；现有策略各 2/10。固定压力样本，候选未全面通过 | [实验契约](context-experiment.md)、[本批验收](../reports/acceptance/2026-10-19-context-and-portfolio.md) |
+| 连续业务上下文 | 新候选 DeepSeek 3/3 场景、17/17 轮；GLM 1/3 场景，执行 7/17 轮、其中 5 轮通过，客户缩写失败保留。候选继续可选 | [连续任务契约](context-workflow.md)、[本批验收](../reports/acceptance/2026-10-19-continuous-context-and-delivery.md) |
+| 求职展示 | 统一投递材料、已有字幕录屏、三个技术取舍、带内外层校验清单的交付包 | [投递材料](application-kit.md)、[作品入口](portfolio-overview.md)、[讲解材料](interview-cases.md) |
+
+每组真实结果是对应冻结用例、源码和预算下的一次观察，不合成跨版本统一成功率。旧未知 usage 与冻结预算保持独立，用户已跳过的供应商账单核销不重新追索。
+
+## 当前开发顺序
+
+用户选择的连续业务上下文验收与投递材料已交付。新候选保留用户原话、明确行号和报价快照金额，
+受保护消息超过估算预算时在请求前停止；真实两模型同源码对照尚未共同达标，候选保持可选。
+下一步需要处理 GLM 客户全称缩写并扩大独立任务样本。政策结束协议与条件拆分仍为独立待办，
+本批政策问答结果继续保持 11/13。
+
+维持本机可信单用户、单 API 进程范围。本阶段没有部署，身份认证、租户隔离与多 worker 执行权需要独立设计。崩溃恢复历史硬退出与组件证据见[原报告](../reports/acceptance/2026-10-08-crash-recovery.md)，ADR-0010 仍待评审。

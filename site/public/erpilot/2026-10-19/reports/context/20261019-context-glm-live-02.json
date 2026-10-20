@@ -1,0 +1,1040 @@
+{
+  "version": "context-retention-2",
+  "mode": "live-historical-context-probes",
+  "model": "glm-5.3-flash",
+  "endpoint_host": "flashcoding.ai",
+  "thinking": false,
+  "timeout": 60.0,
+  "sdk_retries": 0,
+  "cases_sha256": "abb945849e8a256bc86d586a189c004fdb47b0b784bebbe2a949d9ab719dbc7b",
+  "source": {
+    "sha256": "54b14d0607c3b2ee7ea6ff86a2f6fc357fb9d29546dad20f3507faff1ac7c175",
+    "files": {
+      "packages/agent_core/src/agent_core/__init__.py": "a69d099e1cf6eb220b33c3559cbb407d0bfa7a99f92f6a45d1adfd8654b7364d",
+      "packages/agent_core/src/agent_core/__main__.py": "d38b69abe7b11294b013628e8c6709b8fa6023f4606cb0e6d77ee1ce4807f69b",
+      "packages/agent_core/src/agent_core/approval.py": "126fac9d555103ce3402d045c700a08526cde4a6bc5d2c1d29598ee14e932014",
+      "packages/agent_core/src/agent_core/context.py": "3c9cd120114b6ccbe7a49d9d9c297120e90e4ee8da44aa856cc15b2c18a04357",
+      "packages/agent_core/src/agent_core/context_view.py": "281592875101e1df7b8df258ab6656c1b6770f0b730dfc708baf8ce7bc94322e",
+      "packages/agent_core/src/agent_core/demo_tools.py": "43395a81bf8fb13bec44d6728f8827582fce38997ef75c3f62762c2ad1342cf6",
+      "packages/agent_core/src/agent_core/display.py": "29048028882ba4d8df381c1a5dd0340fa6870d92be7edeb497bee1a1d7d0e6a1",
+      "packages/agent_core/src/agent_core/dotenv.py": "31a41af4917d6c5fb76e45ef002df871a5ed84c69f8de9fb9519f5a340701f38",
+      "packages/agent_core/src/agent_core/events.py": "0fb4a3fa3a45ce6bcb43ea0b8e37b2f0c371e4e86a0246db66c250d276d01982",
+      "packages/agent_core/src/agent_core/graph.py": "385fbb6b3d99a0665f97b122c4ce02046d8371f495c250343ab0d2d5f63fd71e",
+      "packages/agent_core/src/agent_core/graph_approval.py": "9705aa427f4ece9916857339d7e03fb12e2649f99e6dd3352c224fd4fbd4dadc",
+      "packages/agent_core/src/agent_core/graph_helpers.py": "fd9617a51bb577fdeb9753f299e3dec2702e722398be797d2264577418d3dc7b",
+      "packages/agent_core/src/agent_core/graph_runtime.py": "9cd244d3c5f3c9e8e7e95ccd05e334004319632edade05e7885fe6a1a5fa77ba",
+      "packages/agent_core/src/agent_core/graph_state.py": "87d42bf6de377ec15d2e054e9fe52378f09e980524c4ae4acf7dec194390aa9a",
+      "packages/agent_core/src/agent_core/graph_tools.py": "84f93c331bb2da84acb63b1fc85d37f8c684a08d2e04711bd845092814f04fae",
+      "packages/agent_core/src/agent_core/llm.py": "bc183039098de3fb96131eed257e681fce4868f3d232664d2328ad82594a26df",
+      "packages/agent_core/src/agent_core/observability.py": "100b660b6d32c8c265f51e926a08213f5594408c6ee81cd1ea7c211ded2edb45",
+      "packages/agent_core/src/agent_core/policy_display.py": "bce33c20a13291c885ebf703d107254aeaac994be8812101b71d0fbf35743770",
+      "packages/agent_core/src/agent_core/prices.py": "07d9d409878e4c1735ddcfa10eea20049bd5cac46c4a8048c75629e231a9f399",
+      "packages/agent_core/src/agent_core/recovery.py": "41b24d5aafd4b49d3f042f8b8cd4e4315c23555cc0ec9f7cc5e83c1d54395019",
+      "packages/agent_core/src/agent_core/replenishment_display.py": "b5f067cc27e0d93f6087fab051d1e7ec70a54b651961865367b6b1c000000cb3",
+      "packages/agent_core/src/agent_core/response_contract.py": "524a6d8e127b07c650f1dd15426a4716fb3ef3e3ba517088bce6da533a5a0b15",
+      "packages/agent_core/src/agent_core/runtime_config.py": "4cd91229993d45a2a42140e5351777eabc12000cda785cc217f051198f585459",
+      "packages/agent_core/src/agent_core/testing.py": "8c49817bbea7681e44ddcb0d732b70de2abc7bb50bd14ab338845a28643f6a89",
+      "packages/agent_core/src/agent_core/tools.py": "be1194be4d0bded5e92c299a8b32a1c3495c04731fedf1ead37c3edbfc4029d9",
+      "packages/agent_core/src/agent_core/trace.py": "0fc53c15276d647938ca2873dec2ef6fb53cc47e018bf7eaf2132a158cfc9079",
+      "packages/erp_store/src/erp_store/__init__.py": "610ac5166c74583dae35b0e9bad546cea6002d99478dca9da75880c383bccaec",
+      "packages/erp_store/src/erp_store/__main__.py": "7573cb8eacfa61a261cbdbbada466a39b698b5dcf10d7a712832609bfac2e1d7",
+      "packages/erp_store/src/erp_store/db.py": "adebff574bb5f95f133a7ee5dfc2dfe93899e70bde4e6cef2497336122a86a80",
+      "packages/erp_store/src/erp_store/drafts.py": "b4748414a67b14786406b6cbd876ee89c37012ebf706eb41ba021d19984b920d",
+      "packages/erp_store/src/erp_store/models.py": "73227857967011b8b469d8ea980af82892fb9d1dccfe524ce149a777522dc5a1",
+      "packages/erp_store/src/erp_store/mutations.py": "2ff6fbe2dc93ad1ac5955a5d973543a06090215425ea317bf5f1718df6db3fad",
+      "packages/erp_store/src/erp_store/operations.py": "53d572230e640c5cacffa1e8fd80ad00959071a47acaa7e6423dd42d40512620",
+      "packages/erp_store/src/erp_store/pricing.py": "a54d7f3e4b003bebcba8d07245d282451462903bc6d7c952461250dfc6b7a67d",
+      "packages/erp_store/src/erp_store/replenishment.py": "40e469dfbac8f621f143b85e52338231f0fb53697ee805fe0ce72b7a5fb8dd3a",
+      "packages/erp_store/src/erp_store/repository.py": "85bd5cecc3561b93a7532559034cc813c04fd61b867a0f0d5071072afb2558c7",
+      "packages/erp_store/src/erp_store/seed.py": "c85ecc233c0f40954a1f2f50209a5ec1f648bd285108dc488bbb780c590b3939",
+      "packages/evals/src/evals/billing.py": "d99661084b5d8c1bba354d3f68fffb41ee50f092fa4550a27aa2a65ec00a760e",
+      "packages/evals/src/evals/context_experiment.py": "477d5c3c323d5275c03f8c26d4beb9cf6caf00d0c625f150bda51168f87d746d",
+      "packages/evals/src/evals/context_live.py": "85e6ca320fa56f29c85653fc7090e33ad759a8fa5411f6b2a57bf9f0e365095a",
+      "packages/mcp_erp/src/mcp_erp/__init__.py": "2e6317a6b3c3507a71cfcc404ac83b4a5ab19f56c431eececfa06db4221340dc",
+      "packages/mcp_erp/src/mcp_erp/__main__.py": "07cd67396e29ec4a522a2594378c6df419d7dd63a0acc73e2aca0f0eeb2ed58d",
+      "packages/mcp_erp/src/mcp_erp/bridge.py": "0cb4ee25be5b61d0fea08d52d4c8037de9c53e7b7b47f788593e105f052e06a0",
+      "packages/mcp_erp/src/mcp_erp/cancellation_assessment.py": "aebcae4e94853cf0617a6fd1b6efb50e255af8fdbed9b62b6543552ea0956959",
+      "packages/mcp_erp/src/mcp_erp/context_view.py": "a86b6f3357030005a33fb4aa922cedc0325fe25552e45b0322c466655cf8bacc",
+      "packages/mcp_erp/src/mcp_erp/draft_tools.py": "ec1c96f5e8bf585b0685a729b17790a9ef4ff5a7686897d57243fe5605df5fce",
+      "packages/mcp_erp/src/mcp_erp/operation_tools.py": "6882056e6fccecd4d91a0999714b5d9b5b3c593561bef8fc5eb578099565daad",
+      "packages/mcp_erp/src/mcp_erp/policy_answer.py": "34757747812640dbc80af287fbf2724d377013167a9a79ebf9147007edd291ce",
+      "packages/mcp_erp/src/mcp_erp/policy_tools.py": "bcaf24a864a6a5c7f3ddb1a2230d51c699ca43e0c3f4d780195ad11c03fe2ce0",
+      "packages/mcp_erp/src/mcp_erp/replenishment_tools.py": "e3ab0bf49868edf6389dfc303c1a42e320d6838f1e18446e91484dc525843f32",
+      "packages/mcp_erp/src/mcp_erp/server.py": "a95c9e1310fa0721b61623434dc1d6e99e1e365bad1b2e5fc0e89948f4d309e1",
+      "packages/mcp_erp/src/mcp_erp/session_tools.py": "a88bb31c8391b1e63f92ec3ae2b34cdaea18d63788899c1aed8c2cb6f503515f"
+    }
+  },
+  "policy": {
+    "max_tokens": 4000,
+    "keep_last_messages": 8,
+    "max_tool_chars": 4000
+  },
+  "rate": {
+    "model": "glm-5.3-flash",
+    "endpoint_host": "flashcoding.ai",
+    "currency": "CNY",
+    "input_per_m": "0.096",
+    "output_per_m": "0.34",
+    "cached_input_per_m": "None",
+    "price_source": "agent_core.prices"
+  },
+  "budget": {
+    "limit": "0.07",
+    "currency": "CNY",
+    "unknown_usage": false,
+    "known_spent": "0.028319"
+  },
+  "complete": true,
+  "source_consistent": true,
+  "results": [
+    {
+      "case_id": "ctx-short",
+      "strategy": "full",
+      "passed": true,
+      "failed_checks": [],
+      "visible_text": "{\"status\": \"active\", \"customer\": \"上下文实验客户甲\", \"note\": \"分开发票，周五发货；只存草稿\", \"target_sku\": \"CTX2c107d00\", \"target_quantity\": 23, \"constraint\": null}",
+      "expected": {
+        "status": "active",
+        "customer": "上下文实验客户甲",
+        "note": "分开发票，周五发货；只存草稿",
+        "target_sku": "CTX2c107d00",
+        "target_quantity": 23,
+        "constraint": null
+      },
+      "usage": {
+        "prompt_tokens": 608,
+        "completion_tokens": 286,
+        "total_tokens": 894
+      },
+      "billing": {
+        "currency": "CNY",
+        "estimated_amount": "0.000156",
+        "pricing_source": "agent_core.prices",
+        "cache_assumption": "uncached_upper_bound",
+        "complete": true
+      },
+      "duration_ms": 3503.754100005608,
+      "tool_attempts": [],
+      "input_sha256": "2b6cf3fe706e396a69520e9bc0286a41cdc034804f8cbdfd78e756c0fa9de542"
+    },
+    {
+      "case_id": "ctx-short",
+      "strategy": "current",
+      "passed": true,
+      "failed_checks": [],
+      "visible_text": "{\"status\": \"active\", \"customer\": \"上下文实验客户甲\", \"note\": \"分开发票，周五发货；只存草稿\", \"target_sku\": \"CTX2c107d00\", \"target_quantity\": 23, \"constraint\": null}",
+      "expected": {
+        "status": "active",
+        "customer": "上下文实验客户甲",
+        "note": "分开发票，周五发货；只存草稿",
+        "target_sku": "CTX2c107d00",
+        "target_quantity": 23,
+        "constraint": null
+      },
+      "usage": {
+        "prompt_tokens": 608,
+        "completion_tokens": 364,
+        "total_tokens": 972
+      },
+      "billing": {
+        "currency": "CNY",
+        "estimated_amount": "0.000182",
+        "pricing_source": "agent_core.prices",
+        "cache_assumption": "uncached_upper_bound",
+        "complete": true
+      },
+      "duration_ms": 2892.5742999999784,
+      "tool_attempts": [],
+      "input_sha256": "2b6cf3fe706e396a69520e9bc0286a41cdc034804f8cbdfd78e756c0fa9de542"
+    },
+    {
+      "case_id": "ctx-short",
+      "strategy": "structured",
+      "passed": true,
+      "failed_checks": [],
+      "visible_text": "{\"status\":\"active\",\"customer\":\"上下文实验客户甲\",\"note\":\"分开发票，周五发货；只存草稿\",\"target_sku\":\"CTX2c107d00\",\"target_quantity\":23,\"constraint\":null}",
+      "expected": {
+        "status": "active",
+        "customer": "上下文实验客户甲",
+        "note": "分开发票，周五发货；只存草稿",
+        "target_sku": "CTX2c107d00",
+        "target_quantity": 23,
+        "constraint": null
+      },
+      "usage": {
+        "prompt_tokens": 319,
+        "completion_tokens": 156,
+        "total_tokens": 475
+      },
+      "billing": {
+        "currency": "CNY",
+        "estimated_amount": "0.000084",
+        "pricing_source": "agent_core.prices",
+        "cache_assumption": "uncached_upper_bound",
+        "complete": true
+      },
+      "duration_ms": 5213.503299979493,
+      "tool_attempts": [],
+      "input_sha256": "5fdc860da0712b31bfa155552e14a35ad9da6bbc0ae5e015f44763ec7559cdb5"
+    },
+    {
+      "case_id": "ctx-long-24",
+      "strategy": "full",
+      "passed": true,
+      "failed_checks": [],
+      "visible_text": "```json\n{\n  \"status\": \"active\",\n  \"customer\": \"上下文实验客户甲\",\n  \"note\": \"分开发票，周五发货；只存草稿\",\n  \"target_sku\": \"CTX2c107d00\",\n  \"target_quantity\": 23,\n  \"constraint\": null\n}\n```",
+      "expected": {
+        "status": "active",
+        "customer": "上下文实验客户甲",
+        "note": "分开发票，周五发货；只存草稿",
+        "target_sku": "CTX2c107d00",
+        "target_quantity": 23,
+        "constraint": null
+      },
+      "usage": {
+        "prompt_tokens": 11936,
+        "completion_tokens": 138,
+        "total_tokens": 12074
+      },
+      "billing": {
+        "currency": "CNY",
+        "estimated_amount": "0.001193",
+        "pricing_source": "agent_core.prices",
+        "cache_assumption": "uncached_upper_bound",
+        "complete": true
+      },
+      "duration_ms": 6858.337400015444,
+      "tool_attempts": [],
+      "input_sha256": "840206d70353f13c57766fc96d518b87740bab9dc7c27a2c5cc0fa93074d552b"
+    },
+    {
+      "case_id": "ctx-long-24",
+      "strategy": "current",
+      "passed": false,
+      "failed_checks": [
+        "status",
+        "customer",
+        "note",
+        "target_sku",
+        "target_quantity"
+      ],
+      "visible_text": "{\"status\": \"unknown\", \"customer\": null, \"note\": null, \"target_sku\": null, \"target_quantity\": null, \"constraint\": null}",
+      "expected": {
+        "status": "active",
+        "customer": "上下文实验客户甲",
+        "note": "分开发票，周五发货；只存草稿",
+        "target_sku": "CTX2c107d00",
+        "target_quantity": 23,
+        "constraint": null
+      },
+      "usage": {
+        "prompt_tokens": 7758,
+        "completion_tokens": 176,
+        "total_tokens": 7934
+      },
+      "billing": {
+        "currency": "CNY",
+        "estimated_amount": "0.000805",
+        "pricing_source": "agent_core.prices",
+        "cache_assumption": "uncached_upper_bound",
+        "complete": true
+      },
+      "duration_ms": 3516.56560000265,
+      "tool_attempts": [],
+      "input_sha256": "8c76b960a44e04d3a756c02dbbb478aebcbce3d36289d47c2cd514fc8eeec174"
+    },
+    {
+      "case_id": "ctx-long-24",
+      "strategy": "structured",
+      "passed": true,
+      "failed_checks": [],
+      "visible_text": "```json\n{\"status\":\"active\",\"customer\":\"上下文实验客户甲\",\"note\":\"分开发票，周五发货；只存草稿\",\"target_sku\":\"CTX2c107d00\",\"target_quantity\":23,\"constraint\":null}\n```",
+      "expected": {
+        "status": "active",
+        "customer": "上下文实验客户甲",
+        "note": "分开发票，周五发货；只存草稿",
+        "target_sku": "CTX2c107d00",
+        "target_quantity": 23,
+        "constraint": null
+      },
+      "usage": {
+        "prompt_tokens": 1746,
+        "completion_tokens": 339,
+        "total_tokens": 2085
+      },
+      "billing": {
+        "currency": "CNY",
+        "estimated_amount": "0.000283",
+        "pricing_source": "agent_core.prices",
+        "cache_assumption": "uncached_upper_bound",
+        "complete": true
+      },
+      "duration_ms": 4952.463199966587,
+      "tool_attempts": [],
+      "input_sha256": "67fc21110792c51be35c73cc04b158ae3a7d45a2999738e2681581bba9ce7e97"
+    },
+    {
+      "case_id": "ctx-large-middle",
+      "strategy": "full",
+      "passed": true,
+      "failed_checks": [],
+      "visible_text": "{\"status\": \"active\", \"customer\": \"上下文实验客户甲\", \"note\": \"分开发票，周五发货；只存草稿\", \"target_sku\": \"CTX18488d3e\", \"target_quantity\": 61, \"constraint\": null}",
+      "expected": {
+        "status": "active",
+        "customer": "上下文实验客户甲",
+        "note": "分开发票，周五发货；只存草稿",
+        "target_sku": "CTX18488d3e",
+        "target_quantity": 61,
+        "constraint": null
+      },
+      "usage": {
+        "prompt_tokens": 8804,
+        "completion_tokens": 1459,
+        "total_tokens": 10263
+      },
+      "billing": {
+        "currency": "CNY",
+        "estimated_amount": "0.001341",
+        "pricing_source": "agent_core.prices",
+        "cache_assumption": "uncached_upper_bound",
+        "complete": true
+      },
+      "duration_ms": 9860.658200050239,
+      "tool_attempts": [],
+      "input_sha256": "69882fe9f1514a06cf5a370b3a11f1c3b0daa2aaefcec29476d24a6ed3d17c43"
+    },
+    {
+      "case_id": "ctx-large-middle",
+      "strategy": "current",
+      "passed": false,
+      "failed_checks": [
+        "invalid_json"
+      ],
+      "visible_text": "{\"status\": \"ambiguous\", \"customer\": null, \"note\": null, \"target_sku\": null, \"target_quantity\": null, \"constraint\": null}\n\n说明：草稿快照中可以读到客户名“上下文实验客户甲”与备注“分开发票，周五发货；只存草稿”，但工具返回内容在中途被截断，无法可靠核对第 31 行对应的 SKU 和数量。由于要求不得猜测，此处仅判定为 ambiguous。该快照仅为历史记录，不代表当前库存或执行许可。",
+      "expected": {
+        "status": "active",
+        "customer": "上下文实验客户甲",
+        "note": "分开发票，周五发货；只存草稿",
+        "target_sku": "CTX18488d3e",
+        "target_quantity": 61,
+        "constraint": null
+      },
+      "usage": {
+        "prompt_tokens": 2213,
+        "completion_tokens": 200,
+        "total_tokens": 2413
+      },
+      "billing": {
+        "currency": "CNY",
+        "estimated_amount": "0.000280",
+        "pricing_source": "agent_core.prices",
+        "cache_assumption": "uncached_upper_bound",
+        "complete": true
+      },
+      "duration_ms": 6806.173600023612,
+      "tool_attempts": [],
+      "input_sha256": "cec251ba19bf8120d493ae93f200194332f2195854cc4bfd33c189dff08b7ca4"
+    },
+    {
+      "case_id": "ctx-large-middle",
+      "strategy": "structured",
+      "passed": false,
+      "failed_checks": [
+        "target_sku",
+        "target_quantity"
+      ],
+      "visible_text": "{\"status\":\"active\",\"customer\":\"上下文实验客户甲\",\"note\":\"分开发票，周五发货；只存草稿\",\"target_sku\":\"CTX74bac6ec\",\"target_quantity\":12,\"constraint\":null}",
+      "expected": {
+        "status": "active",
+        "customer": "上下文实验客户甲",
+        "note": "分开发票，周五发货；只存草稿",
+        "target_sku": "CTX18488d3e",
+        "target_quantity": 61,
+        "constraint": null
+      },
+      "usage": {
+        "prompt_tokens": 1093,
+        "completion_tokens": 181,
+        "total_tokens": 1274
+      },
+      "billing": {
+        "currency": "CNY",
+        "estimated_amount": "0.000166",
+        "pricing_source": "agent_core.prices",
+        "cache_assumption": "uncached_upper_bound",
+        "complete": true
+      },
+      "duration_ms": 6136.159999994561,
+      "tool_attempts": [],
+      "input_sha256": "c2a4cc6edeb962358a185624a6e4e6d5cecd60628f0db15d96e77ffe0b4980f0"
+    },
+    {
+      "case_id": "ctx-combined-48",
+      "strategy": "full",
+      "passed": true,
+      "failed_checks": [],
+      "visible_text": "```json\n{\n  \"status\": \"active\",\n  \"customer\": \"上下文实验客户甲\",\n  \"note\": \"分开发票，周五发货；只存草稿\",\n  \"target_sku\": \"CTX18488d3e\",\n  \"target_quantity\": 61,\n  \"constraint\": null\n}\n```",
+      "expected": {
+        "status": "active",
+        "customer": "上下文实验客户甲",
+        "note": "分开发票，周五发货；只存草稿",
+        "target_sku": "CTX18488d3e",
+        "target_quantity": 61,
+        "constraint": null
+      },
+      "usage": {
+        "prompt_tokens": 31460,
+        "completion_tokens": 794,
+        "total_tokens": 32254
+      },
+      "billing": {
+        "currency": "CNY",
+        "estimated_amount": "0.003290",
+        "pricing_source": "agent_core.prices",
+        "cache_assumption": "uncached_upper_bound",
+        "complete": true
+      },
+      "duration_ms": 7260.607899981551,
+      "tool_attempts": [],
+      "input_sha256": "13eee24e9c2b7e23b831ae5a97bec2d52528825c7ddc70b017c15da0ed178e1f"
+    },
+    {
+      "case_id": "ctx-combined-48",
+      "strategy": "current",
+      "passed": false,
+      "failed_checks": [
+        "status",
+        "customer",
+        "note",
+        "target_sku",
+        "target_quantity"
+      ],
+      "visible_text": "{\"status\": \"unknown\", \"customer\": null, \"note\": null, \"target_sku\": null, \"target_quantity\": null, \"constraint\": null}",
+      "expected": {
+        "status": "active",
+        "customer": "上下文实验客户甲",
+        "note": "分开发票，周五发货；只存草稿",
+        "target_sku": "CTX18488d3e",
+        "target_quantity": 61,
+        "constraint": null
+      },
+      "usage": {
+        "prompt_tokens": 7758,
+        "completion_tokens": 501,
+        "total_tokens": 8259
+      },
+      "billing": {
+        "currency": "CNY",
+        "estimated_amount": "0.000915",
+        "pricing_source": "agent_core.prices",
+        "cache_assumption": "uncached_upper_bound",
+        "complete": true
+      },
+      "duration_ms": 5399.486000009347,
+      "tool_attempts": [],
+      "input_sha256": "c9eedae5dd06e9046a911344fd6d20d2bcc4bf970512f25a65008527dca0d872"
+    },
+    {
+      "case_id": "ctx-combined-48",
+      "strategy": "structured",
+      "passed": true,
+      "failed_checks": [],
+      "visible_text": "{\"status\":\"active\",\"customer\":\"上下文实验客户甲\",\"note\":\"分开发票，周五发货；只存草稿\",\"target_sku\":\"CTX18488d3e\",\"target_quantity\":61,\"constraint\":null}",
+      "expected": {
+        "status": "active",
+        "customer": "上下文实验客户甲",
+        "note": "分开发票，周五发货；只存草稿",
+        "target_sku": "CTX18488d3e",
+        "target_quantity": 61,
+        "constraint": null
+      },
+      "usage": {
+        "prompt_tokens": 2520,
+        "completion_tokens": 650,
+        "total_tokens": 3170
+      },
+      "billing": {
+        "currency": "CNY",
+        "estimated_amount": "0.000463",
+        "pricing_source": "agent_core.prices",
+        "cache_assumption": "uncached_upper_bound",
+        "complete": true
+      },
+      "duration_ms": 6739.780300005805,
+      "tool_attempts": [],
+      "input_sha256": "c101344289d956a199557fc913c8666a906870bdad8a488d4b59502810397fcc"
+    },
+    {
+      "case_id": "ctx-revision",
+      "strategy": "full",
+      "passed": true,
+      "failed_checks": [],
+      "visible_text": "{\n  \"status\": \"active\",\n  \"customer\": \"上下文实验客户甲\",\n  \"note\": \"分开发票，周五发货；只存草稿\",\n  \"target_sku\": \"CTX2c107d00\",\n  \"target_quantity\": 23,\n  \"constraint\": null\n}",
+      "expected": {
+        "status": "active",
+        "customer": "上下文实验客户甲",
+        "note": "分开发票，周五发货；只存草稿",
+        "target_sku": "CTX2c107d00",
+        "target_quantity": 23,
+        "constraint": null
+      },
+      "usage": {
+        "prompt_tokens": 12341,
+        "completion_tokens": 459,
+        "total_tokens": 12800
+      },
+      "billing": {
+        "currency": "CNY",
+        "estimated_amount": "0.001341",
+        "pricing_source": "agent_core.prices",
+        "cache_assumption": "uncached_upper_bound",
+        "complete": true
+      },
+      "duration_ms": 5253.084599971771,
+      "tool_attempts": [],
+      "input_sha256": "0880b1a6e6e345d7cc556308daf5603a7aa8ecc0aefa2645c2e6df718b7cad96"
+    },
+    {
+      "case_id": "ctx-revision",
+      "strategy": "current",
+      "passed": false,
+      "failed_checks": [
+        "status",
+        "customer",
+        "note",
+        "target_sku",
+        "target_quantity"
+      ],
+      "visible_text": "{\"status\": \"unknown\", \"customer\": null, \"note\": null, \"target_sku\": null, \"target_quantity\": null, \"constraint\": null}",
+      "expected": {
+        "status": "active",
+        "customer": "上下文实验客户甲",
+        "note": "分开发票，周五发货；只存草稿",
+        "target_sku": "CTX2c107d00",
+        "target_quantity": 23,
+        "constraint": null
+      },
+      "usage": {
+        "prompt_tokens": 7758,
+        "completion_tokens": 488,
+        "total_tokens": 8246
+      },
+      "billing": {
+        "currency": "CNY",
+        "estimated_amount": "0.000911",
+        "pricing_source": "agent_core.prices",
+        "cache_assumption": "uncached_upper_bound",
+        "complete": true
+      },
+      "duration_ms": 4843.661799968686,
+      "tool_attempts": [],
+      "input_sha256": "8c76b960a44e04d3a756c02dbbb478aebcbce3d36289d47c2cd514fc8eeec174"
+    },
+    {
+      "case_id": "ctx-revision",
+      "strategy": "structured",
+      "passed": true,
+      "failed_checks": [],
+      "visible_text": "{\"status\":\"active\",\"customer\":\"上下文实验客户甲\",\"note\":\"分开发票，周五发货；只存草稿\",\"target_sku\":\"CTX2c107d00\",\"target_quantity\":23,\"constraint\":null}",
+      "expected": {
+        "status": "active",
+        "customer": "上下文实验客户甲",
+        "note": "分开发票，周五发货；只存草稿",
+        "target_sku": "CTX2c107d00",
+        "target_quantity": 23,
+        "constraint": null
+      },
+      "usage": {
+        "prompt_tokens": 1746,
+        "completion_tokens": 454,
+        "total_tokens": 2200
+      },
+      "billing": {
+        "currency": "CNY",
+        "estimated_amount": "0.000322",
+        "pricing_source": "agent_core.prices",
+        "cache_assumption": "uncached_upper_bound",
+        "complete": true
+      },
+      "duration_ms": 4871.4568999712355,
+      "tool_attempts": [],
+      "input_sha256": "c4b3ddf1cec8c1cebecc4d8ec78e02c41e5d5c0b37dae32c3fe1502ec7c46792"
+    },
+    {
+      "case_id": "ctx-ambiguous",
+      "strategy": "full",
+      "passed": true,
+      "failed_checks": [],
+      "visible_text": "```json\n{\"status\": \"ambiguous\", \"customer\": null, \"note\": null, \"target_sku\": null, \"target_quantity\": null, \"constraint\": null}\n```",
+      "expected": {
+        "status": "ambiguous",
+        "customer": null,
+        "note": null,
+        "target_sku": null,
+        "target_quantity": null,
+        "constraint": null
+      },
+      "usage": {
+        "prompt_tokens": 11599,
+        "completion_tokens": 445,
+        "total_tokens": 12044
+      },
+      "billing": {
+        "currency": "CNY",
+        "estimated_amount": "0.001265",
+        "pricing_source": "agent_core.prices",
+        "cache_assumption": "uncached_upper_bound",
+        "complete": true
+      },
+      "duration_ms": 5930.2249000174925,
+      "tool_attempts": [],
+      "input_sha256": "ab361630cfa3aaf2f6ad98c93788ee5b12aa0934922213e4661b762cdca6be21"
+    },
+    {
+      "case_id": "ctx-ambiguous",
+      "strategy": "current",
+      "passed": false,
+      "failed_checks": [
+        "status"
+      ],
+      "visible_text": "{\"status\":\"unknown\",\"customer\":null,\"note\":null,\"target_sku\":null,\"target_quantity\":null,\"constraint\":null}",
+      "expected": {
+        "status": "ambiguous",
+        "customer": null,
+        "note": null,
+        "target_sku": null,
+        "target_quantity": null,
+        "constraint": null
+      },
+      "usage": {
+        "prompt_tokens": 7758,
+        "completion_tokens": 99,
+        "total_tokens": 7857
+      },
+      "billing": {
+        "currency": "CNY",
+        "estimated_amount": "0.000778",
+        "pricing_source": "agent_core.prices",
+        "cache_assumption": "uncached_upper_bound",
+        "complete": true
+      },
+      "duration_ms": 3847.775599977467,
+      "tool_attempts": [],
+      "input_sha256": "8c76b960a44e04d3a756c02dbbb478aebcbce3d36289d47c2cd514fc8eeec174"
+    },
+    {
+      "case_id": "ctx-ambiguous",
+      "strategy": "structured",
+      "passed": true,
+      "failed_checks": [],
+      "visible_text": "{\"status\":\"ambiguous\",\"customer\":null,\"note\":null,\"target_sku\":null,\"target_quantity\":null,\"constraint\":null}",
+      "expected": {
+        "status": "ambiguous",
+        "customer": null,
+        "note": null,
+        "target_sku": null,
+        "target_quantity": null,
+        "constraint": null
+      },
+      "usage": {
+        "prompt_tokens": 1691,
+        "completion_tokens": 123,
+        "total_tokens": 1814
+      },
+      "billing": {
+        "currency": "CNY",
+        "estimated_amount": "0.000204",
+        "pricing_source": "agent_core.prices",
+        "cache_assumption": "uncached_upper_bound",
+        "complete": true
+      },
+      "duration_ms": 5437.273300020024,
+      "tool_attempts": [],
+      "input_sha256": "c7db37af7a251af2ba749ef0cac4d4b2b035d5af3384061fb1d3a65a02c3e160"
+    },
+    {
+      "case_id": "ctx-none",
+      "strategy": "full",
+      "passed": true,
+      "failed_checks": [],
+      "visible_text": "{\"status\": \"none\", \"customer\": null, \"note\": null, \"target_sku\": null, \"target_quantity\": null, \"constraint\": null}",
+      "expected": {
+        "status": "none",
+        "customer": null,
+        "note": null,
+        "target_sku": null,
+        "target_quantity": null,
+        "constraint": null
+      },
+      "usage": {
+        "prompt_tokens": 11560,
+        "completion_tokens": 479,
+        "total_tokens": 12039
+      },
+      "billing": {
+        "currency": "CNY",
+        "estimated_amount": "0.001273",
+        "pricing_source": "agent_core.prices",
+        "cache_assumption": "uncached_upper_bound",
+        "complete": true
+      },
+      "duration_ms": 5825.131300021894,
+      "tool_attempts": [],
+      "input_sha256": "c9b7fbc6bc6dd625f9d36f264b8dd1e510fb5d661a702366cfa0eb089fdf02a8"
+    },
+    {
+      "case_id": "ctx-none",
+      "strategy": "current",
+      "passed": false,
+      "failed_checks": [
+        "status"
+      ],
+      "visible_text": "```json\n{\n  \"status\": \"unknown\",\n  \"customer\": null,\n  \"note\": null,\n  \"target_sku\": null,\n  \"target_quantity\": null,\n  \"constraint\": null\n}\n```",
+      "expected": {
+        "status": "none",
+        "customer": null,
+        "note": null,
+        "target_sku": null,
+        "target_quantity": null,
+        "constraint": null
+      },
+      "usage": {
+        "prompt_tokens": 7758,
+        "completion_tokens": 601,
+        "total_tokens": 8359
+      },
+      "billing": {
+        "currency": "CNY",
+        "estimated_amount": "0.000949",
+        "pricing_source": "agent_core.prices",
+        "cache_assumption": "uncached_upper_bound",
+        "complete": true
+      },
+      "duration_ms": 4865.494400030002,
+      "tool_attempts": [],
+      "input_sha256": "8c76b960a44e04d3a756c02dbbb478aebcbce3d36289d47c2cd514fc8eeec174"
+    },
+    {
+      "case_id": "ctx-none",
+      "strategy": "structured",
+      "passed": true,
+      "failed_checks": [],
+      "visible_text": "{\"status\":\"none\",\"customer\":null,\"note\":null,\"target_sku\":null,\"target_quantity\":null,\"constraint\":null}",
+      "expected": {
+        "status": "none",
+        "customer": null,
+        "note": null,
+        "target_sku": null,
+        "target_quantity": null,
+        "constraint": null
+      },
+      "usage": {
+        "prompt_tokens": 1655,
+        "completion_tokens": 159,
+        "total_tokens": 1814
+      },
+      "billing": {
+        "currency": "CNY",
+        "estimated_amount": "0.000213",
+        "pricing_source": "agent_core.prices",
+        "cache_assumption": "uncached_upper_bound",
+        "complete": true
+      },
+      "duration_ms": 3080.4260000004433,
+      "tool_attempts": [],
+      "input_sha256": "bee2ab3e5265e3216f7d3a45845df23b0cd780c510388662e3a92d7db1c1a846"
+    },
+    {
+      "case_id": "ctx-latest-error",
+      "strategy": "full",
+      "passed": false,
+      "failed_checks": [
+        "status",
+        "customer",
+        "note",
+        "target_sku",
+        "target_quantity"
+      ],
+      "visible_text": "{\"status\": \"active\", \"customer\": \"上下文实验客户旧\", \"note\": \"旧备注\", \"target_sku\": \"CTX2c107d00\", \"target_quantity\": 23, \"constraint\": null}",
+      "expected": {
+        "status": "unavailable",
+        "customer": null,
+        "note": null,
+        "target_sku": null,
+        "target_quantity": null,
+        "constraint": null
+      },
+      "usage": {
+        "prompt_tokens": 11961,
+        "completion_tokens": 6397,
+        "total_tokens": 18358
+      },
+      "billing": {
+        "currency": "CNY",
+        "estimated_amount": "0.003323",
+        "pricing_source": "agent_core.prices",
+        "cache_assumption": "uncached_upper_bound",
+        "complete": true
+      },
+      "duration_ms": 42558.86729998747,
+      "tool_attempts": [],
+      "input_sha256": "f77250e5c369f3fce51cfcdcc2d2e7e8e38a61f63879246f63288e54e659c9fd"
+    },
+    {
+      "case_id": "ctx-latest-error",
+      "strategy": "current",
+      "passed": false,
+      "failed_checks": [
+        "status"
+      ],
+      "visible_text": "{\"status\": \"unknown\", \"customer\": null, \"note\": null, \"target_sku\": null, \"target_quantity\": null, \"constraint\": null}",
+      "expected": {
+        "status": "unavailable",
+        "customer": null,
+        "note": null,
+        "target_sku": null,
+        "target_quantity": null,
+        "constraint": null
+      },
+      "usage": {
+        "prompt_tokens": 7758,
+        "completion_tokens": 392,
+        "total_tokens": 8150
+      },
+      "billing": {
+        "currency": "CNY",
+        "estimated_amount": "0.000878",
+        "pricing_source": "agent_core.prices",
+        "cache_assumption": "uncached_upper_bound",
+        "complete": true
+      },
+      "duration_ms": 5356.29050002899,
+      "tool_attempts": [],
+      "input_sha256": "8c76b960a44e04d3a756c02dbbb478aebcbce3d36289d47c2cd514fc8eeec174"
+    },
+    {
+      "case_id": "ctx-latest-error",
+      "strategy": "structured",
+      "passed": true,
+      "failed_checks": [],
+      "visible_text": "{\"status\": \"unavailable\", \"customer\": null, \"note\": null, \"target_sku\": null, \"target_quantity\": null, \"constraint\": null}",
+      "expected": {
+        "status": "unavailable",
+        "customer": null,
+        "note": null,
+        "target_sku": null,
+        "target_quantity": null,
+        "constraint": null
+      },
+      "usage": {
+        "prompt_tokens": 1655,
+        "completion_tokens": 279,
+        "total_tokens": 1934
+      },
+      "billing": {
+        "currency": "CNY",
+        "estimated_amount": "0.000254",
+        "pricing_source": "agent_core.prices",
+        "cache_assumption": "uncached_upper_bound",
+        "complete": true
+      },
+      "duration_ms": 3646.485199977178,
+      "tool_attempts": [],
+      "input_sha256": "c36c96fa7c0338d140377f02ed51e7974dce4bec7148c5a120d148add8675b6a"
+    },
+    {
+      "case_id": "ctx-unpersisted-constraint",
+      "strategy": "full",
+      "passed": true,
+      "failed_checks": [],
+      "visible_text": "```json\n{\"status\": \"active\", \"customer\": \"上下文实验客户甲\", \"note\": \"分开发票，周五发货；只存草稿\", \"target_sku\": \"CTX2c107d00\", \"target_quantity\": 23, \"constraint\": \"独立发货限制：只能周六上午发货。\"}\n```",
+      "expected": {
+        "status": "active",
+        "customer": "上下文实验客户甲",
+        "note": "分开发票，周五发货；只存草稿",
+        "target_sku": "CTX2c107d00",
+        "target_quantity": 23,
+        "constraint": "独立发货限制：只能周六上午发货。"
+      },
+      "usage": {
+        "prompt_tokens": 11985,
+        "completion_tokens": 367,
+        "total_tokens": 12352
+      },
+      "billing": {
+        "currency": "CNY",
+        "estimated_amount": "0.001275",
+        "pricing_source": "agent_core.prices",
+        "cache_assumption": "uncached_upper_bound",
+        "complete": true
+      },
+      "duration_ms": 4118.80850000307,
+      "tool_attempts": [],
+      "input_sha256": "1cd45de83aca01569ca78d3a67d6592b1f5b64f8638d1d4c96bd1942cc1559c0"
+    },
+    {
+      "case_id": "ctx-unpersisted-constraint",
+      "strategy": "current",
+      "passed": false,
+      "failed_checks": [
+        "status",
+        "customer",
+        "note",
+        "target_sku",
+        "target_quantity",
+        "constraint"
+      ],
+      "visible_text": "{\"status\": \"unknown\", \"customer\": null, \"note\": null, \"target_sku\": null, \"target_quantity\": null, \"constraint\": null}",
+      "expected": {
+        "status": "active",
+        "customer": "上下文实验客户甲",
+        "note": "分开发票，周五发货；只存草稿",
+        "target_sku": "CTX2c107d00",
+        "target_quantity": 23,
+        "constraint": "独立发货限制：只能周六上午发货。"
+      },
+      "usage": {
+        "prompt_tokens": 7788,
+        "completion_tokens": 449,
+        "total_tokens": 8237
+      },
+      "billing": {
+        "currency": "CNY",
+        "estimated_amount": "0.000900",
+        "pricing_source": "agent_core.prices",
+        "cache_assumption": "uncached_upper_bound",
+        "complete": true
+      },
+      "duration_ms": 4784.214099985547,
+      "tool_attempts": [],
+      "input_sha256": "5a38a5efe620ba443651bc835c54618edf13be51c01860cc231ab03b533553b9"
+    },
+    {
+      "case_id": "ctx-unpersisted-constraint",
+      "strategy": "structured",
+      "passed": false,
+      "failed_checks": [
+        "constraint"
+      ],
+      "visible_text": "```json\n{\"status\": \"active\", \"customer\": \"上下文实验客户甲\", \"note\": \"分开发票，周五发货；只存草稿\", \"target_sku\": \"CTX2c107d00\", \"target_quantity\": 23, \"constraint\": null}\n```",
+      "expected": {
+        "status": "active",
+        "customer": "上下文实验客户甲",
+        "note": "分开发票，周五发货；只存草稿",
+        "target_sku": "CTX2c107d00",
+        "target_quantity": 23,
+        "constraint": "独立发货限制：只能周六上午发货。"
+      },
+      "usage": {
+        "prompt_tokens": 1776,
+        "completion_tokens": 4291,
+        "total_tokens": 6067
+      },
+      "billing": {
+        "currency": "CNY",
+        "estimated_amount": "0.001629",
+        "pricing_source": "agent_core.prices",
+        "cache_assumption": "uncached_upper_bound",
+        "complete": true
+      },
+      "duration_ms": 32071.595099987462,
+      "tool_attempts": [],
+      "input_sha256": "70c59911b292d0932b57f2a9c94331a93668a16b733a099a4d7cc05d442ca8f7"
+    },
+    {
+      "case_id": "ctx-protected-overflow",
+      "strategy": "full",
+      "passed": true,
+      "failed_checks": [],
+      "visible_text": "{\"status\": \"active\", \"customer\": \"上下文实验客户甲\", \"note\": \"分开发票，周五发货；只存草稿\", \"target_sku\": \"CTX2c107d00\", \"target_quantity\": 23, \"constraint\": null}",
+      "expected": {
+        "status": "active",
+        "customer": "上下文实验客户甲",
+        "note": "分开发票，周五发货；只存草稿",
+        "target_sku": "CTX2c107d00",
+        "target_quantity": 23,
+        "constraint": null
+      },
+      "usage": {
+        "prompt_tokens": 11808,
+        "completion_tokens": 196,
+        "total_tokens": 12004
+      },
+      "billing": {
+        "currency": "CNY",
+        "estimated_amount": "0.001200",
+        "pricing_source": "agent_core.prices",
+        "cache_assumption": "uncached_upper_bound",
+        "complete": true
+      },
+      "duration_ms": 3059.596600010991,
+      "tool_attempts": [],
+      "input_sha256": "20691f5ad830be0e6e92a308b87a51b3b79cfcbd243921596b33eadb6f5beecd"
+    },
+    {
+      "case_id": "ctx-protected-overflow",
+      "strategy": "current",
+      "passed": true,
+      "failed_checks": [],
+      "visible_text": "{\"status\": \"active\", \"customer\": \"上下文实验客户甲\", \"note\": \"分开发票，周五发货；只存草稿\", \"target_sku\": \"CTX2c107d00\", \"target_quantity\": 23, \"constraint\": null}",
+      "expected": {
+        "status": "active",
+        "customer": "上下文实验客户甲",
+        "note": "分开发票，周五发货；只存草稿",
+        "target_sku": "CTX2c107d00",
+        "target_quantity": 23,
+        "constraint": null
+      },
+      "usage": {
+        "prompt_tokens": 11808,
+        "completion_tokens": 250,
+        "total_tokens": 12058
+      },
+      "billing": {
+        "currency": "CNY",
+        "estimated_amount": "0.001219",
+        "pricing_source": "agent_core.prices",
+        "cache_assumption": "uncached_upper_bound",
+        "complete": true
+      },
+      "duration_ms": 4261.973699962255,
+      "tool_attempts": [],
+      "input_sha256": "20691f5ad830be0e6e92a308b87a51b3b79cfcbd243921596b33eadb6f5beecd"
+    },
+    {
+      "case_id": "ctx-protected-overflow",
+      "strategy": "structured",
+      "passed": true,
+      "failed_checks": [],
+      "visible_text": "{\"status\": \"active\", \"customer\": \"上下文实验客户甲\", \"note\": \"分开发票，周五发货；只存草稿\", \"target_sku\": \"CTX2c107d00\", \"target_quantity\": 23, \"constraint\": null}",
+      "expected": {
+        "status": "active",
+        "customer": "上下文实验客户甲",
+        "note": "分开发票，周五发货；只存草稿",
+        "target_sku": "CTX2c107d00",
+        "target_quantity": 23,
+        "constraint": null
+      },
+      "usage": {
+        "prompt_tokens": 11519,
+        "completion_tokens": 356,
+        "total_tokens": 11875
+      },
+      "billing": {
+        "currency": "CNY",
+        "estimated_amount": "0.001227",
+        "pricing_source": "agent_core.prices",
+        "cache_assumption": "uncached_upper_bound",
+        "complete": true
+      },
+      "duration_ms": 3572.183300042525,
+      "tool_attempts": [],
+      "input_sha256": "1f382492d51bb58faf73a30c67b73bb7df7431d302651af9cf9c079856a31988"
+    }
+  ],
+  "journal_audit": {
+    "requests": 30,
+    "known_spent": "0.028319",
+    "unknown_requests": 0
+  }
+}

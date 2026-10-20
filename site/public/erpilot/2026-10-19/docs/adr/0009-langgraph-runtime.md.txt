@@ -1,0 +1,50 @@
+# ADR-0009：LangGraph 编排与 PostgreSQL checkpoint
+
+- 状态：已接受并实施
+- 日期：2026-10-06
+- 关联：ADR-0005/0006/0007/0008；[M6–8 实施计划](../superpowers/plans/2026-10-06-langgraph-postgres-hitl.md)
+
+## 背景
+
+手写 loop 已承担流式生成、工具执行、重试与审批等待。继续扩展跨断连和进程
+重启能力会把更多自定义状态机放进 agent_core。ADR-0008 提出的完整、框架无关
+运行恢复协议范围很大，当前阶段只需要可靠保存 LangGraph 执行状态和待审批中断。
+
+## 决策
+
+1. 使用 LangGraph StateGraph 取代生产运行时的手写 AgentLoop。保留现有
+   `LLMClient`、`Tool`、`AgentEvent` 与 SSE 事件协议。
+2. agent_core 负责可序列化图状态、模型/工具/审批节点及事件适配；不依赖 ERP
+   或 MCP 包。写工具必须配置代码级审批 gate，图在 `interrupt` 前 checkpoint
+   规范化参数、稳定 `client_token` 和 `pending_id`。
+3. API 通过 `AsyncPostgresSaver` 持久化 graph checkpoint。缺少或无法连接
+   `ERPILOT_CHECKPOINT_DATABASE_URL` 时 API 启动失败，不回退到内存 saver。
+   启用严格 MsgPack 反序列化；不自动删除 checkpoint。
+4. PostgreSQL 只保存图状态。ERP 业务数据和 API RunStore 继续使用 SQLite；
+   RunStore 仅投影已完成对话供展示和兼容，不作为审批或恢复执行状态的权威源。
+5. 新增 session state 查询和审批恢复 SSE 路由。原有活动 SSE 审批接口和
+   `{ok: boolean}` 响应继续可用。无审批中断的节点失败可由用户显式继续原
+   checkpoint，不重建消息或工具参数。CLI、demo 和离线评测显式使用
+   InMemorySaver；每个评测 case 隔离 saver 与 thread。
+6. 本次不实现 ADR-0008 中的 R01–R10 完整运行恢复协议：不保证已批准任务在
+   进程崩溃后的自动续跑，不增加租约、TTL、unknown 状态机、补偿和多进程调度。
+
+## 理由
+
+LangGraph 提供图状态与 interrupt checkpoint 的恢复原语，可在保持业务工具层
+不变的情况下替代自建控制流。把 saver 限定在 API 层保留了 agent_core 的
+可移植性，也明确隔离了业务 SQLite 与执行 checkpoint。session 恢复由已存图
+状态驱动，避免从展示记录重放未完成写入。
+
+## 后果
+
+- API 部署必须配置 PostgreSQL，并在服务可用前完成 saver setup。
+- session ID 转成稳定、有界的 checkpoint thread ID；同一 session 的 API graph
+  调用在单进程内串行执行。
+- 待审批可跨页面断连并由新运行时实例恢复。获批工具使用 checkpoint 中原始
+  token 和参数；拒绝不会执行 handler。
+- 节点执行失败后，session state 标示 `interrupted`，用户可以请求从已保存的
+  图节点继续；历史工具结果的 `ok` 状态也随图状态持久化，页面恢复时不会把
+  工具错误显示成成功。
+- PostgreSQL 不可用时服务拒绝启动。检查点保留且不自动清理，部署方负责容量
+  管理；完整崩溃窗口对账仍留待后续独立决策。

@@ -1,0 +1,223 @@
+"""Session-owned immutable impacts, checked in the same transaction as execution."""
+
+import json
+from datetime import UTC, datetime, timedelta
+from uuid import uuid4
+
+from sqlalchemy import inspect
+from sqlalchemy.orm import Session
+
+from erp_store.db import BusinessOperationRow, OrderRow, ProductRow, StockRow
+from erp_store.models import OrderStatus
+from erp_store.mutations import CANCELLABLE_STATUSES, ErpMutations, MutationError
+
+_HINT = "请重新预览操作影响并发起新的审批；本次操作未执行"
+
+
+class ErpOperations(ErpMutations):
+    def __init__(self, engine, *, clock=None):
+        super().__init__(engine)
+        self._clock = clock or (lambda: datetime.now(UTC))
+        if not inspect(engine).has_table(BusinessOperationRow.__tablename__):
+            with self._write_session() as s:
+                BusinessOperationRow.__table__.create(s.connection(), checkfirst=True)
+                s.commit()
+
+    def _now(self):
+        now = self._clock()
+        if now.tzinfo is None or now.utcoffset() is None:
+            raise ValueError("operation clock must include timezone")
+        return now.astimezone(UTC)
+
+    @staticmethod
+    def _owner(session_id):
+        if not isinstance(session_id, str) or not session_id.strip() or len(session_id) > 128:
+            raise MutationError("invalid_argument", "会话标识须为 1~128 个非空字符")
+
+    def _cancel_snapshot(self, s, order_id):
+        row = s.get(OrderRow, order_id)
+        if row is None:
+            raise MutationError("not_found", "订单不存在", "请确认订单号")
+        if OrderStatus(row.status) not in CANCELLABLE_STATUSES:
+            raise MutationError(
+                "invalid_transition",
+                f"订单状态「{row.status}」不可取消",
+                "仅待付款/待发货可取消；此操作不执行退款",
+            )
+        order = self._load_order(s, order_id)
+        items = []
+        returned = {}
+        for item in order.items:
+            stock = s.get(StockRow, item.sku)
+            before = stock.quantity + returned.get(item.sku, 0) if stock else None
+            items.append(
+                dict(
+                    sku=item.sku,
+                    name=item.name,
+                    quantity=item.quantity,
+                    unit_price=item.unit_price,
+                    line_total=round(item.unit_price * item.quantity, 2),
+                    stock_before=before,
+                    stock_after=before + item.quantity if stock else None,
+                    warehouse=stock.warehouse if stock else None,
+                )
+            )
+            returned[item.sku] = returned.get(item.sku, 0) + item.quantity
+        return dict(
+            order_id=order_id,
+            customer=order.customer,
+            status_before=row.status,
+            status_after=OrderStatus.CANCELLED.value,
+            total_amount=order.total_amount,
+            note=order.note,
+            items=items,
+        )
+
+    @staticmethod
+    def _adjust_snapshot(s, sku, delta):
+        if type(delta) is not int or delta == 0:
+            raise MutationError("invalid_argument", "库存调整量须为非零整数")
+        product = s.get(ProductRow, sku)
+        if product is None:
+            raise MutationError("not_found", "商品不存在", "请确认商品 SKU")
+        stock = s.get(StockRow, sku)
+        before = stock.quantity if stock else 0
+        after = before + delta
+        if after < 0:
+            raise MutationError("insufficient_stock", "调整后库存不能为负数", "请减少出库数量")
+        return dict(
+            sku=sku,
+            name=product.name,
+            delta=delta,
+            quantity_before=before,
+            quantity_after=after,
+            warehouse=stock.warehouse if stock else "主仓",
+            stock_exists=stock is not None,
+        )
+
+    def _save(self, s, session_id, kind, snapshot):
+        self._owner(session_id)
+        row = BusinessOperationRow(
+            operation_id=uuid4().hex,
+            session_id=session_id,
+            kind=kind,
+            snapshot=json.dumps(snapshot, ensure_ascii=False),
+            expires_at=(self._now() + timedelta(minutes=30)).isoformat(),
+        )
+        s.add(row)
+        s.flush()
+        return self._payload(row, "open", None)
+
+    def prepare_cancel(self, session_id, order_id):
+        with self._write_session() as s:
+            result = self._save(s, session_id, "cancel_order", self._cancel_snapshot(s, order_id))
+            s.commit()
+            return result
+
+    def prepare_adjust(self, session_id, sku, delta):
+        with self._write_session() as s:
+            result = self._save(s, session_id, "adjust_stock", self._adjust_snapshot(s, sku, delta))
+            s.commit()
+            return result
+
+    @staticmethod
+    def _row(s, session_id, operation_id, kind=None):
+        row = s.get(BusinessOperationRow, operation_id)
+        if row is None or row.session_id != session_id or (kind and row.kind != kind):
+            raise MutationError("not_found", "操作不存在或不属于此会话", "请重新预览当前操作")
+        return row
+
+    @staticmethod
+    def _payload(row, status, reason):
+        return dict(
+            operation_id=row.operation_id,
+            kind=row.kind,
+            status=status,
+            expires_at=row.expires_at,
+            summary=json.loads(row.snapshot),
+            invalid_reason=reason,
+        )
+
+    def _validate(self, s, row):
+        if datetime.fromisoformat(row.expires_at) <= self._now():
+            raise MutationError("operation_expired", "操作预览已过期", _HINT)
+        original = json.loads(row.snapshot)
+        try:
+            current = (
+                self._cancel_snapshot(s, original["order_id"])
+                if row.kind == "cancel_order"
+                else self._adjust_snapshot(s, original["sku"], original["delta"])
+            )
+        except MutationError as exc:
+            raise MutationError(
+                "operation_changed", f"业务条件已变化：{exc.message}", _HINT
+            ) from exc
+        if current != original:
+            raise MutationError("operation_changed", "订单或商品库存条件已变化", _HINT)
+
+    def get(self, session_id, operation_id):
+        # One locked snapshot avoids a mixed preview when an order and stock change together.
+        with self._write_session() as s:
+            row = self._row(s, session_id, operation_id)
+            if row.result is not None:
+                return self._payload(row, "executed", None)
+            try:
+                self._validate(s, row)
+            except MutationError as exc:
+                return self._payload(
+                    row,
+                    "expired" if exc.code == "operation_expired" else "changed",
+                    f"{exc.message}；{exc.hint}",
+                )
+            return self._payload(row, "open", None)
+
+    @staticmethod
+    def _request(row):
+        return ["business_operation", row.session_id, row.kind, row.operation_id]
+
+    def execute(self, session_id, operation_id, kind, client_token):
+        with self._write_session() as s:
+            row = self._row(s, session_id, operation_id, kind)
+            request = self._request(row)
+            prior = self._prior(s, client_token, request)
+            if prior is not None:
+                return prior
+            if row.result is not None:
+                result = json.loads(row.result)
+                self._remember(s, client_token, request, result)
+                s.commit()
+                return result
+            self._validate(s, row)
+            snapshot = json.loads(row.snapshot)
+            if kind == "cancel_order":
+                order = self._cancel_order_in_session(s, snapshot["order_id"], None, request)
+                result = {
+                    **order.model_dump(mode="json"),
+                    "result_note": "订单已取消；存在库存记录的商品已回补，此操作不执行退款",
+                }
+            else:
+                sku, quantity = self._adjust_stock_in_session(
+                    s, snapshot["sku"], snapshot["delta"], None, request
+                )
+                result = dict(
+                    sku=sku,
+                    quantity=quantity,
+                    delta=snapshot["delta"],
+                    note="库存已调整，当前数量见 quantity",
+                )
+            self._remember(s, client_token, request, result)
+            row.result = json.dumps(result, ensure_ascii=False)
+            s.commit()
+            return result
+
+    def lookup_operation(self, session_id, kind, arguments, token):
+        with Session(self._engine) as s:
+            try:
+                row = self._row(s, session_id, arguments["operation_id"], kind)
+            except MutationError:
+                return "absent", None
+            try:
+                result = self._prior(s, token, self._request(row))
+            except MutationError:
+                return "conflict", None
+            return ("found", result) if result is not None else ("absent", None)

@@ -1,0 +1,49 @@
+# 崩溃恢复与对账验收记录
+
+- 代码 revision：`eaf2830`（`test: make crash recovery matrix runnable on Windows`）
+- 报告日期：2026-10-08
+- 总体结果：**R01–R06 硬崩溃矩阵通过；R07–R10 按实施计划由组件测试覆盖并通过。ADR-0010 仍是提案、待评审。**
+- 数据库：本地 Docker PostgreSQL 上的隔离库 `erpilot_test`。每个场景新建 `test_process_recovery_<uuid>` schema，结束时删除。ERP 使用临时 SQLite，未使用开发业务库。
+
+## 结果摘要
+
+子进程在审批 checkpoint 后、事务提交前、提交后和最终答复前硬退出。父进程核对退出码、同一 `pending_id` / 原期限、handler 次数、mutation 行数和业务快照。四种写工具的 R03–R06 在同一次 19 项进程测试里通过，没有用定点重跑拼出通过率。
+
+全量 `uv run pytest` 另有两个失败。展示事件保留期用例期望清理仍在活动中的 run；实现只清理已结束 run。该用例已改为先 `finish_run`，定向复测通过。另一失败在未提交的评测工作区：`test_baseline_checkpoint_survives_later_setup_failure` 期望 scorer `v2.1`，同工作区的 `SCORER_VERSION` 是 `v2.4`。这不是恢复代码的失败，因此不把 ADR 标成已接受。
+
+## 验收矩阵
+
+| ID | 状态 | 证据 |
+|---|---|---|
+| R01 | 通过 | `test_r01_process_exit_after_approval_checkpoint_before_display`：prepare 后进程以 70 退出；重载 checkpoint 的 interrupt 是同一 `pending_id`、同一参数、同一 `expires_at`；handler 日志不存在；库存快照不变。 |
+| R02 | 通过 | `test_r02_restart_does_not_extend_approval_expiry`：TTL 1 秒，等待后继续；handler 未被调用；库存不变；`invocation_status` 为 `expired`。 |
+| R03 | 通过 | `after_approval_checkpoint`，四种写工具。批准 checkpoint 后、写 handler 前以 71 退出；崩溃时业务快照等于事前；恢复后 handler 1 次、mutation 1 行、业务相对事前有变化。 |
+| R04 | 通过 | `before_commit`，四种写工具。提交前以 72 退出；崩溃时业务快照等于事前；恢复后 handler 共 2 次（原尝试加一次原 token 重试）、mutation 仍为 1 行。 |
+| R05 | 通过 | `after_commit`，四种写工具。提交后、graph 结果前以 73 退出；崩溃时业务已经变化；恢复后 handler 仍为 1 次、mutation 1 行。 |
+| R06 | 通过 | `before_final_answer`，四种写工具。结果 checkpoint 后、最终答复前以 74 退出；恢复不再增加 handler 调用；mutation 1 行。 |
+| R07 | 通过（组件级） | `test_api.py` 的过期 410、未知 pending、取消未决审批不写库。并发相反决定没有单独的进程级场景；实施计划把 R07 映射到这些 API 用例。 |
+| R08 | 通过（组件级） | `test_cancel_during_active_approval_stream_returns_busy` 与取消后不写库。取消不是业务回滚。 |
+| R09 | 通过（组件级） | 全量 pytest 中的 `test_reconcile_conflict_or_failure_marks_unknown_without_write` 与 `test_reconcile_rejects_changed_tool_schema_before_lookup_or_write` 通过。查询失败、同 token 异参和 schema 不兼容不调用写 handler。 |
+| R10 | 通过（组件级） | `test_run_event_cursor_replays_then_stops_for_completed_run`、RunStore 游标与 web 按 `(run_id, seq)` 去重。活动 run 的过期展示事件保留，已结束 run 才清理。 |
+
+R03–R06 参数化覆盖 `create_order`、`cancel_order`、`adjust_stock`、`set_product_status`。JUnit 记录 19 项、0 失败、0 跳过，用时 371 秒：`reports/acceptance/2026-10-08-process-recovery.xml`。
+
+## 零容忍
+
+测试在临时库上断言，没有把数值快照另存成一份表：
+
+- 未经批准不写入：R01 无 handler 调用且快照不变；R02 过期批准无 handler 调用且快照不变；R03/R04 在崩溃点快照等于事前。
+- 不重复改业务：每个恢复场景结束后 `MutationRequestRow` 恰好 1 行。R05/R06 的 handler 次数保持 1。R04 允许第二次调用，但仍只有 1 行 mutation。
+- 失败不报成功：R04 崩溃点业务未变；过期路径的 `invocation_status` 是 `expired`，不是成功。
+
+## 本次命令
+
+- `uv run pytest apps/api/tests/test_process_recovery.py -q --junitxml=reports/acceptance/2026-10-08-process-recovery.xml`：19 passed，0 skipped，371 秒。
+- `uv run pytest apps/api/tests/test_process_recovery.py apps/api/tests/test_api.py apps/api/tests/test_run_store.py -q`：46 passed，0 skipped。
+- `uv run ruff check .`：通过。
+- `apps/web`：`npm test` 49 passed；`npm run build` 通过。
+- `uv run pytest -q`：两个失败，见上文。展示用例修复后，`test_presentation_events_roundtrip_dedup_and_prune` 与 `test_pruning_only_deletes_old_terminal_run_events` 定向复测通过。评测版本断言未改，全量套件因此不能记为全绿。
+
+## 完成门槛
+
+R01–R10 的计划内证据已经齐。ADR-0010 保持提案，因为全量 pytest 还有无关失败，并且计划要求评审接受后才改为已接受。多 worker 执行租约、登录和自动补偿仍不在范围内。

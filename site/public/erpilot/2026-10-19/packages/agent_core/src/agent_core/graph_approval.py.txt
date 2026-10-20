@@ -1,0 +1,41 @@
+"""Fixed approval payload and strict decision validation."""
+
+from copy import deepcopy
+from typing import Literal
+
+from pydantic import BaseModel, ConfigDict, StrictBool, model_validator
+
+
+class ResumeDecision(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    pending_id: str
+    approved: StrictBool
+    reason: str = ""
+    outcome: Literal["approved", "denied", "expired", "cancelled"] | None = None
+
+    @model_validator(mode="after")
+    def outcome_matches_boolean(self):
+        if self.outcome is not None and (self.outcome == "approved") != self.approved:
+            raise ValueError("outcome must match approved")
+        return self
+
+    @property
+    def resolved_outcome(self) -> str:
+        return self.outcome or ("approved" if self.approved else "denied")
+
+
+def make_approval_payload(call):
+    return {
+        "call_id": call["call_id"],
+        "pending_id": call["pending_id"],
+        "tool": call["name"],
+        "risk": call["risk"],
+        "arguments": deepcopy(call["arguments"]),
+        "expires_at": call.get("approval_expires_at"),
+    }
+
+
+class ReconciliationDecision(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    call_id: str
+    retry: StrictBool

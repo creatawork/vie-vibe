@@ -1,0 +1,256 @@
+{
+  "date": "2026-10-19",
+  "scope": "articles 03-07",
+  "paid_requests": 0,
+  "inputs": {
+    "reports/acceptance/2026-10-08-process-recovery.xml": "d5ffaa89222dab03ddc422e2c8aa76bd9810deb56f994fa2c5419cb98be6f658",
+    "reports/evals/20261008-104243-fdd8ba.json": "5a5c2616bed5303cca9481d353124855fb5c9f66328261f304ea347a76d6e0e5",
+    "reports/evals/20261008-110631-3b5f1f.json": "2a59148b3d8ec3bebc9027cb62c2717c66889a4a1a184f6867157d46e0d1b186",
+    "reports/evals/20261008-110815-1a9599.json": "3fd142c6e71083e3d214004e415f44a7391018f8867006152c326de06a59c309",
+    "reports/evals/20261009-134617-f7b440.json": "04252f569b1683cd2babc3fa095380eb020a345b2bf2edbbe919902b2a21edad",
+    "reports/evals/20261009-134746-2277a2.json": "2229e37178e483aa91ab7e2b1cb6d839be49cf334de0268527456bbb94d5bb42",
+    "reports/security/20261009-prompt-injection-v26-rescore.md": "b144230e2841b210907f701ad7ee71e892e06727b722b901532fde9eb78d2b40",
+    "reports/rag/20261019-retrieval-v1-real.json": "a8082cd7b229792b8847e66c6e3c0a7676634ee23cc58ddfc3e5b26eb3976eb5",
+    "packages/rag/src/rag/benchmarks/policy-retrieval-v1.json": "6e2fbec90ffede7ed2e9c4f9329eda92bc8910e351231f7ece1ce21560c7f099",
+    "packages/rag/src/rag/policies/catalog.json": "f5be1de67facd3f6e4eac5f1f36c4857eac8be4bab2b0121a1c2b0a868628c75",
+    "reports/acceptance/20261019-structured-glm-campaign-03-summary.json": "fdb378b565926f584748fb36f74388b7db2bf0196ceef6d886fb07349ac2a926",
+    "reports/acceptance/20261019-structured-deepseek-campaign-01-summary.json": "98d876cdc5df8a86f0e026590d74c5bb39072619b813ae69d379d7eb4355a36e",
+    "reports/context/20261019-context-glm-live-02.json": "7a3222dd9a0cb15e1ba92ec88f3acb0bcd011aa3ecbe58ba2771d138a75cb72f",
+    "reports/context/20261019-context-deepseek-live-02.json": "e736091dd5961e52cadeeabc6885f8a33175470309aaaf12f4a8620d6ff60a7c",
+    "reports/context/20261019-workflow-glm-01.json": "530d3a026c7f0c66fb224564869958a100257eaa3b21b7b7647c563d09bfcfab",
+    "reports/context/20261019-workflow-deepseek-01.json": "5a6230e8ee31fc22e97b4410205977c8cfb4b8982a59c106285f1ebab7af3b21"
+  },
+  "historical_crash_tests": {
+    "tests": 19,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0
+  },
+  "historical_evaluation": {
+    "reports/evals/20261008-104243-fdd8ba.json": {
+      "cases": 35,
+      "passed": 32
+    },
+    "reports/evals/20261008-110631-3b5f1f.json": {
+      "cases": 3,
+      "passed": 2
+    },
+    "reports/evals/20261008-110815-1a9599.json": {
+      "cases": 1,
+      "passed": 1
+    },
+    "reports/evals/20261009-134617-f7b440.json": {
+      "cases": 4,
+      "passed": 3
+    },
+    "reports/evals/20261009-134746-2277a2.json": {
+      "cases": 4,
+      "passed": 2
+    }
+  },
+  "injection_rescore": {
+    "source": "reports/security/20261009-prompt-injection-v26-rescore.md",
+    "basis": "historical rescore record; original trace files absent here; no new trace replay"
+  },
+  "retrieval": {
+    "cases": 36,
+    "answerable": 24,
+    "out_of_corpus": 12,
+    "dev": 12,
+    "test": 24,
+    "documents": 3,
+    "chunks": 18,
+    "methods": {
+      "vector_current": {
+        "cutoff": 0.57,
+        "test_percentages": [
+          "96.9",
+          "58.1",
+          "87.5"
+        ]
+      },
+      "vector": {
+        "cutoff": 0.6706680073111653,
+        "test_percentages": [
+          "59.4",
+          "100.0",
+          "100.0"
+        ]
+      },
+      "bm25": {
+        "cutoff": 4.162054389149395,
+        "test_percentages": [
+          "87.5",
+          "54.8",
+          "62.5"
+        ]
+      },
+      "rrf": {
+        "cutoff": 0.03252247488101535,
+        "test_percentages": [
+          "78.1",
+          "87.5",
+          "75.0"
+        ]
+      }
+    }
+  },
+  "structured_policy": {
+    "glm": {
+      "cases": 13,
+      "completed": 13,
+      "passed": 11,
+      "failed_case_ids": [
+        "rag-grounding-unavailable",
+        "rag-grounding-inactive"
+      ]
+    },
+    "deepseek": {
+      "cases": 13,
+      "completed": 13,
+      "passed": 11,
+      "failed_case_ids": [
+        "rag-grounding-freight-gap",
+        "rag-grounding-unavailable"
+      ]
+    }
+  },
+  "context_snapshot": {
+    "glm": {
+      "full": {
+        "cases": 10,
+        "passed": 9,
+        "prompt_tokens": 124062
+      },
+      "current": {
+        "cases": 10,
+        "passed": 2,
+        "prompt_tokens": 68965
+      },
+      "structured": {
+        "cases": 10,
+        "passed": 8,
+        "prompt_tokens": 25720
+      },
+      "prompt_reduction_percent": 62.7057202929022
+    },
+    "deepseek": {
+      "full": {
+        "cases": 10,
+        "passed": 10,
+        "prompt_tokens": 124696
+      },
+      "current": {
+        "cases": 10,
+        "passed": 2,
+        "prompt_tokens": 69202
+      },
+      "structured": {
+        "cases": 10,
+        "passed": 9,
+        "prompt_tokens": 26300
+      },
+      "prompt_reduction_percent": 61.99531805439149
+    }
+  },
+  "context_workflow": {
+    "glm": {
+      "current": {
+        "complete_scenarios": 0,
+        "passed_scenarios": 0,
+        "executed_turns": 5,
+        "planned_turns": 17,
+        "passed_turns": 2
+      },
+      "structured": {
+        "complete_scenarios": 1,
+        "passed_scenarios": 1,
+        "executed_turns": 7,
+        "planned_turns": 17,
+        "passed_turns": 5
+      }
+    },
+    "deepseek": {
+      "current": {
+        "complete_scenarios": 2,
+        "passed_scenarios": 1,
+        "executed_turns": 15,
+        "planned_turns": 17,
+        "passed_turns": 13
+      },
+      "structured": {
+        "complete_scenarios": 3,
+        "passed_scenarios": 3,
+        "executed_turns": 17,
+        "planned_turns": 17,
+        "passed_turns": 17
+      }
+    }
+  },
+  "approval_excerpt": "exact source match; standalone imports verified",
+  "idempotency_example": {
+    "observed_delta": 5,
+    "replay_same_result": true,
+    "lookup_status": "found",
+    "different_arguments": "idempotency_conflict"
+  },
+  "articles": {
+    "03-langgraph-approval.md": {
+      "characters_including_code": 4566,
+      "local_links_checked": 7,
+      "sha256": "5afaa7e96623385338ecbafa76f5e19f92f48ba928e42442b9c7a53ee4e731b4"
+    },
+    "04-idempotency-and-recovery.md": {
+      "characters_including_code": 4470,
+      "local_links_checked": 9,
+      "sha256": "7dd99d820b003060db90d5a3a7321978bf13665173e278f689230aa5d70c347c"
+    },
+    "05-agent-evaluation.md": {
+      "characters_including_code": 4283,
+      "local_links_checked": 9,
+      "sha256": "3ceb8a769df9b19f5308c4d3d3a4ad216762ae6cc960ceb54e0e3e0e00a48477"
+    },
+    "06-rag-evidence-and-answers.md": {
+      "characters_including_code": 4261,
+      "local_links_checked": 8,
+      "sha256": "250e885e8fa6ea4f446d51d782483fc56db104e74b306792c8734ec4b5b049b1"
+    },
+    "07-context-and-multi-turn-state.md": {
+      "characters_including_code": 4964,
+      "local_links_checked": 10,
+      "sha256": "eec96410167ddb828ce889ea52cfb64f20c33e7f90312ccb9b4b923455017d98"
+    }
+  },
+  "source_files_sha256": {
+    "packages/agent_core/src/agent_core/graph.py": "385fbb6b3d99a0665f97b122c4ce02046d8371f495c250343ab0d2d5f63fd71e",
+    "packages/agent_core/src/agent_core/graph_approval.py": "9705aa427f4ece9916857339d7e03fb12e2649f99e6dd3352c224fd4fbd4dadc",
+    "packages/agent_core/src/agent_core/graph_tools.py": "84f93c331bb2da84acb63b1fc85d37f8c684a08d2e04711bd845092814f04fae",
+    "packages/agent_core/src/agent_core/context_view.py": "99d0bf77086feb5278bc213b724f3577e31e8ced339a37f50691da52f22c2d6f",
+    "packages/erp_store/src/erp_store/mutations.py": "2ff6fbe2dc93ad1ac5955a5d973543a06090215425ea317bf5f1718df6db3fad",
+    "packages/erp_store/src/erp_store/drafts.py": "b4748414a67b14786406b6cbd876ee89c37012ebf706eb41ba021d19984b920d",
+    "packages/erp_store/src/erp_store/operations.py": "53d572230e640c5cacffa1e8fd80ad00959071a47acaa7e6423dd42d40512620",
+    "packages/evals/src/evals/runner.py": "11a7d8d6d0f324473687a0e60198ceb4d9ef231194e6015bbb50db31dddcb0a5",
+    "packages/evals/src/evals/checks.py": "8082f03074362f13855aaf5cae0fb590562396c88f35aa9a2992c60a4e61a21b",
+    "packages/evals/src/evals/gate.py": "30ffcbdc11cd059af019b8a82a55a71f6f57c36dc6037796243e4aa3c6decf8a",
+    "packages/evals/src/evals/compare.py": "87a6587ed0e3b75b41a4c77b2ab75bbd57a2fedb824e6f8d90b8cf8d2490d8b5",
+    "packages/evals/src/evals/context_workflow.py": "960abdd6fa572e6326775c94962bc2e1e644e315a7cf4fca8be86c3955a1da48",
+    "packages/rag/src/rag/lexical.py": "cea6ff7e332042e5c6429872e6e745ccd248047d96ec32a5efdb74375c81143a",
+    "packages/mcp_erp/src/mcp_erp/context_view.py": "7899cb31a0d65c106108eb7dd5856317b8278dc27dadcb8c314949f6c2a76dbc",
+    "packages/mcp_erp/src/mcp_erp/policy_answer.py": "34757747812640dbc80af287fbf2724d377013167a9a79ebf9147007edd291ce",
+    "apps/api/src/erpilot_api/events.py": "be61bbdce5fd0eb76b6a1c706821a2db7051c6fbdd4ebd0a713214d63c7dfc61",
+    "apps/web/src/protocol.ts": "9f1c157fd68ed81625dc0fe4b8749b7fb40b319b8cc13106393fa3ba25451932",
+    "examples/articles/04_idempotency.py": "b03953d98de0e32eb90d311158154136e11c9fa07f85cf2be5f8e0be62592bbc"
+  },
+  "final_document_checks": {
+    "local_links_checked": 80,
+    "balanced_fences": true,
+    "clean_whitespace": true,
+    "bidirectional_navigation": true,
+    "unwritten_topics_remaining_in_index": false
+  },
+  "offline_tests": {
+    "approval_and_mutations": 83,
+    "evaluation_rag_and_context": 195,
+    "total_passed": 278
+  }
+}

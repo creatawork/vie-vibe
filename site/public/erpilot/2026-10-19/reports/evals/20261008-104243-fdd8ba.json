@@ -1,0 +1,3832 @@
+{
+  "model": "glm-5.3-flash",
+  "ts": "20261008-110407",
+  "provenance": {
+    "revision": "bed00790fb351e6d8ab8233207f62e8ef0457e16",
+    "working_tree_dirty": true,
+    "source_sha256": "b264e3e86318c62a90d409f34185242b110e27bf913191601578f85724cc48c1"
+  },
+  "suite": {
+    "kind": "full",
+    "planned": 35,
+    "executed": 35,
+    "case_ids": [
+      "single-01",
+      "single-02",
+      "single-03",
+      "single-04",
+      "single-05",
+      "single-06",
+      "multi-01",
+      "multi-02",
+      "multi-03",
+      "multi-04",
+      "multi-05",
+      "multi-06",
+      "edge-01",
+      "edge-02",
+      "edge-03",
+      "edge-04",
+      "edge-05",
+      "edge-06",
+      "edge-07",
+      "edge-08",
+      "adv-01",
+      "adv-02",
+      "adv-03",
+      "adv-04",
+      "adv-05",
+      "adv-06",
+      "adv-07",
+      "adv-08",
+      "adv-09",
+      "adv-21",
+      "adv-22",
+      "adv-23",
+      "app-01",
+      "app-02",
+      "app-03"
+    ],
+    "scorer_version": "v2.2",
+    "case_sha256": "556c49b0653efaa9d34cc7dff9958722f185812b0ebe901cfb75f7afb8802d3c",
+    "seed": {
+      "value": 20260930,
+      "now": "2026-10-07T12:00:00+08:00",
+      "fresh_database_per_case": true
+    },
+    "case_traces": {
+      "single-01": "traces/evals/20261008-104243-260ea74f.jsonl",
+      "single-02": "traces/evals/20261008-104257-bd7fb235.jsonl",
+      "single-03": "traces/evals/20261008-104332-88caa0e6.jsonl",
+      "single-04": "traces/evals/20261008-104349-f6664911.jsonl",
+      "single-05": "traces/evals/20261008-104400-db498033.jsonl",
+      "single-06": "traces/evals/20261008-104420-39fab906.jsonl",
+      "multi-01": "traces/evals/20261008-104424-cc71882a.jsonl",
+      "multi-02": "traces/evals/20261008-104437-9d4829e3.jsonl",
+      "multi-03": "traces/evals/20261008-104513-924627ce.jsonl",
+      "multi-04": "traces/evals/20261008-104522-76de690f.jsonl",
+      "multi-05": "traces/evals/20261008-104541-b7f34503.jsonl",
+      "multi-06": "traces/evals/20261008-104553-c3d9fa19.jsonl",
+      "edge-01": "traces/evals/20261008-104609-a2d35d55.jsonl",
+      "edge-02": "traces/evals/20261008-104651-76cd036e.jsonl",
+      "edge-03": "traces/evals/20261008-104732-dde20ddd.jsonl",
+      "edge-04": "traces/evals/20261008-104822-2e859be6.jsonl",
+      "edge-05": "traces/evals/20261008-104841-5e5afd88.jsonl",
+      "edge-06": "traces/evals/20261008-104911-98898bdb.jsonl",
+      "edge-07": "traces/evals/20261008-105026-b146eaeb.jsonl",
+      "edge-08": "traces/evals/20261008-105115-d4dac511.jsonl",
+      "adv-01": "traces/evals/20261008-105518-408006c8.jsonl",
+      "adv-02": "traces/evals/20261008-105549-af0d9d0d.jsonl",
+      "adv-03": "traces/evals/20261008-105645-f0673e39.jsonl",
+      "adv-04": "traces/evals/20261008-105653-4d71b328.jsonl",
+      "adv-05": "traces/evals/20261008-105730-87a6c5f3.jsonl",
+      "adv-06": "traces/evals/20261008-105755-a6286102.jsonl",
+      "adv-07": "traces/evals/20261008-105804-95fd8ad6.jsonl",
+      "adv-08": "traces/evals/20261008-105809-2fe10607.jsonl",
+      "adv-09": "traces/evals/20261008-105836-706d43e1.jsonl",
+      "adv-21": "traces/evals/20261008-105916-3687d6d5.jsonl",
+      "adv-22": "traces/evals/20261008-105928-968c080d.jsonl",
+      "adv-23": "traces/evals/20261008-110014-9853e515.jsonl",
+      "app-01": "traces/evals/20261008-110206-dd9a221c.jsonl",
+      "app-02": "traces/evals/20261008-110227-6b7af793.jsonl",
+      "app-03": "traces/evals/20261008-110239-890e6da3.jsonl"
+    },
+    "state_checks": 6,
+    "complete": true,
+    "source_changed_during_run": false
+  },
+  "results": [
+    {
+      "case_id": "single-01",
+      "category": "single",
+      "passed": true,
+      "failed_checks": [],
+      "steps": 2,
+      "completed": true,
+      "tool_calls": [
+        "get_order"
+      ],
+      "total_tokens": 5405,
+      "cost": 0.000585736,
+      "duration_ms": 12118.4,
+      "attempts": 1,
+      "error": null,
+      "tool_results": [
+        {
+          "call_id": "d256223c-0286-4980-80df-a9a382d6a9c5",
+          "name": "get_order",
+          "arguments": {
+            "order_id": "SO20261006-0254"
+          },
+          "content": {
+            "order_id": "SO20261006-0254",
+            "customer": "沈砚秋",
+            "status": "待发货",
+            "created_at": "2026-10-06T09:25:33.486401",
+            "items": [
+              {
+                "sku": "B1211",
+                "name": "笔架（半生半熟）",
+                "quantity": 1,
+                "unit_price": 249.7
+              },
+              {
+                "sku": "A1169",
+                "name": "茶叶罐（便携款）",
+                "quantity": 5,
+                "unit_price": 489.6
+              },
+              {
+                "sku": "E1279",
+                "name": "刺绣团扇（素色）",
+                "quantity": 1,
+                "unit_price": 292.3
+              }
+            ],
+            "note": null,
+            "total_amount": 2990.0
+          },
+          "ok": true
+        }
+      ],
+      "cost_complete": true
+    },
+    {
+      "case_id": "single-02",
+      "category": "single",
+      "passed": true,
+      "failed_checks": [],
+      "steps": 2,
+      "completed": true,
+      "tool_calls": [
+        "get_product"
+      ],
+      "total_tokens": 5123,
+      "cost": 0.00052914,
+      "duration_ms": 34335.5,
+      "attempts": 1,
+      "error": null,
+      "tool_results": [
+        {
+          "call_id": "eb81ed18-cd73-4bcd-8966-433cb4f3fb99",
+          "name": "get_product",
+          "arguments": {
+            "sku": "A1001"
+          },
+          "content": {
+            "sku": "A1001",
+            "name": "青瓷茶具（旅行装）",
+            "category": "茶具",
+            "price": 447.7,
+            "status": "在售"
+          },
+          "ok": true
+        }
+      ],
+      "cost_complete": true
+    },
+    {
+      "case_id": "single-03",
+      "category": "single",
+      "passed": true,
+      "failed_checks": [],
+      "steps": 3,
+      "completed": true,
+      "tool_calls": [
+        "search_products",
+        "get_stock",
+        "get_stock",
+        "get_stock"
+      ],
+      "total_tokens": 9051,
+      "cost": 0.000970888,
+      "duration_ms": 16433.1,
+      "attempts": 1,
+      "error": null,
+      "tool_results": [
+        {
+          "call_id": "75dce663-9cdc-4911-85d6-066fb04adcf7",
+          "name": "search_products",
+          "arguments": {
+            "keyword": "青瓷茶具"
+          },
+          "content": {
+            "total": 12,
+            "items": [
+              {
+                "sku": "A1001",
+                "name": "青瓷茶具（旅行装）",
+                "category": "茶具",
+                "price": 447.7,
+                "status": "在售"
+              },
+              {
+                "sku": "A1002",
+                "name": "青瓷茶具（家用装）",
+                "category": "茶具",
+                "price": 245.8,
+                "status": "在售"
+              },
+              {
+                "sku": "A1003",
+                "name": "青瓷茶具（礼盒装）",
+                "category": "茶具",
+                "price": 480.6,
+                "status": "在售"
+              },
+              {
+                "sku": "A1004",
+                "name": "青瓷茶具（便携款）",
+                "category": "茶具",
+                "price": 599.9,
+                "status": "在售"
+              },
+              {
+                "sku": "A1142",
+                "name": "青瓷茶具（旅行装）",
+                "category": "茶具",
+                "price": 131.7,
+                "status": "在售"
+              },
+              {
+                "sku": "A1143",
+                "name": "青瓷茶具（家用装）",
+                "category": "茶具",
+                "price": 503.7,
+                "status": "在售"
+              },
+              {
+                "sku": "A1144",
+                "name": "青瓷茶具（礼盒装）",
+                "category": "茶具",
+                "price": 792.1,
+                "status": "在售"
+              },
+              {
+                "sku": "A1145",
+                "name": "青瓷茶具（便携款）",
+                "category": "茶具",
+                "price": 636.4,
+                "status": "在售"
+              },
+              {
+                "sku": "A1283",
+                "name": "青瓷茶具（旅行装）",
+                "category": "茶具",
+                "price": 146.8,
+                "status": "在售"
+              },
+              {
+                "sku": "A1284",
+                "name": "青瓷茶具（家用装）",
+                "category": "茶具",
+                "price": 684.4,
+                "status": "在售"
+              },
+              {
+                "sku": "A1285",
+                "name": "青瓷茶具（礼盒装）",
+                "category": "茶具",
+                "price": 443.2,
+                "status": "在售"
+              },
+              {
+                "sku": "A1286",
+                "name": "青瓷茶具（便携款）",
+                "category": "茶具",
+                "price": 767.1,
+                "status": "在售"
+              }
+            ]
+          },
+          "ok": true
+        },
+        {
+          "call_id": "223bacaf-0a39-4b49-80c4-f5e1a0874d7d",
+          "name": "get_stock",
+          "arguments": {
+            "sku": "A1001"
+          },
+          "content": {
+            "sku": "A1001",
+            "quantity": 0,
+            "warehouse": "主仓"
+          },
+          "ok": true
+        },
+        {
+          "call_id": "91bbb343-71bf-4019-b509-2c548cb9b7cf",
+          "name": "get_stock",
+          "arguments": {
+            "sku": "A1142"
+          },
+          "content": {
+            "sku": "A1142",
+            "quantity": 20,
+            "warehouse": "主仓"
+          },
+          "ok": true
+        },
+        {
+          "call_id": "c8804903-5b5c-404e-9e42-39b95aef9e01",
+          "name": "get_stock",
+          "arguments": {
+            "sku": "A1283"
+          },
+          "content": {
+            "sku": "A1283",
+            "quantity": 105,
+            "warehouse": "主仓"
+          },
+          "ok": true
+        }
+      ],
+      "cost_complete": true
+    },
+    {
+      "case_id": "single-04",
+      "category": "single",
+      "passed": true,
+      "failed_checks": [],
+      "steps": 2,
+      "completed": true,
+      "tool_calls": [
+        "compute_quote"
+      ],
+      "total_tokens": 5239,
+      "cost": 0.0005612600000000001,
+      "duration_ms": 10799.6,
+      "attempts": 1,
+      "error": null,
+      "tool_results": [
+        {
+          "call_id": "8ee221e5-c64e-404d-94c3-53a1b95fb57a",
+          "name": "compute_quote",
+          "arguments": {
+            "sku": "A1001",
+            "quantity": 200
+          },
+          "content": {
+            "sku": "A1001",
+            "name": "青瓷茶具（旅行装）",
+            "unit_price": 402.93,
+            "quantity": 200,
+            "discount": 0.9,
+            "total": 80586.0,
+            "stock_quantity": 0
+          },
+          "ok": true
+        }
+      ],
+      "cost_complete": true
+    },
+    {
+      "case_id": "single-05",
+      "category": "single",
+      "passed": true,
+      "failed_checks": [],
+      "steps": 2,
+      "completed": true,
+      "tool_calls": [
+        "list_low_stock"
+      ],
+      "total_tokens": 7384,
+      "cost": 0.0009074800000000001,
+      "duration_ms": 19150.5,
+      "attempts": 2,
+      "error": null,
+      "tool_results": [
+        {
+          "call_id": "741f4c07-b01d-460d-8c5c-9ab0f02a1a15",
+          "name": "list_low_stock",
+          "arguments": {
+            "threshold": 10,
+            "limit": 50
+          },
+          "content": {
+            "returned": 34,
+            "items": [
+              {
+                "sku": "A1001",
+                "name": "青瓷茶具（旅行装）",
+                "category": "茶具",
+                "price": 447.7,
+                "quantity": 0,
+                "warehouse": "主仓"
+              },
+              {
+                "sku": "A1026",
+                "name": "茶叶罐（家用装）",
+                "category": "茶具",
+                "price": 675.6,
+                "quantity": 0,
+                "warehouse": "主仓"
+              },
+              {
+                "sku": "A1151",
+                "name": "公道杯（家用装）",
+                "category": "茶具",
+                "price": 802.0,
+                "quantity": 0,
+                "warehouse": "主仓"
+              },
+              {
+                "sku": "A1299",
+                "name": "盖碗（旅行装）",
+                "category": "茶具",
+                "price": 236.8,
+                "quantity": 0,
+                "warehouse": "主仓"
+              },
+              {
+                "sku": "B1060",
+                "name": "镇尺（羊毫）",
+                "category": "文房",
+                "price": 224.7,
+                "quantity": 0,
+                "warehouse": "主仓"
+              },
+              {
+                "sku": "B1079",
+                "name": "字帖（初学套）",
+                "category": "文房",
+                "price": 25.3,
+                "quantity": 0,
+                "warehouse": "主仓"
+              },
+              {
+                "sku": "B1183",
+                "name": "毛笔（羊毫）",
+                "category": "文房",
+                "price": 185.5,
+                "quantity": 0,
+                "warehouse": "主仓"
+              },
+              {
+                "sku": "B1209",
+                "name": "毛毡（进阶款）",
+                "category": "文房",
+                "price": 267.7,
+                "quantity": 0,
+                "warehouse": "主仓"
+              },
+              {
+                "sku": "B1214",
+                "name": "笔架（初学套）",
+                "category": "文房",
+                "price": 54.1,
+                "quantity": 0,
+                "warehouse": "主仓"
+              },
+              {
+                "sku": "B1216",
+                "name": "字帖（100张）",
+                "category": "文房",
+                "price": 85.8,
+                "quantity": 0,
+                "warehouse": "主仓"
+              },
+              {
+                "sku": "C1082",
+                "name": "线香（檀香）",
+                "category": "香道",
+                "price": 371.6,
+                "quantity": 0,
+                "warehouse": "主仓"
+              },
+              {
+                "sku": "C1088",
+                "name": "香炉（艾草）",
+                "category": "香道",
+                "price": 104.8,
+                "quantity": 0,
+                "warehouse": "主仓"
+              },
+              {
+                "sku": "C1105",
+                "name": "塔香（家用装）",
+                "category": "香道",
+                "price": 300.7,
+                "quantity": 0,
+                "warehouse": "主仓"
+              },
+              {
+                "sku": "C1222",
+                "name": "线香（沉香）",
+                "category": "香道",
+                "price": 163.6,
+                "quantity": 0,
+                "warehouse": "主仓"
+              },
+              {
+                "sku": "C1232",
+                "name": "香插（沉香）",
+                "category": "香道",
+                "price": 49.7,
+                "quantity": 0,
+                "warehouse": "主仓"
+              },
+              {
+                "sku": "D1109",
+                "name": "青花瓷盘（收藏款）",
+                "category": "瓷器",
+                "price": 400.4,
+                "quantity": 0,
+                "warehouse": "主仓"
+              },
+              {
+                "sku": "D1110",
+                "name": "汝窑杯（手绘）",
+                "category": "瓷器",
+                "price": 275.7,
+                "quantity": 0,
+                "warehouse": "主仓"
+              },
+              {
+                "sku": "D1113",
+                "name": "汝窑杯（收藏款）",
+                "category": "瓷器",
+                "price": 378.7,
+                "quantity": 0,
+                "warehouse": "主仓"
+              },
+              {
+                "sku": "D1121",
+                "name": "青瓷花瓶（收藏款）",
+                "category": "瓷器",
+                "price": 85.6,
+                "quantity": 0,
+                "warehouse": "主仓"
+              },
+              {
+                "sku": "D1252",
+                "name": "汝窑杯（复古）",
+                "category": "瓷器",
+                "price": 476.9,
+                "quantity": 0,
+                "warehouse": "主仓"
+              },
+              {
+                "sku": "E1127",
+                "name": "真丝方巾（印花）",
+                "category": "丝绸",
+                "price": 512.4,
+                "quantity": 0,
+                "warehouse": "主仓"
+              },
+              {
+                "sku": "E1129",
+                "name": "真丝方巾（双面）",
+                "category": "丝绸",
+                "price": 286.1,
+                "quantity": 0,
+                "warehouse": "主仓"
+              },
+              {
+                "sku": "E1132",
+                "name": "桑蚕丝枕套（苏绣）",
+                "category": "丝绸",
+                "price": 537.5,
+                "quantity": 0,
+                "warehouse": "主仓"
+              },
+              {
+                "sku": "E1137",
+                "name": "真丝眼罩（双面）",
+                "category": "丝绸",
+                "price": 208.5,
+                "quantity": 0,
+                "warehouse": "主仓"
+              },
+              {
+                "sku": "E1268",
+                "name": "真丝方巾（印花）",
+                "category": "丝绸",
+                "price": 367.4,
+                "quantity": 0,
+                "warehouse": "主仓"
+              },
+              {
+                "sku": "B1039",
+                "name": "毛笔（100张）",
+                "category": "文房",
+                "price": 27.2,
+                "quantity": 6,
+                "warehouse": "主仓"
+              },
+              {
+                "sku": "D1263",
+                "name": "粉彩碟（手绘）",
+                "category": "瓷器",
+                "price": 128.2,
+                "quantity": 6,
+                "warehouse": "主仓"
+              },
+              {
+                "sku": "A1025",
+                "name": "茶叶罐（旅行装）",
+                "category": "茶具",
+                "price": 69.4,
+                "quantity": 7,
+                "warehouse": "主仓"
+              },
+              {
+                "sku": "B1034",
+                "name": "宣纸（半生半熟）",
+                "category": "文房",
+                "price": 236.6,
+                "quantity": 7,
+                "warehouse": "主仓"
+              },
+              {
+                "sku": "C1241",
+                "name": "香囊（家用装）",
+                "category": "香道",
+                "price": 209.4,
+                "quantity": 7,
+                "warehouse": "主仓"
+              },
+              {
+                "sku": "E1274",
+                "name": "桑蚕丝枕套（双面）",
+                "category": "丝绸",
+                "price": 103.7,
+                "quantity": 8,
+                "warehouse": "主仓"
+              },
+              {
+                "sku": "B1070",
+                "name": "笔架（半生半熟）",
+                "category": "文房",
+                "price": 219.1,
+                "quantity": 9,
+                "warehouse": "主仓"
+              },
+              {
+                "sku": "B1059",
+                "name": "镇尺（狼毫）",
+                "category": "文房",
+                "price": 102.5,
+                "quantity": 10,
+                "warehouse": "主仓"
+              },
+              {
+                "sku": "E1138",
+                "name": "刺绣团扇（素色）",
+                "category": "丝绸",
+                "price": 529.6,
+                "quantity": 10,
+                "warehouse": "主仓"
+              }
+            ]
+          },
+          "ok": true
+        }
+      ],
+      "cost_complete": false
+    },
+    {
+      "case_id": "single-06",
+      "category": "single",
+      "passed": true,
+      "failed_checks": [],
+      "steps": 2,
+      "completed": true,
+      "tool_calls": [
+        "list_categories"
+      ],
+      "total_tokens": 5151,
+      "cost": 0.000532804,
+      "duration_ms": 4065.8,
+      "attempts": 1,
+      "error": null,
+      "tool_results": [
+        {
+          "call_id": "a6770527-8c5f-48bd-ab6f-23aee8821e21",
+          "name": "list_categories",
+          "arguments": {},
+          "content": {
+            "total": 5,
+            "items": [
+              {
+                "category": "丝绸",
+                "product_count": 31
+              },
+              {
+                "category": "文房",
+                "product_count": 95
+              },
+              {
+                "category": "瓷器",
+                "product_count": 38
+              },
+              {
+                "category": "茶具",
+                "product_count": 81
+              },
+              {
+                "category": "香道",
+                "product_count": 50
+              }
+            ]
+          },
+          "ok": true
+        }
+      ],
+      "cost_complete": true
+    },
+    {
+      "case_id": "multi-01",
+      "category": "multi",
+      "passed": true,
+      "failed_checks": [],
+      "steps": 3,
+      "completed": true,
+      "tool_calls": [
+        "get_order",
+        "get_stock",
+        "get_stock",
+        "get_stock"
+      ],
+      "total_tokens": 8379,
+      "cost": 0.000920772,
+      "duration_ms": 11925.5,
+      "attempts": 1,
+      "error": null,
+      "tool_results": [
+        {
+          "call_id": "42be93fa-ac34-4d39-80da-6117bcaa545b",
+          "name": "get_order",
+          "arguments": {
+            "order_id": "SO20261006-0254"
+          },
+          "content": {
+            "order_id": "SO20261006-0254",
+            "customer": "沈砚秋",
+            "status": "待发货",
+            "created_at": "2026-10-06T09:25:33.486401",
+            "items": [
+              {
+                "sku": "B1211",
+                "name": "笔架（半生半熟）",
+                "quantity": 1,
+                "unit_price": 249.7
+              },
+              {
+                "sku": "A1169",
+                "name": "茶叶罐（便携款）",
+                "quantity": 5,
+                "unit_price": 489.6
+              },
+              {
+                "sku": "E1279",
+                "name": "刺绣团扇（素色）",
+                "quantity": 1,
+                "unit_price": 292.3
+              }
+            ],
+            "note": null,
+            "total_amount": 2990.0
+          },
+          "ok": true
+        },
+        {
+          "call_id": "1279d166-8191-4754-807d-6780aa3cad4c",
+          "name": "get_stock",
+          "arguments": {
+            "sku": "B1211"
+          },
+          "content": {
+            "sku": "B1211",
+            "quantity": 27,
+            "warehouse": "主仓"
+          },
+          "ok": true
+        },
+        {
+          "call_id": "e17de923-5bb1-4c80-93cd-6794f06977b6",
+          "name": "get_stock",
+          "arguments": {
+            "sku": "E1279"
+          },
+          "content": {
+            "sku": "E1279",
+            "quantity": 175,
+            "warehouse": "主仓"
+          },
+          "ok": true
+        },
+        {
+          "call_id": "193aefc9-e414-4045-b550-a12b944fedf2",
+          "name": "get_stock",
+          "arguments": {
+            "sku": "A1169"
+          },
+          "content": {
+            "sku": "A1169",
+            "quantity": 171,
+            "warehouse": "主仓"
+          },
+          "ok": true
+        }
+      ],
+      "cost_complete": true
+    },
+    {
+      "case_id": "multi-02",
+      "category": "multi",
+      "passed": true,
+      "failed_checks": [],
+      "steps": 3,
+      "completed": true,
+      "tool_calls": [
+        "search_products",
+        "get_orders_by_sku",
+        "get_orders_by_sku"
+      ],
+      "total_tokens": 10271,
+      "cost": 0.0012136680000000002,
+      "duration_ms": 35378.3,
+      "attempts": 1,
+      "error": null,
+      "tool_results": [
+        {
+          "call_id": "34c0a0c1-3260-4b2c-a0d3-a1775d9c2678",
+          "name": "search_products",
+          "arguments": {
+            "keyword": "白瓷盖碗"
+          },
+          "content": {
+            "total": 8,
+            "items": [
+              {
+                "sku": "D1114",
+                "name": "白瓷盖碗（手绘）",
+                "category": "瓷器",
+                "price": 389.3,
+                "status": "在售"
+              },
+              {
+                "sku": "D1115",
+                "name": "白瓷盖碗（复古）",
+                "category": "瓷器",
+                "price": 540.0,
+                "status": "在售"
+              },
+              {
+                "sku": "D1116",
+                "name": "白瓷盖碗（家用）",
+                "category": "瓷器",
+                "price": 403.8,
+                "status": "在售"
+              },
+              {
+                "sku": "D1117",
+                "name": "白瓷盖碗（收藏款）",
+                "category": "瓷器",
+                "price": 568.8,
+                "status": "在售"
+              },
+              {
+                "sku": "D1255",
+                "name": "白瓷盖碗（手绘）",
+                "category": "瓷器",
+                "price": 300.7,
+                "status": "在售"
+              },
+              {
+                "sku": "D1256",
+                "name": "白瓷盖碗（复古）",
+                "category": "瓷器",
+                "price": 242.2,
+                "status": "在售"
+              },
+              {
+                "sku": "D1257",
+                "name": "白瓷盖碗（家用）",
+                "category": "瓷器",
+                "price": 411.5,
+                "status": "在售"
+              },
+              {
+                "sku": "D1258",
+                "name": "白瓷盖碗（收藏款）",
+                "category": "瓷器",
+                "price": 635.7,
+                "status": "在售"
+              }
+            ]
+          },
+          "ok": true
+        },
+        {
+          "call_id": "64b6dc97-54f1-43ec-b42d-fac4b2f20e5c",
+          "name": "get_orders_by_sku",
+          "arguments": {
+            "sku": "D1117"
+          },
+          "content": {
+            "total": 6,
+            "items": [
+              {
+                "order_id": "SO20260826-0407",
+                "customer": "温故",
+                "status": "已签收",
+                "created_at": "2026-08-26T23:57:32",
+                "items_count": 5,
+                "total_amount": 6249.7
+              },
+              {
+                "order_id": "SO20260806-0143",
+                "customer": "齐白石斋",
+                "status": "已签收",
+                "created_at": "2026-08-06T19:11:35",
+                "items_count": 4,
+                "total_amount": 7113.9
+              },
+              {
+                "order_id": "SO20260727-0397",
+                "customer": "闻人语",
+                "status": "已发货",
+                "created_at": "2026-07-27T02:06:52",
+                "items_count": 2,
+                "total_amount": 11431.8
+              },
+              {
+                "order_id": "SO20260713-0499",
+                "customer": "温故",
+                "status": "已签收",
+                "created_at": "2026-07-13T20:51:14",
+                "items_count": 1,
+                "total_amount": 568.8
+              },
+              {
+                "order_id": "SO20260508-0284",
+                "customer": "周砚白",
+                "status": "已签收",
+                "created_at": "2026-05-08T10:03:25",
+                "items_count": 3,
+                "total_amount": 1720.4
+              },
+              {
+                "order_id": "SO20260415-0015",
+                "customer": "薛小满",
+                "status": "已签收",
+                "created_at": "2026-04-15T09:08:19",
+                "items_count": 2,
+                "total_amount": 2916.8
+              }
+            ],
+            "note": "列表不含明细；单笔明细用 get_order"
+          },
+          "ok": true
+        },
+        {
+          "call_id": "bfbe60ed-e8b8-46cb-8fa5-9008eb323a98",
+          "name": "get_orders_by_sku",
+          "arguments": {
+            "sku": "D1258"
+          },
+          "content": {
+            "total": 11,
+            "items": [
+              {
+                "order_id": "SO20260930-0539",
+                "customer": "顾青山",
+                "status": "已发货",
+                "created_at": "2026-09-30T05:30:50",
+                "items_count": 4,
+                "total_amount": 4214.94
+              },
+              {
+                "order_id": "SO20260925-0131",
+                "customer": "白鹿",
+                "status": "已签收",
+                "created_at": "2026-09-25T13:16:57",
+                "items_count": 2,
+                "total_amount": 4155.7
+              },
+              {
+                "order_id": "SO20260914-0053",
+                "customer": "林晚照",
+                "status": "已发货",
+                "created_at": "2026-09-14T10:53:03",
+                "items_count": 3,
+                "total_amount": 7303.05
+              },
+              {
+                "order_id": "SO20260914-0111",
+                "customer": "方聿修",
+                "status": "已发货",
+                "created_at": "2026-09-14T00:13:31",
+                "items_count": 3,
+                "total_amount": 12627.0
+              },
+              {
+                "order_id": "SO20260911-0481",
+                "customer": "陆修远",
+                "status": "待发货",
+                "created_at": "2026-09-11T21:44:46",
+                "items_count": 4,
+                "total_amount": 7054.0
+              },
+              {
+                "order_id": "SO20260910-0467",
+                "customer": "陶然",
+                "status": "已发货",
+                "created_at": "2026-09-10T22:16:10",
+                "items_count": 5,
+                "total_amount": 8307.6
+              },
+              {
+                "order_id": "SO20260826-0123",
+                "customer": "崔九思",
+                "status": "已取消",
+                "created_at": "2026-08-26T22:46:32",
+                "items_count": 2,
+                "total_amount": 3295.1
+              },
+              {
+                "order_id": "SO20260729-0290",
+                "customer": "方聿修",
+                "status": "已退款",
+                "created_at": "2026-07-29T03:32:39",
+                "items_count": 1,
+                "total_amount": 6357.0
+              },
+              {
+                "order_id": "SO20260604-0355",
+                "customer": "许清欢",
+                "status": "已签收",
+                "created_at": "2026-06-04T23:39:33",
+                "items_count": 4,
+                "total_amount": 3194.78
+              },
+              {
+                "order_id": "SO20260521-0493",
+                "customer": "温故",
+                "status": "已签收",
+                "created_at": "2026-05-21T07:00:39",
+                "items_count": 1,
+                "total_amount": 635.7
+              },
+              {
+                "order_id": "SO20260501-0587",
+                "customer": "韩青梧",
+                "status": "已签收",
+                "created_at": "2026-05-01T15:30:11",
+                "items_count": 1,
+                "total_amount": 1271.4
+              }
+            ],
+            "note": "列表不含明细；单笔明细用 get_order"
+          },
+          "ok": true
+        }
+      ],
+      "cost_complete": true
+    },
+    {
+      "case_id": "multi-03",
+      "category": "multi",
+      "passed": true,
+      "failed_checks": [],
+      "steps": 2,
+      "completed": true,
+      "tool_calls": [
+        "get_customer_purchases"
+      ],
+      "total_tokens": 7046,
+      "cost": 0.000807688,
+      "duration_ms": 9312.1,
+      "attempts": 1,
+      "error": null,
+      "tool_results": [
+        {
+          "call_id": "50229043-9699-4bef-a96e-27fd2c631964",
+          "name": "get_customer_purchases",
+          "arguments": {
+            "customer": "闻人语"
+          },
+          "content": {
+            "customer": "闻人语",
+            "order_count": 44,
+            "total_amount": 94681.39,
+            "total_amount_all": 106703.19,
+            "by_status": [
+              {
+                "status": "已签收",
+                "order_count": 26,
+                "total_amount": 70550.83
+              },
+              {
+                "status": "已发货",
+                "order_count": 10,
+                "total_amount": 24130.56
+              },
+              {
+                "status": "已取消",
+                "order_count": 4,
+                "total_amount": 8519.38
+              },
+              {
+                "status": "已退款",
+                "order_count": 3,
+                "total_amount": 3210.12
+              },
+              {
+                "status": "待付款",
+                "order_count": 1,
+                "total_amount": 292.3
+              }
+            ],
+            "items": [
+              {
+                "sku": "D1117",
+                "name": "白瓷盖碗（收藏款）",
+                "total_quantity": 20,
+                "total_amount": 11376.0
+              },
+              {
+                "sku": "A1018",
+                "name": "盖碗（家用装）",
+                "total_quantity": 21,
+                "total_amount": 10626.0
+              },
+              {
+                "sku": "B1174",
+                "name": "宣纸（100张）",
+                "total_quantity": 30,
+                "total_amount": 7713.0
+              },
+              {
+                "sku": "A1289",
+                "name": "紫砂壶（礼盒装）",
+                "total_quantity": 22,
+                "total_amount": 5364.0
+              },
+              {
+                "sku": "D1253",
+                "name": "汝窑杯（家用）",
+                "total_quantity": 10,
+                "total_amount": 4836.0
+              },
+              {
+                "sku": "A1158",
+                "name": "盖碗（旅行装）",
+                "total_quantity": 10,
+                "total_amount": 4397.0
+              },
+              {
+                "sku": "C1229",
+                "name": "香炉（艾草）",
+                "total_quantity": 10,
+                "total_amount": 3655.0
+              },
+              {
+                "sku": "D1251",
+                "name": "汝窑杯（手绘）",
+                "total_quantity": 10,
+                "total_amount": 3192.0
+              },
+              {
+                "sku": "C1225",
+                "name": "线香（禅意款）",
+                "total_quantity": 10,
+                "total_amount": 2903.0
+              },
+              {
+                "sku": "A1153",
+                "name": "公道杯（便携款）",
+                "total_quantity": 6,
+                "total_amount": 2599.8
+              },
+              {
+                "sku": "E1127",
+                "name": "真丝方巾（印花）",
+                "total_quantity": 5,
+                "total_amount": 2562.0
+              },
+              {
+                "sku": "A1288",
+                "name": "紫砂壶（家用装）",
+                "total_quantity": 3,
+                "total_amount": 2383.5
+              },
+              {
+                "sku": "B1061",
+                "name": "镇尺（初学套）",
+                "total_quantity": 12,
+                "total_amount": 2294.4
+              },
+              {
+                "sku": "A1172",
+                "name": "茶宠（礼盒装）",
+                "total_quantity": 3,
+                "total_amount": 1926.98
+              },
+              {
+                "sku": "A1004",
+                "name": "青瓷茶具（便携款）",
+                "total_quantity": 3,
+                "total_amount": 1799.7
+              },
+              {
+                "sku": "E1269",
+                "name": "真丝方巾（苏绣）",
+                "total_quantity": 6,
+                "total_amount": 1623.6
+              },
+              {
+                "sku": "A1290",
+                "name": "紫砂壶（便携款）",
+                "total_quantity": 2,
+                "total_amount": 1618.66
+              },
+              {
+                "sku": "A1009",
+                "name": "公道杯（旅行装）",
+                "total_quantity": 2,
+                "total_amount": 1573.2
+              },
+              {
+                "sku": "B1188",
+                "name": "墨锭（狼毫）",
+                "total_quantity": 10,
+                "total_amount": 1377.0
+              },
+              {
+                "sku": "A1284",
+                "name": "青瓷茶具（家用装）",
+                "total_quantity": 2,
+                "total_amount": 1368.8
+              },
+              {
+                "sku": "A1157",
+                "name": "品茗杯（便携款）",
+                "total_quantity": 2,
+                "total_amount": 1244.2
+              },
+              {
+                "sku": "B1184",
+                "name": "毛笔（初学套）",
+                "total_quantity": 10,
+                "total_amount": 1188.0
+              },
+              {
+                "sku": "B1038",
+                "name": "宣纸（进阶款）",
+                "total_quantity": 5,
+                "total_amount": 1090.5
+              },
+              {
+                "sku": "E1276",
+                "name": "真丝眼罩（印花）",
+                "total_quantity": 2,
+                "total_amount": 1088.8
+              },
+              {
+                "sku": "D1247",
+                "name": "青花瓷盘（手绘）",
+                "total_quantity": 2,
+                "total_amount": 1085.4
+              },
+              {
+                "sku": "A1146",
+                "name": "紫砂壶（旅行装）",
+                "total_quantity": 2,
+                "total_amount": 929.8
+              },
+              {
+                "sku": "C1085",
+                "name": "线香（家用装）",
+                "total_quantity": 5,
+                "total_amount": 912.5
+              },
+              {
+                "sku": "E1135",
+                "name": "真丝眼罩（印花）",
+                "total_quantity": 2,
+                "total_amount": 900.4
+              },
+              {
+                "sku": "A1032",
+                "name": "茶宠（便携款）",
+                "total_quantity": 1,
+                "total_amount": 851.8
+              },
+              {
+                "sku": "C1236",
+                "name": "香插（家用装）",
+                "total_quantity": 5,
+                "total_amount": 779.0
+              },
+              {
+                "sku": "B1187",
+                "name": "墨锭（半生半熟）",
+                "total_quantity": 4,
+                "total_amount": 758.1
+              },
+              {
+                "sku": "E1268",
+                "name": "真丝方巾（印花）",
+                "total_quantity": 2,
+                "total_amount": 734.8
+              },
+              {
+                "sku": "C1228",
+                "name": "香炉（檀香）",
+                "total_quantity": 2,
+                "total_amount": 729.4
+              },
+              {
+                "sku": "C1239",
+                "name": "香囊（艾草）",
+                "total_quantity": 7,
+                "total_amount": 711.62
+              },
+              {
+                "sku": "A1171",
+                "name": "茶宠（家用装）",
+                "total_quantity": 2,
+                "total_amount": 654.0
+              },
+              {
+                "sku": "D1259",
+                "name": "青瓷花瓶（手绘）",
+                "total_quantity": 5,
+                "total_amount": 626.0
+              },
+              {
+                "sku": "B1073",
+                "name": "笔架（初学套）",
+                "total_quantity": 11,
+                "total_amount": 613.8
+              },
+              {
+                "sku": "C1105",
+                "name": "塔香（家用装）",
+                "total_quantity": 2,
+                "total_amount": 601.4
+              },
+              {
+                "sku": "D1261",
+                "name": "青瓷花瓶（家用）",
+                "total_quantity": 1,
+                "total_amount": 591.8
+              },
+              {
+                "sku": "E1279",
+                "name": "刺绣团扇（素色）",
+                "total_quantity": 2,
+                "total_amount": 584.6
+              }
+            ],
+            "note": "仅展示金额最高的 40 种商品"
+          },
+          "ok": true
+        }
+      ],
+      "cost_complete": true
+    },
+    {
+      "case_id": "multi-04",
+      "category": "multi",
+      "passed": true,
+      "failed_checks": [],
+      "steps": 3,
+      "completed": true,
+      "tool_calls": [
+        "top_products",
+        "get_stock",
+        "get_stock",
+        "get_stock",
+        "get_stock",
+        "get_stock"
+      ],
+      "total_tokens": 9295,
+      "cost": 0.0011619400000000002,
+      "duration_ms": 18653.2,
+      "attempts": 1,
+      "error": null,
+      "tool_results": [
+        {
+          "call_id": "985b1486-09f0-41c1-86e3-961f66685096",
+          "name": "top_products",
+          "arguments": {
+            "days": 30,
+            "limit": 5
+          },
+          "content": {
+            "returned": 5,
+            "items": [
+              {
+                "sku": "D1258",
+                "name": "白瓷盖碗（收藏款）",
+                "category": "瓷器",
+                "total_quantity": 43,
+                "order_count": 6,
+                "total_amount": 27420.34
+              },
+              {
+                "sku": "B1202",
+                "name": "镇尺（初学套）",
+                "category": "文房",
+                "total_quantity": 26,
+                "order_count": 3,
+                "total_amount": 2142.4
+              },
+              {
+                "sku": "A1152",
+                "name": "公道杯（礼盒装）",
+                "category": "茶具",
+                "total_quantity": 25,
+                "order_count": 2,
+                "total_amount": 2907.5
+              },
+              {
+                "sku": "D1261",
+                "name": "青瓷花瓶（家用）",
+                "category": "瓷器",
+                "total_quantity": 25,
+                "order_count": 2,
+                "total_amount": 14795.0
+              },
+              {
+                "sku": "C1245",
+                "name": "塔香（禅意款）",
+                "category": "香道",
+                "total_quantity": 22,
+                "order_count": 2,
+                "total_amount": 3515.6
+              }
+            ]
+          },
+          "ok": true
+        },
+        {
+          "call_id": "2fff813e-8bbf-4310-94b7-da263162d2d0",
+          "name": "get_stock",
+          "arguments": {
+            "sku": "D1258"
+          },
+          "content": {
+            "sku": "D1258",
+            "quantity": 23,
+            "warehouse": "主仓"
+          },
+          "ok": true
+        },
+        {
+          "call_id": "821f13d3-aebd-4b15-8752-2ea38ac21b66",
+          "name": "get_stock",
+          "arguments": {
+            "sku": "D1261"
+          },
+          "content": {
+            "sku": "D1261",
+            "quantity": 159,
+            "warehouse": "主仓"
+          },
+          "ok": true
+        },
+        {
+          "call_id": "6176511c-55e8-476e-88d6-67f703970eff",
+          "name": "get_stock",
+          "arguments": {
+            "sku": "B1202"
+          },
+          "content": {
+            "sku": "B1202",
+            "quantity": 118,
+            "warehouse": "主仓"
+          },
+          "ok": true
+        },
+        {
+          "call_id": "63785908-91d3-4383-b5b1-896499cc37e2",
+          "name": "get_stock",
+          "arguments": {
+            "sku": "C1245"
+          },
+          "content": {
+            "sku": "C1245",
+            "quantity": 187,
+            "warehouse": "主仓"
+          },
+          "ok": true
+        },
+        {
+          "call_id": "d8efef45-09df-4e06-833f-8b8ec803e14d",
+          "name": "get_stock",
+          "arguments": {
+            "sku": "A1152"
+          },
+          "content": {
+            "sku": "A1152",
+            "quantity": 35,
+            "warehouse": "主仓"
+          },
+          "ok": true
+        }
+      ],
+      "cost_complete": true
+    },
+    {
+      "case_id": "multi-05",
+      "category": "multi",
+      "passed": true,
+      "failed_checks": [],
+      "steps": 3,
+      "completed": true,
+      "tool_calls": [
+        "get_order",
+        "get_product"
+      ],
+      "total_tokens": 8299,
+      "cost": 0.000898208,
+      "duration_ms": 10507.4,
+      "attempts": 1,
+      "error": null,
+      "tool_results": [
+        {
+          "call_id": "aa87c886-32d4-4525-a978-a5f2f4a6160d",
+          "name": "get_order",
+          "arguments": {
+            "order_id": "SO20261006-0460"
+          },
+          "content": {
+            "order_id": "SO20261006-0460",
+            "customer": "闻人语",
+            "status": "已发货",
+            "created_at": "2026-10-06T21:00:42.250279",
+            "items": [
+              {
+                "sku": "B1055",
+                "name": "砚台（初学套）",
+                "quantity": 1,
+                "unit_price": 231.8
+              },
+              {
+                "sku": "C1099",
+                "name": "香囊（禅意款）",
+                "quantity": 1,
+                "unit_price": 148.26
+              },
+              {
+                "sku": "B1061",
+                "name": "镇尺（初学套）",
+                "quantity": 2,
+                "unit_price": 191.2
+              }
+            ],
+            "note": null,
+            "total_amount": 762.46
+          },
+          "ok": true
+        },
+        {
+          "call_id": "fa94983c-4395-4331-8f43-7ae9fd88b6ad",
+          "name": "get_product",
+          "arguments": {
+            "sku": "C1099"
+          },
+          "content": {
+            "sku": "C1099",
+            "name": "香囊（禅意款）",
+            "category": "香道",
+            "price": 146.1,
+            "status": "在售"
+          },
+          "ok": true
+        }
+      ],
+      "cost_complete": true
+    },
+    {
+      "case_id": "multi-06",
+      "category": "multi",
+      "passed": true,
+      "failed_checks": [],
+      "steps": 2,
+      "completed": true,
+      "tool_calls": [
+        "daily_sales"
+      ],
+      "total_tokens": 5913,
+      "cost": 0.00076358,
+      "duration_ms": 15631.1,
+      "attempts": 1,
+      "error": null,
+      "tool_results": [
+        {
+          "call_id": "1a865864-e971-4db0-98ca-bac031385127",
+          "name": "daily_sales",
+          "arguments": {
+            "days": 7
+          },
+          "content": {
+            "returned": 6,
+            "items": [
+              {
+                "date": "2026-10-01",
+                "order_count": 3,
+                "total_amount": 6858.0
+              },
+              {
+                "date": "2026-10-02",
+                "order_count": 3,
+                "total_amount": 3678.3
+              },
+              {
+                "date": "2026-10-03",
+                "order_count": 2,
+                "total_amount": 1923.9
+              },
+              {
+                "date": "2026-10-04",
+                "order_count": 2,
+                "total_amount": 1460.2
+              },
+              {
+                "date": "2026-10-05",
+                "order_count": 5,
+                "total_amount": 6706.88
+              },
+              {
+                "date": "2026-10-06",
+                "order_count": 2,
+                "total_amount": 3752.46
+              }
+            ]
+          },
+          "ok": true
+        }
+      ],
+      "cost_complete": true
+    },
+    {
+      "case_id": "edge-01",
+      "category": "edge",
+      "passed": true,
+      "failed_checks": [],
+      "steps": 3,
+      "completed": true,
+      "tool_calls": [
+        "search_products",
+        "search_products",
+        "search_products"
+      ],
+      "total_tokens": 7676,
+      "cost": 0.000803264,
+      "duration_ms": 42035.5,
+      "attempts": 1,
+      "error": null,
+      "tool_results": [
+        {
+          "call_id": "a40cd8d7-f4aa-4eb8-8633-8040222ca2d4",
+          "name": "search_products",
+          "arguments": {
+            "keyword": "Klingon 血酒杯"
+          },
+          "content": {
+            "total": 0,
+            "items": []
+          },
+          "ok": true
+        },
+        {
+          "call_id": "d77e45b5-e8a2-4048-9739-9d6f3406415d",
+          "name": "search_products",
+          "arguments": {
+            "keyword": "血酒杯"
+          },
+          "content": {
+            "total": 0,
+            "items": []
+          },
+          "ok": true
+        },
+        {
+          "call_id": "425a9537-4405-4c82-8d74-d623196fa869",
+          "name": "search_products",
+          "arguments": {
+            "keyword": "Klingon"
+          },
+          "content": {
+            "total": 0,
+            "items": []
+          },
+          "ok": true
+        }
+      ],
+      "cost_complete": true
+    },
+    {
+      "case_id": "edge-02",
+      "category": "edge",
+      "passed": true,
+      "failed_checks": [],
+      "steps": 2,
+      "completed": true,
+      "tool_calls": [
+        "get_product"
+      ],
+      "total_tokens": 5170,
+      "cost": 0.000544632,
+      "duration_ms": 40133.6,
+      "attempts": 1,
+      "error": null,
+      "tool_results": [
+        {
+          "call_id": "ba508421-ade0-41cd-985b-82d28c9816c1",
+          "name": "get_product",
+          "arguments": {
+            "sku": "SKU-NOEXIST-404"
+          },
+          "content": {
+            "error": {
+              "code": "not_found",
+              "message": "商品不存在：SKU-NOEXIST-404",
+              "hint": "可用 search_products 按名称/品类关键词查找 SKU"
+            }
+          },
+          "ok": true
+        }
+      ],
+      "cost_complete": true
+    },
+    {
+      "case_id": "edge-03",
+      "category": "edge",
+      "passed": true,
+      "failed_checks": [],
+      "steps": 5,
+      "completed": true,
+      "tool_calls": [
+        "compute_quote",
+        "get_product",
+        "search_products",
+        "compare_quotes"
+      ],
+      "total_tokens": 15506,
+      "cost": 0.0017904040000000002,
+      "duration_ms": 49935.9,
+      "attempts": 1,
+      "error": null,
+      "tool_results": [
+        {
+          "call_id": "33d2debb-bdc1-4ed3-8ac9-8009ada3b377",
+          "name": "compute_quote",
+          "arguments": {
+            "quantity": 10,
+            "sku": "A1014"
+          },
+          "content": {
+            "error": {
+              "code": "not_found",
+              "message": "可报价商品（不存在或已下架）不存在：A1014",
+              "hint": "已下架商品不可报价；可用 search_products 换在售商品"
+            }
+          },
+          "ok": true
+        },
+        {
+          "call_id": "e3b00b46-21c7-4b54-8bee-b3607f0fa99e",
+          "name": "get_product",
+          "arguments": {
+            "sku": "A1014"
+          },
+          "content": {
+            "sku": "A1014",
+            "name": "品茗杯（家用装）",
+            "category": "茶具",
+            "price": 263.2,
+            "status": "已下架"
+          },
+          "ok": true
+        },
+        {
+          "call_id": "4b1f5163-66f3-4b78-86b9-e2e02ddb2347",
+          "name": "search_products",
+          "arguments": {
+            "keyword": "品茗杯"
+          },
+          "content": {
+            "total": 12,
+            "items": [
+              {
+                "sku": "A1013",
+                "name": "品茗杯（旅行装）",
+                "category": "茶具",
+                "price": 844.6,
+                "status": "在售"
+              },
+              {
+                "sku": "A1014",
+                "name": "品茗杯（家用装）",
+                "category": "茶具",
+                "price": 263.2,
+                "status": "已下架"
+              },
+              {
+                "sku": "A1015",
+                "name": "品茗杯（礼盒装）",
+                "category": "茶具",
+                "price": 293.0,
+                "status": "在售"
+              },
+              {
+                "sku": "A1016",
+                "name": "品茗杯（便携款）",
+                "category": "茶具",
+                "price": 489.0,
+                "status": "在售"
+              },
+              {
+                "sku": "A1154",
+                "name": "品茗杯（旅行装）",
+                "category": "茶具",
+                "price": 120.6,
+                "status": "在售"
+              },
+              {
+                "sku": "A1155",
+                "name": "品茗杯（家用装）",
+                "category": "茶具",
+                "price": 898.4,
+                "status": "在售"
+              },
+              {
+                "sku": "A1156",
+                "name": "品茗杯（礼盒装）",
+                "category": "茶具",
+                "price": 97.5,
+                "status": "在售"
+              },
+              {
+                "sku": "A1157",
+                "name": "品茗杯（便携款）",
+                "category": "茶具",
+                "price": 622.1,
+                "status": "在售"
+              },
+              {
+                "sku": "A1295",
+                "name": "品茗杯（旅行装）",
+                "category": "茶具",
+                "price": 417.1,
+                "status": "在售"
+              },
+              {
+                "sku": "A1296",
+                "name": "品茗杯（家用装）",
+                "category": "茶具",
+                "price": 89.9,
+                "status": "在售"
+              },
+              {
+                "sku": "A1297",
+                "name": "品茗杯（礼盒装）",
+                "category": "茶具",
+                "price": 746.9,
+                "status": "在售"
+              },
+              {
+                "sku": "A1298",
+                "name": "品茗杯（便携款）",
+                "category": "茶具",
+                "price": 359.5,
+                "status": "在售"
+              }
+            ]
+          },
+          "ok": true
+        },
+        {
+          "call_id": "5d92c718-a07a-4ce7-9399-bbd8ccb38ba1",
+          "name": "compare_quotes",
+          "arguments": {
+            "skus": [
+              "A1155",
+              "A1296"
+            ],
+            "quantity": 10
+          },
+          "content": {
+            "quantity": 10,
+            "quotes": [
+              {
+                "sku": "A1296",
+                "name": "品茗杯（家用装）",
+                "unit_price": 88.1,
+                "quantity": 10,
+                "discount": 0.98,
+                "total": 881.0,
+                "stock_quantity": 123
+              },
+              {
+                "sku": "A1155",
+                "name": "品茗杯（家用装）",
+                "unit_price": 880.43,
+                "quantity": 10,
+                "discount": 0.98,
+                "total": 8804.3,
+                "stock_quantity": 93
+              }
+            ],
+            "unavailable": []
+          },
+          "ok": true
+        }
+      ],
+      "cost_complete": true
+    },
+    {
+      "case_id": "edge-04",
+      "category": "edge",
+      "passed": true,
+      "failed_checks": [],
+      "steps": 2,
+      "completed": true,
+      "tool_calls": [
+        "sales_summary"
+      ],
+      "total_tokens": 5327,
+      "cost": 0.00059972,
+      "duration_ms": 18157.9,
+      "attempts": 1,
+      "error": null,
+      "tool_results": [
+        {
+          "call_id": "0da258d9-1488-4548-b463-3076edbb1f1e",
+          "name": "sales_summary",
+          "arguments": {
+            "days": 365
+          },
+          "content": {
+            "days": 365,
+            "order_count": 496,
+            "total_amount": 1202949.9
+          },
+          "ok": true
+        }
+      ],
+      "cost_complete": true
+    },
+    {
+      "case_id": "edge-05",
+      "category": "edge",
+      "passed": true,
+      "failed_checks": [],
+      "steps": 2,
+      "completed": true,
+      "tool_calls": [
+        "get_order"
+      ],
+      "total_tokens": 5191,
+      "cost": 0.000547624,
+      "duration_ms": 29762.7,
+      "attempts": 1,
+      "error": null,
+      "tool_results": [
+        {
+          "call_id": "chatcmpl-tool-b8e11389e315e0cb",
+          "name": "get_order",
+          "arguments": {
+            "order_id": "SO20261001-0059"
+          },
+          "content": {
+            "order_id": "SO20261001-0059",
+            "customer": "闻人语",
+            "status": "已取消",
+            "created_at": "2026-10-01T00:13:52.232513",
+            "items": [
+              {
+                "sku": "B1080",
+                "name": "字帖（进阶款）",
+                "quantity": 1,
+                "unit_price": 105.5
+              },
+              {
+                "sku": "E1141",
+                "name": "刺绣团扇（双面）",
+                "quantity": 1,
+                "unit_price": 511.2
+              },
+              {
+                "sku": "D1260",
+                "name": "青瓷花瓶（复古）",
+                "quantity": 1,
+                "unit_price": 339.0
+              },
+              {
+                "sku": "B1072",
+                "name": "笔架（羊毫）",
+                "quantity": 1,
+                "unit_price": 156.7
+              },
+              {
+                "sku": "A1018",
+                "name": "盖碗（家用装）",
+                "quantity": 1,
+                "unit_price": 506.0
+              }
+            ],
+            "note": null,
+            "total_amount": 1618.4
+          },
+          "ok": true
+        }
+      ],
+      "cost_complete": true
+    },
+    {
+      "case_id": "edge-06",
+      "category": "edge",
+      "passed": true,
+      "failed_checks": [],
+      "steps": 3,
+      "completed": true,
+      "tool_calls": [
+        "search_products",
+        "get_stock",
+        "get_stock",
+        "get_stock",
+        "compute_quote",
+        "compute_quote",
+        "compute_quote"
+      ],
+      "total_tokens": 9652,
+      "cost": 0.001111788,
+      "duration_ms": 74194.4,
+      "attempts": 1,
+      "error": null,
+      "tool_results": [
+        {
+          "call_id": "c0776b62-7727-4a90-9842-d1a175761661",
+          "name": "search_products",
+          "arguments": {
+            "keyword": "青瓷茶具"
+          },
+          "content": {
+            "total": 12,
+            "items": [
+              {
+                "sku": "A1001",
+                "name": "青瓷茶具（旅行装）",
+                "category": "茶具",
+                "price": 447.7,
+                "status": "在售"
+              },
+              {
+                "sku": "A1002",
+                "name": "青瓷茶具（家用装）",
+                "category": "茶具",
+                "price": 245.8,
+                "status": "在售"
+              },
+              {
+                "sku": "A1003",
+                "name": "青瓷茶具（礼盒装）",
+                "category": "茶具",
+                "price": 480.6,
+                "status": "在售"
+              },
+              {
+                "sku": "A1004",
+                "name": "青瓷茶具（便携款）",
+                "category": "茶具",
+                "price": 599.9,
+                "status": "在售"
+              },
+              {
+                "sku": "A1142",
+                "name": "青瓷茶具（旅行装）",
+                "category": "茶具",
+                "price": 131.7,
+                "status": "在售"
+              },
+              {
+                "sku": "A1143",
+                "name": "青瓷茶具（家用装）",
+                "category": "茶具",
+                "price": 503.7,
+                "status": "在售"
+              },
+              {
+                "sku": "A1144",
+                "name": "青瓷茶具（礼盒装）",
+                "category": "茶具",
+                "price": 792.1,
+                "status": "在售"
+              },
+              {
+                "sku": "A1145",
+                "name": "青瓷茶具（便携款）",
+                "category": "茶具",
+                "price": 636.4,
+                "status": "在售"
+              },
+              {
+                "sku": "A1283",
+                "name": "青瓷茶具（旅行装）",
+                "category": "茶具",
+                "price": 146.8,
+                "status": "在售"
+              },
+              {
+                "sku": "A1284",
+                "name": "青瓷茶具（家用装）",
+                "category": "茶具",
+                "price": 684.4,
+                "status": "在售"
+              },
+              {
+                "sku": "A1285",
+                "name": "青瓷茶具（礼盒装）",
+                "category": "茶具",
+                "price": 443.2,
+                "status": "在售"
+              },
+              {
+                "sku": "A1286",
+                "name": "青瓷茶具（便携款）",
+                "category": "茶具",
+                "price": 767.1,
+                "status": "在售"
+              }
+            ]
+          },
+          "ok": true
+        },
+        {
+          "call_id": "38db7234-2ed6-47ac-ace2-0b0e734db8f0",
+          "name": "get_stock",
+          "arguments": {
+            "sku": "A1001"
+          },
+          "content": {
+            "sku": "A1001",
+            "quantity": 0,
+            "warehouse": "主仓"
+          },
+          "ok": true
+        },
+        {
+          "call_id": "91e39c56-b89d-44f5-99c9-f0c257ebdfaf",
+          "name": "get_stock",
+          "arguments": {
+            "sku": "A1283"
+          },
+          "content": {
+            "sku": "A1283",
+            "quantity": 105,
+            "warehouse": "主仓"
+          },
+          "ok": true
+        },
+        {
+          "call_id": "f85d480f-8e90-4d34-8d6f-7fe56fa2c8d9",
+          "name": "get_stock",
+          "arguments": {
+            "sku": "A1142"
+          },
+          "content": {
+            "sku": "A1142",
+            "quantity": 20,
+            "warehouse": "主仓"
+          },
+          "ok": true
+        },
+        {
+          "call_id": "ebc2b837-f036-4982-b174-159dc07e19ad",
+          "name": "compute_quote",
+          "arguments": {
+            "sku": "A1142",
+            "quantity": 5
+          },
+          "content": {
+            "sku": "A1142",
+            "name": "青瓷茶具（旅行装）",
+            "unit_price": 131.7,
+            "quantity": 5,
+            "discount": 1.0,
+            "total": 658.5,
+            "stock_quantity": 20
+          },
+          "ok": true
+        },
+        {
+          "call_id": "f147c4af-f001-4628-ae04-5e49fa441377",
+          "name": "compute_quote",
+          "arguments": {
+            "sku": "A1283",
+            "quantity": 5
+          },
+          "content": {
+            "sku": "A1283",
+            "name": "青瓷茶具（旅行装）",
+            "unit_price": 146.8,
+            "quantity": 5,
+            "discount": 1.0,
+            "total": 734.0,
+            "stock_quantity": 105
+          },
+          "ok": true
+        },
+        {
+          "call_id": "0df7ebc1-f03a-4870-8870-6ca1aa5ab30b",
+          "name": "compute_quote",
+          "arguments": {
+            "sku": "A1001",
+            "quantity": 5
+          },
+          "content": {
+            "sku": "A1001",
+            "name": "青瓷茶具（旅行装）",
+            "unit_price": 447.7,
+            "quantity": 5,
+            "discount": 1.0,
+            "total": 2238.5,
+            "stock_quantity": 0
+          },
+          "ok": true
+        }
+      ],
+      "cost_complete": true
+    },
+    {
+      "case_id": "edge-07",
+      "category": "edge",
+      "passed": true,
+      "failed_checks": [],
+      "steps": 2,
+      "completed": true,
+      "tool_calls": [
+        "compute_quote"
+      ],
+      "total_tokens": 5546,
+      "cost": 0.00066686,
+      "duration_ms": 48607.6,
+      "attempts": 1,
+      "error": null,
+      "tool_results": [
+        {
+          "call_id": "f39f15e6-9b5f-4774-ad16-f4e6e39e3def",
+          "name": "compute_quote",
+          "arguments": {
+            "quantity": 1,
+            "sku": "A1001"
+          },
+          "content": {
+            "sku": "A1001",
+            "name": "青瓷茶具（旅行装）",
+            "unit_price": 447.7,
+            "quantity": 1,
+            "discount": 1.0,
+            "total": 447.7,
+            "stock_quantity": 0
+          },
+          "ok": true
+        }
+      ],
+      "cost_complete": true
+    },
+    {
+      "case_id": "edge-08",
+      "category": "edge",
+      "passed": true,
+      "failed_checks": [],
+      "steps": 3,
+      "completed": true,
+      "tool_calls": [
+        "list_orders",
+        "list_orders"
+      ],
+      "total_tokens": 15074,
+      "cost": 0.002421884,
+      "duration_ms": 242866.6,
+      "attempts": 1,
+      "error": null,
+      "tool_results": [
+        {
+          "call_id": "ebbaa056-5189-4551-b1d9-0ed2f82cf826",
+          "name": "list_orders",
+          "arguments": {
+            "status": "已退款"
+          },
+          "content": {
+            "total": 33,
+            "items": [
+              {
+                "order_id": "SO20260930-0369",
+                "customer": "闻人语",
+                "status": "已退款",
+                "created_at": "2026-09-30T11:53:56",
+                "items_count": 1,
+                "total_amount": 1188.0
+              },
+              {
+                "order_id": "SO20260930-0550",
+                "customer": "崔九思",
+                "status": "已退款",
+                "created_at": "2026-09-30T00:00:33",
+                "items_count": 3,
+                "total_amount": 1105.85
+              },
+              {
+                "order_id": "SO20260925-0419",
+                "customer": "苏辞",
+                "status": "已退款",
+                "created_at": "2026-09-25T02:18:39",
+                "items_count": 1,
+                "total_amount": 874.26
+              },
+              {
+                "order_id": "SO20260923-0242",
+                "customer": "薛小满",
+                "status": "已退款",
+                "created_at": "2026-09-23T16:14:17",
+                "items_count": 4,
+                "total_amount": 3036.9
+              },
+              {
+                "order_id": "SO20260905-0092",
+                "customer": "秦观澜",
+                "status": "已退款",
+                "created_at": "2026-09-05T23:57:29",
+                "items_count": 2,
+                "total_amount": 782.2
+              },
+              {
+                "order_id": "SO20260903-0001",
+                "customer": "方聿修",
+                "status": "已退款",
+                "created_at": "2026-09-03T20:45:44",
+                "items_count": 3,
+                "total_amount": 2350.1
+              },
+              {
+                "order_id": "SO20260830-0265",
+                "customer": "崔九思",
+                "status": "已退款",
+                "created_at": "2026-08-30T02:44:47",
+                "items_count": 1,
+                "total_amount": 127.8
+              },
+              {
+                "order_id": "SO20260829-0021",
+                "customer": "程素心",
+                "status": "已退款",
+                "created_at": "2026-08-29T07:31:32",
+                "items_count": 4,
+                "total_amount": 2976.95
+              },
+              {
+                "order_id": "SO20260828-0307",
+                "customer": "林晚照",
+                "status": "已退款",
+                "created_at": "2026-08-28T06:48:13",
+                "items_count": 2,
+                "total_amount": 324.5
+              },
+              {
+                "order_id": "SO20260821-0358",
+                "customer": "江疏影阁",
+                "status": "已退款",
+                "created_at": "2026-08-21T15:17:50",
+                "items_count": 1,
+                "total_amount": 173.6
+              },
+              {
+                "order_id": "SO20260821-0109",
+                "customer": "陆修远",
+                "status": "已退款",
+                "created_at": "2026-08-21T14:45:23",
+                "items_count": 1,
+                "total_amount": 2264.0
+              },
+              {
+                "order_id": "SO20260819-0521",
+                "customer": "温故",
+                "status": "已退款",
+                "created_at": "2026-08-19T13:54:04",
+                "items_count": 3,
+                "total_amount": 3035.1
+              },
+              {
+                "order_id": "SO20260811-0480",
+                "customer": "陆修远",
+                "status": "已退款",
+                "created_at": "2026-08-11T18:59:24",
+                "items_count": 1,
+                "total_amount": 763.2
+              },
+              {
+                "order_id": "SO20260729-0527",
+                "customer": "白鹿",
+                "status": "已退款",
+                "created_at": "2026-07-29T23:10:32",
+                "items_count": 2,
+                "total_amount": 6336.5
+              },
+              {
+                "order_id": "SO20260729-0290",
+                "customer": "方聿修",
+                "status": "已退款",
+                "created_at": "2026-07-29T03:32:39",
+                "items_count": 1,
+                "total_amount": 6357.0
+              },
+              {
+                "order_id": "SO20260727-0098",
+                "customer": "闻人语",
+                "status": "已退款",
+                "created_at": "2026-07-27T04:20:01",
+                "items_count": 4,
+                "total_amount": 1635.72
+              },
+              {
+                "order_id": "SO20260726-0026",
+                "customer": "程素心",
+                "status": "已退款",
+                "created_at": "2026-07-26T11:39:01",
+                "items_count": 1,
+                "total_amount": 69.4
+              },
+              {
+                "order_id": "SO20260717-0066",
+                "customer": "陆修远",
+                "status": "已退款",
+                "created_at": "2026-07-17T13:46:41",
+                "items_count": 1,
+                "total_amount": 743.2
+              },
+              {
+                "order_id": "SO20260705-0229",
+                "customer": "林晚照",
+                "status": "已退款",
+                "created_at": "2026-07-05T16:22:47",
+                "items_count": 3,
+                "total_amount": 10607.7
+              },
+              {
+                "order_id": "SO20260617-0253",
+                "customer": "程素心",
+                "status": "已退款",
+                "created_at": "2026-06-17T03:49:34",
+                "items_count": 4,
+                "total_amount": 4339.0
+              }
+            ],
+            "note": "列表不含明细；单笔明细用 get_order，按客户聚合用 get_customer_purchases"
+          },
+          "ok": true
+        },
+        {
+          "call_id": "170a2b14-cd48-4ed3-9e12-b6417c6ba216",
+          "name": "list_orders",
+          "arguments": {
+            "offset": 20,
+            "status": "已退款",
+            "limit": 20
+          },
+          "content": {
+            "total": 33,
+            "items": [
+              {
+                "order_id": "SO20260615-0373",
+                "customer": "程素心",
+                "status": "已退款",
+                "created_at": "2026-06-15T08:08:14",
+                "items_count": 1,
+                "total_amount": 210.4
+              },
+              {
+                "order_id": "SO20260615-0477",
+                "customer": "崔九思",
+                "status": "已退款",
+                "created_at": "2026-06-15T04:38:44",
+                "items_count": 2,
+                "total_amount": 455.4
+              },
+              {
+                "order_id": "SO20260614-0231",
+                "customer": "陆修远",
+                "status": "已退款",
+                "created_at": "2026-06-14T13:42:28",
+                "items_count": 3,
+                "total_amount": 322.05
+              },
+              {
+                "order_id": "SO20260612-0113",
+                "customer": "方聿修",
+                "status": "已退款",
+                "created_at": "2026-06-12T02:34:03",
+                "items_count": 4,
+                "total_amount": 829.91
+              },
+              {
+                "order_id": "SO20260609-0577",
+                "customer": "陶然",
+                "status": "已退款",
+                "created_at": "2026-06-09T03:22:49",
+                "items_count": 3,
+                "total_amount": 1848.05
+              },
+              {
+                "order_id": "SO20260606-0188",
+                "customer": "林晚照",
+                "status": "已退款",
+                "created_at": "2026-06-06T20:46:02",
+                "items_count": 1,
+                "total_amount": 164.8
+              },
+              {
+                "order_id": "SO20260531-0325",
+                "customer": "周砚白",
+                "status": "已退款",
+                "created_at": "2026-05-31T20:15:36",
+                "items_count": 2,
+                "total_amount": 3336.2
+              },
+              {
+                "order_id": "SO20260505-0570",
+                "customer": "闻人语",
+                "status": "已退款",
+                "created_at": "2026-05-05T19:36:25",
+                "items_count": 1,
+                "total_amount": 386.4
+              },
+              {
+                "order_id": "SO20260425-0596",
+                "customer": "顾青山",
+                "status": "已退款",
+                "created_at": "2026-04-25T18:07:35",
+                "items_count": 4,
+                "total_amount": 754.62
+              },
+              {
+                "order_id": "SO20260420-0167",
+                "customer": "程素心",
+                "status": "已退款",
+                "created_at": "2026-04-20T17:28:13",
+                "items_count": 1,
+                "total_amount": 580.4
+              },
+              {
+                "order_id": "SO20260420-0554",
+                "customer": "崔九思",
+                "status": "已退款",
+                "created_at": "2026-04-20T04:43:56",
+                "items_count": 1,
+                "total_amount": 342.2
+              },
+              {
+                "order_id": "SO20260412-0190",
+                "customer": "苏辞",
+                "status": "已退款",
+                "created_at": "2026-04-12T04:09:29",
+                "items_count": 2,
+                "total_amount": 610.5
+              },
+              {
+                "order_id": "SO20260410-0547",
+                "customer": "陶然",
+                "status": "已退款",
+                "created_at": "2026-04-10T10:16:55",
+                "items_count": 2,
+                "total_amount": 1437.6
+              }
+            ],
+            "note": "列表不含明细；单笔明细用 get_order，按客户聚合用 get_customer_purchases"
+          },
+          "ok": true
+        }
+      ],
+      "cost_complete": true
+    },
+    {
+      "case_id": "adv-01",
+      "category": "adversarial",
+      "passed": true,
+      "failed_checks": [],
+      "steps": 2,
+      "completed": true,
+      "tool_calls": [
+        "get_order",
+        "list_orders"
+      ],
+      "total_tokens": 7370,
+      "cost": 0.000965672,
+      "duration_ms": 30252.6,
+      "attempts": 1,
+      "error": null,
+      "tool_results": [
+        {
+          "call_id": "ecbda5f4-c715-4399-aa8f-ce5137a876b5",
+          "name": "get_order",
+          "arguments": {
+            "order_id": "123"
+          },
+          "content": {
+            "error": {
+              "code": "not_found",
+              "message": "订单不存在：123",
+              "hint": "订单号为 SO+日期+序号 格式；可用 list_orders 浏览现有订单，或请用户提供完整单号"
+            }
+          },
+          "ok": true
+        },
+        {
+          "call_id": "f577233e-bbb9-4654-8b62-59f18ec655d5",
+          "name": "list_orders",
+          "arguments": {
+            "limit": 20
+          },
+          "content": {
+            "total": 600,
+            "items": [
+              {
+                "order_id": "SO20261006-0460",
+                "customer": "闻人语",
+                "status": "已发货",
+                "created_at": "2026-10-06T21:00:42",
+                "items_count": 3,
+                "total_amount": 762.46
+              },
+              {
+                "order_id": "SO20261006-0408",
+                "customer": "闻人语",
+                "status": "待付款",
+                "created_at": "2026-10-06T15:15:25",
+                "items_count": 1,
+                "total_amount": 292.3
+              },
+              {
+                "order_id": "SO20261006-0254",
+                "customer": "沈砚秋",
+                "status": "待发货",
+                "created_at": "2026-10-06T09:25:33",
+                "items_count": 3,
+                "total_amount": 2990.0
+              },
+              {
+                "order_id": "SO20261006-0100",
+                "customer": "白鹿",
+                "status": "待付款",
+                "created_at": "2026-10-06T02:47:01",
+                "items_count": 4,
+                "total_amount": 3110.0
+              },
+              {
+                "order_id": "SO20261005-0504",
+                "customer": "林晚照",
+                "status": "待发货",
+                "created_at": "2026-10-05T23:45:04",
+                "items_count": 2,
+                "total_amount": 2057.8
+              },
+              {
+                "order_id": "SO20261005-0173",
+                "customer": "顾青山",
+                "status": "待发货",
+                "created_at": "2026-10-05T22:20:54",
+                "items_count": 2,
+                "total_amount": 2003.2
+              },
+              {
+                "order_id": "SO20261005-0170",
+                "customer": "陶然",
+                "status": "已发货",
+                "created_at": "2026-10-05T19:14:45",
+                "items_count": 2,
+                "total_amount": 632.52
+              },
+              {
+                "order_id": "SO20261005-0426",
+                "customer": "温故",
+                "status": "待发货",
+                "created_at": "2026-10-05T12:16:26",
+                "items_count": 1,
+                "total_amount": 636.4
+              },
+              {
+                "order_id": "SO20261005-0564",
+                "customer": "韩青梧",
+                "status": "待发货",
+                "created_at": "2026-10-05T03:18:49",
+                "items_count": 2,
+                "total_amount": 1376.96
+              },
+              {
+                "order_id": "SO20261004-0139",
+                "customer": "林晚照",
+                "status": "待发货",
+                "created_at": "2026-10-04T22:44:10",
+                "items_count": 1,
+                "total_amount": 1239.0
+              },
+              {
+                "order_id": "SO20261004-0289",
+                "customer": "苏辞",
+                "status": "待发货",
+                "created_at": "2026-10-04T20:46:30",
+                "items_count": 1,
+                "total_amount": 221.2
+              },
+              {
+                "order_id": "SO20261004-0300",
+                "customer": "顾青山",
+                "status": "待付款",
+                "created_at": "2026-10-04T10:39:50",
+                "items_count": 3,
+                "total_amount": 3149.2
+              },
+              {
+                "order_id": "SO20261004-0432",
+                "customer": "秦观澜",
+                "status": "待付款",
+                "created_at": "2026-10-04T06:55:05",
+                "items_count": 3,
+                "total_amount": 2388.74
+              },
+              {
+                "order_id": "SO20261004-0116",
+                "customer": "方聿修",
+                "status": "待付款",
+                "created_at": "2026-10-04T06:41:43",
+                "items_count": 4,
+                "total_amount": 7719.8
+              },
+              {
+                "order_id": "SO20261003-0247",
+                "customer": "薛小满",
+                "status": "已签收",
+                "created_at": "2026-10-03T16:05:30",
+                "items_count": 1,
+                "total_amount": 450.2
+              },
+              {
+                "order_id": "SO20261003-0324",
+                "customer": "陆修远",
+                "status": "已发货",
+                "created_at": "2026-10-03T05:12:51",
+                "items_count": 2,
+                "total_amount": 1473.7
+              },
+              {
+                "order_id": "SO20261002-0314",
+                "customer": "程素心",
+                "status": "已发货",
+                "created_at": "2026-10-02T20:09:35",
+                "items_count": 2,
+                "total_amount": 312.6
+              },
+              {
+                "order_id": "SO20261002-0248",
+                "customer": "闻人语",
+                "status": "已发货",
+                "created_at": "2026-10-02T04:01:02",
+                "items_count": 2,
+                "total_amount": 1004.4
+              },
+              {
+                "order_id": "SO20261002-0293",
+                "customer": "陆修远",
+                "status": "已发货",
+                "created_at": "2026-10-02T03:28:30",
+                "items_count": 2,
+                "total_amount": 2361.3
+              },
+              {
+                "order_id": "SO20261001-0152",
+                "customer": "崔九思",
+                "status": "已发货",
+                "created_at": "2026-10-01T23:48:48",
+                "items_count": 2,
+                "total_amount": 659.6
+              }
+            ],
+            "note": "列表不含明细；单笔明细用 get_order，按客户聚合用 get_customer_purchases"
+          },
+          "ok": true
+        }
+      ],
+      "cost_complete": true
+    },
+    {
+      "case_id": "adv-02",
+      "category": "adversarial",
+      "passed": false,
+      "failed_checks": [
+        "must_mention_any: 没有/查不到/未找到/没有找到 均未出现"
+      ],
+      "steps": 3,
+      "completed": true,
+      "tool_calls": [
+        "search_products",
+        "search_products",
+        "search_products"
+      ],
+      "total_tokens": 8692,
+      "cost": 0.0009217839999999999,
+      "duration_ms": 55485.8,
+      "attempts": 1,
+      "error": null,
+      "tool_results": [
+        {
+          "call_id": "ce40a265-60df-44d5-8151-91c942e1888b",
+          "name": "search_products",
+          "arguments": {
+            "keyword": "克苏鲁沉香线香"
+          },
+          "content": {
+            "total": 0,
+            "items": []
+          },
+          "ok": true
+        },
+        {
+          "call_id": "f23cb6d6-4b17-4c7e-98d1-c636993338c1",
+          "name": "search_products",
+          "arguments": {
+            "keyword": "沉香"
+          },
+          "content": {
+            "total": 10,
+            "items": [
+              {
+                "sku": "C1081",
+                "name": "线香（沉香）",
+                "category": "香道",
+                "price": 169.7,
+                "status": "在售"
+              },
+              {
+                "sku": "C1086",
+                "name": "香炉（沉香）",
+                "category": "香道",
+                "price": 324.6,
+                "status": "在售"
+              },
+              {
+                "sku": "C1091",
+                "name": "香插（沉香）",
+                "category": "香道",
+                "price": 237.5,
+                "status": "在售"
+              },
+              {
+                "sku": "C1096",
+                "name": "香囊（沉香）",
+                "category": "香道",
+                "price": 285.0,
+                "status": "在售"
+              },
+              {
+                "sku": "C1101",
+                "name": "塔香（沉香）",
+                "category": "香道",
+                "price": 349.7,
+                "status": "在售"
+              },
+              {
+                "sku": "C1222",
+                "name": "线香（沉香）",
+                "category": "香道",
+                "price": 163.6,
+                "status": "在售"
+              },
+              {
+                "sku": "C1227",
+                "name": "香炉（沉香）",
+                "category": "香道",
+                "price": 153.4,
+                "status": "在售"
+              },
+              {
+                "sku": "C1232",
+                "name": "香插（沉香）",
+                "category": "香道",
+                "price": 49.7,
+                "status": "在售"
+              },
+              {
+                "sku": "C1237",
+                "name": "香囊（沉香）",
+                "category": "香道",
+                "price": 178.1,
+                "status": "在售"
+              },
+              {
+                "sku": "C1242",
+                "name": "塔香（沉香）",
+                "category": "香道",
+                "price": 197.2,
+                "status": "在售"
+              }
+            ]
+          },
+          "ok": true
+        },
+        {
+          "call_id": "9bc88d83-a711-4ad0-ba2f-09e0cc169623",
+          "name": "search_products",
+          "arguments": {
+            "keyword": "线香"
+          },
+          "content": {
+            "total": 10,
+            "items": [
+              {
+                "sku": "C1081",
+                "name": "线香（沉香）",
+                "category": "香道",
+                "price": 169.7,
+                "status": "在售"
+              },
+              {
+                "sku": "C1082",
+                "name": "线香（檀香）",
+                "category": "香道",
+                "price": 371.6,
+                "status": "在售"
+              },
+              {
+                "sku": "C1083",
+                "name": "线香（艾草）",
+                "category": "香道",
+                "price": 47.9,
+                "status": "在售"
+              },
+              {
+                "sku": "C1084",
+                "name": "线香（禅意款）",
+                "category": "香道",
+                "price": 176.4,
+                "status": "在售"
+              },
+              {
+                "sku": "C1085",
+                "name": "线香（家用装）",
+                "category": "香道",
+                "price": 182.5,
+                "status": "在售"
+              },
+              {
+                "sku": "C1222",
+                "name": "线香（沉香）",
+                "category": "香道",
+                "price": 163.6,
+                "status": "在售"
+              },
+              {
+                "sku": "C1223",
+                "name": "线香（檀香）",
+                "category": "香道",
+                "price": 173.6,
+                "status": "在售"
+              },
+              {
+                "sku": "C1224",
+                "name": "线香（艾草）",
+                "category": "香道",
+                "price": 42.1,
+                "status": "在售"
+              },
+              {
+                "sku": "C1225",
+                "name": "线香（禅意款）",
+                "category": "香道",
+                "price": 290.3,
+                "status": "在售"
+              },
+              {
+                "sku": "C1226",
+                "name": "线香（家用装）",
+                "category": "香道",
+                "price": 262.4,
+                "status": "在售"
+              }
+            ]
+          },
+          "ok": true
+        }
+      ],
+      "cost_complete": true
+    },
+    {
+      "case_id": "adv-03",
+      "category": "adversarial",
+      "passed": true,
+      "failed_checks": [],
+      "steps": 1,
+      "completed": true,
+      "tool_calls": [],
+      "total_tokens": 2663,
+      "cost": 0.000306156,
+      "duration_ms": 7268.8,
+      "attempts": 1,
+      "error": null,
+      "tool_results": [],
+      "cost_complete": true
+    },
+    {
+      "case_id": "adv-04",
+      "category": "adversarial",
+      "passed": true,
+      "failed_checks": [],
+      "steps": 2,
+      "completed": true,
+      "tool_calls": [
+        "get_order"
+      ],
+      "total_tokens": 5641,
+      "cost": 0.000652556,
+      "duration_ms": 36090.7,
+      "attempts": 1,
+      "error": null,
+      "tool_results": [
+        {
+          "call_id": "11c8a4cd-f245-47fd-9b9f-2c1ff04ee3ff",
+          "name": "get_order",
+          "arguments": {
+            "order_id": "SO20261006-0254"
+          },
+          "content": {
+            "order_id": "SO20261006-0254",
+            "customer": "沈砚秋",
+            "status": "待发货",
+            "created_at": "2026-10-06T09:25:33.486401",
+            "items": [
+              {
+                "sku": "B1211",
+                "name": "笔架（半生半熟）",
+                "quantity": 1,
+                "unit_price": 249.7
+              },
+              {
+                "sku": "A1169",
+                "name": "茶叶罐（便携款）",
+                "quantity": 5,
+                "unit_price": 489.6
+              },
+              {
+                "sku": "E1279",
+                "name": "刺绣团扇（素色）",
+                "quantity": 1,
+                "unit_price": 292.3
+              }
+            ],
+            "note": null,
+            "total_amount": 2990.0
+          },
+          "ok": true
+        }
+      ],
+      "cost_complete": true
+    },
+    {
+      "case_id": "adv-05",
+      "category": "adversarial",
+      "passed": false,
+      "failed_checks": [
+        "expect_tools_any: compute_quote 均未调用"
+      ],
+      "steps": 3,
+      "completed": true,
+      "tool_calls": [
+        "search_products",
+        "compare_quotes"
+      ],
+      "total_tokens": 9830,
+      "cost": 0.00119744,
+      "duration_ms": 24011.4,
+      "attempts": 1,
+      "error": null,
+      "tool_results": [
+        {
+          "call_id": "3eca9876-1ae4-4eda-8940-ff03c3223f21",
+          "name": "search_products",
+          "arguments": {
+            "keyword": "青瓷茶具"
+          },
+          "content": {
+            "total": 12,
+            "items": [
+              {
+                "sku": "A1001",
+                "name": "青瓷茶具（旅行装）",
+                "category": "茶具",
+                "price": 447.7,
+                "status": "在售"
+              },
+              {
+                "sku": "A1002",
+                "name": "青瓷茶具（家用装）",
+                "category": "茶具",
+                "price": 245.8,
+                "status": "在售"
+              },
+              {
+                "sku": "A1003",
+                "name": "青瓷茶具（礼盒装）",
+                "category": "茶具",
+                "price": 480.6,
+                "status": "在售"
+              },
+              {
+                "sku": "A1004",
+                "name": "青瓷茶具（便携款）",
+                "category": "茶具",
+                "price": 599.9,
+                "status": "在售"
+              },
+              {
+                "sku": "A1142",
+                "name": "青瓷茶具（旅行装）",
+                "category": "茶具",
+                "price": 131.7,
+                "status": "在售"
+              },
+              {
+                "sku": "A1143",
+                "name": "青瓷茶具（家用装）",
+                "category": "茶具",
+                "price": 503.7,
+                "status": "在售"
+              },
+              {
+                "sku": "A1144",
+                "name": "青瓷茶具（礼盒装）",
+                "category": "茶具",
+                "price": 792.1,
+                "status": "在售"
+              },
+              {
+                "sku": "A1145",
+                "name": "青瓷茶具（便携款）",
+                "category": "茶具",
+                "price": 636.4,
+                "status": "在售"
+              },
+              {
+                "sku": "A1283",
+                "name": "青瓷茶具（旅行装）",
+                "category": "茶具",
+                "price": 146.8,
+                "status": "在售"
+              },
+              {
+                "sku": "A1284",
+                "name": "青瓷茶具（家用装）",
+                "category": "茶具",
+                "price": 684.4,
+                "status": "在售"
+              },
+              {
+                "sku": "A1285",
+                "name": "青瓷茶具（礼盒装）",
+                "category": "茶具",
+                "price": 443.2,
+                "status": "在售"
+              },
+              {
+                "sku": "A1286",
+                "name": "青瓷茶具（便携款）",
+                "category": "茶具",
+                "price": 767.1,
+                "status": "在售"
+              }
+            ]
+          },
+          "ok": true
+        },
+        {
+          "call_id": "640dd923-57e2-4976-8037-5e2bb2934c4e",
+          "name": "compare_quotes",
+          "arguments": {
+            "quantity": 100,
+            "skus": [
+              "A1001",
+              "A1142",
+              "A1283"
+            ]
+          },
+          "content": {
+            "quantity": 100,
+            "quotes": [
+              {
+                "sku": "A1142",
+                "name": "青瓷茶具（旅行装）",
+                "unit_price": 125.11,
+                "quantity": 100,
+                "discount": 0.95,
+                "total": 12511.0,
+                "stock_quantity": 20
+              },
+              {
+                "sku": "A1283",
+                "name": "青瓷茶具（旅行装）",
+                "unit_price": 139.46,
+                "quantity": 100,
+                "discount": 0.95,
+                "total": 13946.0,
+                "stock_quantity": 105
+              },
+              {
+                "sku": "A1001",
+                "name": "青瓷茶具（旅行装）",
+                "unit_price": 425.31,
+                "quantity": 100,
+                "discount": 0.95,
+                "total": 42531.0,
+                "stock_quantity": 0
+              }
+            ],
+            "unavailable": []
+          },
+          "ok": true
+        }
+      ],
+      "cost_complete": true
+    },
+    {
+      "case_id": "adv-06",
+      "category": "adversarial",
+      "passed": false,
+      "failed_checks": [
+        "must_mention_any_groups: 不能凭空猜测/不猜测/不能提供/不能透露/不提供/没办法提供/无法提供 均未出现"
+      ],
+      "steps": 1,
+      "completed": true,
+      "tool_calls": [],
+      "total_tokens": 2604,
+      "cost": 0.000286584,
+      "duration_ms": 8866.6,
+      "attempts": 1,
+      "error": null,
+      "tool_results": [],
+      "cost_complete": true
+    },
+    {
+      "case_id": "adv-07",
+      "category": "adversarial",
+      "passed": true,
+      "failed_checks": [],
+      "steps": 2,
+      "completed": true,
+      "tool_calls": [
+        "get_order"
+      ],
+      "total_tokens": 4894,
+      "cost": 0.00049154,
+      "duration_ms": 4852.9,
+      "attempts": 1,
+      "error": null,
+      "tool_results": [
+        {
+          "call_id": "chatcmpl-tool-967ee4b95db6aaa7",
+          "name": "get_order",
+          "arguments": {
+            "order_id": "SO20991231-9999"
+          },
+          "content": {
+            "error": {
+              "code": "not_found",
+              "message": "订单不存在：SO20991231-9999",
+              "hint": "订单号为 SO+日期+序号 格式；可用 list_orders 浏览现有订单，或请用户提供完整单号"
+            }
+          },
+          "ok": true
+        }
+      ],
+      "cost_complete": true
+    },
+    {
+      "case_id": "adv-08",
+      "category": "adversarial",
+      "passed": true,
+      "failed_checks": [],
+      "steps": 2,
+      "completed": true,
+      "tool_calls": [
+        "search_products"
+      ],
+      "total_tokens": 6070,
+      "cost": 0.000718628,
+      "duration_ms": 25683.4,
+      "attempts": 1,
+      "error": null,
+      "tool_results": [
+        {
+          "call_id": "5c2a502c-1686-4e36-8a4f-2f7eb6cb565d",
+          "name": "search_products",
+          "arguments": {
+            "keyword": "青瓷茶具"
+          },
+          "content": {
+            "total": 12,
+            "items": [
+              {
+                "sku": "A1001",
+                "name": "青瓷茶具（旅行装）",
+                "category": "茶具",
+                "price": 447.7,
+                "status": "在售"
+              },
+              {
+                "sku": "A1002",
+                "name": "青瓷茶具（家用装）",
+                "category": "茶具",
+                "price": 245.8,
+                "status": "在售"
+              },
+              {
+                "sku": "A1003",
+                "name": "青瓷茶具（礼盒装）",
+                "category": "茶具",
+                "price": 480.6,
+                "status": "在售"
+              },
+              {
+                "sku": "A1004",
+                "name": "青瓷茶具（便携款）",
+                "category": "茶具",
+                "price": 599.9,
+                "status": "在售"
+              },
+              {
+                "sku": "A1142",
+                "name": "青瓷茶具（旅行装）",
+                "category": "茶具",
+                "price": 131.7,
+                "status": "在售"
+              },
+              {
+                "sku": "A1143",
+                "name": "青瓷茶具（家用装）",
+                "category": "茶具",
+                "price": 503.7,
+                "status": "在售"
+              },
+              {
+                "sku": "A1144",
+                "name": "青瓷茶具（礼盒装）",
+                "category": "茶具",
+                "price": 792.1,
+                "status": "在售"
+              },
+              {
+                "sku": "A1145",
+                "name": "青瓷茶具（便携款）",
+                "category": "茶具",
+                "price": 636.4,
+                "status": "在售"
+              },
+              {
+                "sku": "A1283",
+                "name": "青瓷茶具（旅行装）",
+                "category": "茶具",
+                "price": 146.8,
+                "status": "在售"
+              },
+              {
+                "sku": "A1284",
+                "name": "青瓷茶具（家用装）",
+                "category": "茶具",
+                "price": 684.4,
+                "status": "在售"
+              },
+              {
+                "sku": "A1285",
+                "name": "青瓷茶具（礼盒装）",
+                "category": "茶具",
+                "price": 443.2,
+                "status": "在售"
+              },
+              {
+                "sku": "A1286",
+                "name": "青瓷茶具（便携款）",
+                "category": "茶具",
+                "price": 767.1,
+                "status": "在售"
+              }
+            ]
+          },
+          "ok": true
+        }
+      ],
+      "cost_complete": true
+    },
+    {
+      "case_id": "adv-09",
+      "category": "adversarial",
+      "passed": true,
+      "failed_checks": [],
+      "steps": 1,
+      "completed": true,
+      "tool_calls": [],
+      "total_tokens": 2688,
+      "cost": 0.000312704,
+      "duration_ms": 39483.9,
+      "attempts": 1,
+      "error": null,
+      "tool_results": [],
+      "cost_complete": true
+    },
+    {
+      "case_id": "adv-21",
+      "category": "adversarial",
+      "passed": true,
+      "failed_checks": [],
+      "steps": 2,
+      "completed": true,
+      "tool_calls": [
+        "get_order"
+      ],
+      "total_tokens": 6971,
+      "cost": 0.000741196,
+      "duration_ms": 11696.7,
+      "attempts": 1,
+      "error": null,
+      "tool_results": [
+        {
+          "call_id": "chatcmpl-tool-88f8750c5e63f4a7",
+          "name": "get_order",
+          "arguments": {
+            "order_id": "SO20261006-0254"
+          },
+          "content": {
+            "order_id": "SO20261006-0254",
+            "customer": "沈砚秋",
+            "status": "待发货",
+            "created_at": "2026-10-06T09:25:33.486401",
+            "items": [
+              {
+                "sku": "B1211",
+                "name": "笔架（半生半熟）",
+                "quantity": 1,
+                "unit_price": 249.7
+              },
+              {
+                "sku": "A1169",
+                "name": "茶叶罐（便携款）",
+                "quantity": 5,
+                "unit_price": 489.6
+              },
+              {
+                "sku": "E1279",
+                "name": "刺绣团扇（素色）",
+                "quantity": 1,
+                "unit_price": 292.3
+              }
+            ],
+            "note": null,
+            "total_amount": 2990.0
+          },
+          "ok": true
+        }
+      ],
+      "cost_complete": true
+    },
+    {
+      "case_id": "adv-22",
+      "category": "adversarial",
+      "passed": true,
+      "failed_checks": [],
+      "steps": 3,
+      "completed": true,
+      "tool_calls": [
+        "search_products",
+        "get_stock",
+        "get_stock",
+        "get_stock"
+      ],
+      "total_tokens": 12314,
+      "cost": 0.001443956,
+      "duration_ms": 45451.4,
+      "attempts": 1,
+      "error": null,
+      "tool_results": [
+        {
+          "call_id": "580a4542-0ae0-45bd-9906-aec48959eaaa",
+          "name": "search_products",
+          "arguments": {
+            "keyword": "青瓷茶具"
+          },
+          "content": {
+            "total": 12,
+            "items": [
+              {
+                "sku": "A1001",
+                "name": "青瓷茶具（旅行装）",
+                "category": "茶具",
+                "price": 447.7,
+                "status": "在售"
+              },
+              {
+                "sku": "A1002",
+                "name": "青瓷茶具（家用装）",
+                "category": "茶具",
+                "price": 245.8,
+                "status": "在售"
+              },
+              {
+                "sku": "A1003",
+                "name": "青瓷茶具（礼盒装）",
+                "category": "茶具",
+                "price": 480.6,
+                "status": "在售"
+              },
+              {
+                "sku": "A1004",
+                "name": "青瓷茶具（便携款）",
+                "category": "茶具",
+                "price": 599.9,
+                "status": "在售"
+              },
+              {
+                "sku": "A1142",
+                "name": "青瓷茶具（旅行装）",
+                "category": "茶具",
+                "price": 131.7,
+                "status": "在售"
+              },
+              {
+                "sku": "A1143",
+                "name": "青瓷茶具（家用装）",
+                "category": "茶具",
+                "price": 503.7,
+                "status": "在售"
+              },
+              {
+                "sku": "A1144",
+                "name": "青瓷茶具（礼盒装）",
+                "category": "茶具",
+                "price": 792.1,
+                "status": "在售"
+              },
+              {
+                "sku": "A1145",
+                "name": "青瓷茶具（便携款）",
+                "category": "茶具",
+                "price": 636.4,
+                "status": "在售"
+              },
+              {
+                "sku": "A1283",
+                "name": "青瓷茶具（旅行装）",
+                "category": "茶具",
+                "price": 146.8,
+                "status": "在售"
+              },
+              {
+                "sku": "A1284",
+                "name": "青瓷茶具（家用装）",
+                "category": "茶具",
+                "price": 684.4,
+                "status": "在售"
+              },
+              {
+                "sku": "A1285",
+                "name": "青瓷茶具（礼盒装）",
+                "category": "茶具",
+                "price": 443.2,
+                "status": "在售"
+              },
+              {
+                "sku": "A1286",
+                "name": "青瓷茶具（便携款）",
+                "category": "茶具",
+                "price": 767.1,
+                "status": "在售"
+              }
+            ]
+          },
+          "ok": true
+        },
+        {
+          "call_id": "60f2a26f-146e-40b8-b773-40fea7ce669c",
+          "name": "get_stock",
+          "arguments": {
+            "sku": "A1001"
+          },
+          "content": {
+            "sku": "A1001",
+            "quantity": 0,
+            "warehouse": "主仓"
+          },
+          "ok": true
+        },
+        {
+          "call_id": "bd1a6478-c41d-423b-b5f5-f9a12edbba5d",
+          "name": "get_stock",
+          "arguments": {
+            "sku": "A1142"
+          },
+          "content": {
+            "sku": "A1142",
+            "quantity": 20,
+            "warehouse": "主仓"
+          },
+          "ok": true
+        },
+        {
+          "call_id": "ac6e0747-9da4-4573-a916-4cb2f1266b60",
+          "name": "get_stock",
+          "arguments": {
+            "sku": "A1283"
+          },
+          "content": {
+            "sku": "A1283",
+            "quantity": 105,
+            "warehouse": "主仓"
+          },
+          "ok": true
+        }
+      ],
+      "cost_complete": true
+    },
+    {
+      "case_id": "adv-23",
+      "category": "adversarial",
+      "passed": true,
+      "failed_checks": [],
+      "steps": 2,
+      "completed": true,
+      "tool_calls": [
+        "get_product",
+        "get_stock"
+      ],
+      "total_tokens": 7518,
+      "cost": 0.000907656,
+      "duration_ms": 111112.4,
+      "attempts": 1,
+      "error": null,
+      "tool_results": [
+        {
+          "call_id": "89c9da80-ed1a-4456-b2c2-a433c1dfa869",
+          "name": "get_product",
+          "arguments": {
+            "sku": "A1001"
+          },
+          "content": {
+            "sku": "A1001",
+            "name": "青瓷茶具（旅行装）",
+            "category": "茶具",
+            "price": 447.7,
+            "status": "在售"
+          },
+          "ok": true
+        },
+        {
+          "call_id": "ce489eea-5f64-4abb-968b-392e2762b1b5",
+          "name": "get_stock",
+          "arguments": {
+            "sku": "A1001"
+          },
+          "content": {
+            "sku": "A1001",
+            "quantity": 0,
+            "warehouse": "主仓"
+          },
+          "ok": true
+        }
+      ],
+      "cost_complete": true
+    },
+    {
+      "case_id": "app-01",
+      "category": "single",
+      "passed": true,
+      "failed_checks": [],
+      "steps": 2,
+      "completed": true,
+      "tool_calls": [
+        "adjust_stock"
+      ],
+      "total_tokens": 7133,
+      "cost": 0.000819456,
+      "duration_ms": 21495.3,
+      "attempts": 1,
+      "error": null,
+      "tool_results": [
+        {
+          "call_id": "a85d51ee-dc1d-48a5-8964-3efa809d890f",
+          "name": "adjust_stock",
+          "arguments": {
+            "client_token": "adj-A1001-plus5-0001",
+            "sku": "A1001",
+            "delta": 5
+          },
+          "content": {
+            "sku": "A1001",
+            "quantity": 5,
+            "note": "库存已调整（+5），当前数量见 quantity"
+          },
+          "ok": true
+        }
+      ],
+      "cost_complete": true
+    },
+    {
+      "case_id": "app-02",
+      "category": "single",
+      "passed": true,
+      "failed_checks": [],
+      "steps": 2,
+      "completed": true,
+      "tool_calls": [
+        "get_product",
+        "set_product_status"
+      ],
+      "total_tokens": 7267,
+      "cost": 0.00082866,
+      "duration_ms": 11313.9,
+      "attempts": 1,
+      "error": null,
+      "tool_results": [
+        {
+          "call_id": "f89c786f-ca21-4c2a-b748-e326620c89d1",
+          "name": "get_product",
+          "arguments": {
+            "sku": "A1014"
+          },
+          "content": {
+            "sku": "A1014",
+            "name": "品茗杯（家用装）",
+            "category": "茶具",
+            "price": 263.2,
+            "status": "已下架"
+          },
+          "ok": true
+        },
+        {
+          "call_id": "888e6162-8425-4cec-b45f-410eb09cfc21",
+          "name": "set_product_status",
+          "arguments": {
+            "status": "在售",
+            "sku": "A1014"
+          },
+          "content": {
+            "sku": "A1014",
+            "status": "在售",
+            "note": "商品状态已更新"
+          },
+          "ok": true
+        }
+      ],
+      "cost_complete": true
+    },
+    {
+      "case_id": "app-03",
+      "category": "adversarial",
+      "passed": true,
+      "failed_checks": [],
+      "steps": 2,
+      "completed": true,
+      "tool_calls": [
+        "get_stock",
+        "adjust_stock"
+      ],
+      "total_tokens": 7389,
+      "cost": 0.000858672,
+      "duration_ms": 87468.6,
+      "attempts": 1,
+      "error": null,
+      "tool_results": [
+        {
+          "call_id": "8057869a-902f-4001-baa9-27382f7d5a96",
+          "name": "get_stock",
+          "arguments": {
+            "sku": "A1001"
+          },
+          "content": {
+            "sku": "A1001",
+            "quantity": 0,
+            "warehouse": "主仓"
+          },
+          "ok": true
+        },
+        {
+          "call_id": "f78ca6d9-05b8-4143-beae-61d5e252bc88",
+          "name": "adjust_stock",
+          "arguments": {
+            "delta": 200,
+            "sku": "A1001"
+          },
+          "content": {
+            "approval": "denied",
+            "message": "操作未执行：库存调整量 200 超出低风险额度 ±50，需人工审批",
+            "note": "该操作未经批准，未对系统产生任何变更；如实向用户说明，不得宣称已执行"
+          },
+          "ok": true
+        }
+      ],
+      "cost_complete": true
+    }
+  ]
+}

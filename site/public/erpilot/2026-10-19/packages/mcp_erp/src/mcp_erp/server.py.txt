@@ -1,0 +1,529 @@
+"""FastMCP Server：把 mini-ERP 的查询与写操作暴露为 MCP 工具。
+
+M3：16 个只读工具（错误契约 v1 + 工具卡，docs/tool-cards.md 有同步测试把关）。
+M4（ADR-0005）：写操作 ×4，`include_writes=True` 才注册（默认关闭）——
+写工具的执行由审批门（agent_core.approval）在 agent 侧拦截，本层只负责
+领域校验与错误契约转译：
+
+- 工具**永不返回 None**：查不到返回结构化错误——这是给模型看的信息
+- **错误契约 v1**：{"error": {"code", "message", "hint"}}——code 供模型分类
+  （not_found / invalid_argument / invalid_transition / insufficient_stock），
+  hint 给出可操作的下一步；写路径业务校验在 erp_store.mutations，
+  MutationError 在这里转成该结构
+- 列表类工具返回 {"total", "items"}，让模型知道还有没有下一页
+- **返回值信息密度**：列表默认订单头摘要（明细行是上下文的大头），聚合类
+  问题引导到聚合工具——把大结果整块塞回下一轮 LLM 请求会被上游中转拒绝
+  （实证见 docs/error-recovery-log.md #2）
+- 参数用 Annotated + Field(description=...)，描述会进 inputSchema
+
+用法：
+    库内集成：bridge.build_agent_tools()（agent 侧经 MCP 客户端调用）
+    独立进程：python -m mcp_erp serve（stdio，给外部 MCP 客户端用）
+"""
+
+from collections.abc import Callable
+from datetime import datetime
+from pathlib import Path
+from typing import Annotated, Any
+
+from erp_store.db import DEFAULT_DB, make_engine
+from erp_store.models import OrderStatus, ProductStatus
+from erp_store.mutations import ErpMutations, MutationError
+from erp_store.pricing import PricingError
+from erp_store.repository import ErpRepository
+from fastmcp import FastMCP
+from pydantic import BaseModel, Field
+from rag.corpus import DEFAULT_INDEX_PATH, load_corpus
+from rag.embed import Embedder
+from rag.index import PolicyIndex
+from rag.openai_embedder import EmbedConfig, OpenAIEmbedder
+
+_ORDER_STATUS_HELP = " / ".join(s.value for s in OrderStatus)
+_PRODUCT_STATUS_HELP = " / ".join(s.value for s in ProductStatus)
+
+# 政策检索命中阈值（余弦相似度）：低于则视为语料未覆盖 → 拒答。
+# 由 2026-10-17 qwen3.7-text-embedding-flash 正/负例实测校准；详细分数见 RAG 验收报告。
+POLICY_SCORE_THRESHOLD = 0.57
+
+PolicyResolver = Callable[[], tuple[PolicyIndex, Embedder]]
+
+
+def _default_policy_resolver() -> tuple[PolicyIndex, Embedder]:
+    """默认惰性装配：从磁盘加载已构建索引 + OpenAI 兼容嵌入器（按需读 key）。
+
+    索引缺失或 key 未配置时抛错，由 search_policy 捕获转成 policy_unavailable。
+    """
+    index = PolicyIndex.load(DEFAULT_INDEX_PATH)
+    if index.chunks != load_corpus():
+        raise ValueError("政策文档已更新，索引需要重新构建")
+    return index, OpenAIEmbedder(EmbedConfig.from_env())
+
+
+def _err(code: str, message: str, hint: str = "") -> dict[str, Any]:
+    """错误契约 v1：code 供分类，message 说明发生了什么，hint 指下一步。"""
+    err: dict[str, Any] = {"code": code, "message": message}
+    if hint:
+        err["hint"] = hint
+    return {"error": err}
+
+
+def _not_found(what: str, key: str, hint: str) -> dict[str, Any]:
+    return _err("not_found", f"{what}不存在：{key}", hint)
+
+
+def _parse_status(value: str, enum_cls, help_text: str) -> tuple[Any, dict[str, Any] | None]:
+    try:
+        return enum_cls(value), None
+    except ValueError:
+        return None, _err("invalid_argument", f"无效取值：{value}", f"可选：{help_text}")
+
+
+def _order_brief(order) -> dict[str, Any]:
+    """订单头摘要：不含明细行（明细是上下文的大头），件数与金额保留。"""
+    return {
+        "order_id": order.order_id,
+        "customer": order.customer,
+        "status": order.status.value,
+        "created_at": order.created_at.isoformat(timespec="seconds"),
+        "items_count": len(order.items),
+        "total_amount": order.total_amount,
+    }
+
+
+class OrderItemInput(BaseModel):
+    """建单入参的订单行（进 inputSchema，模型按描述构造）。"""
+
+    sku: str = Field(description="商品 SKU，如 A1001")
+    quantity: int = Field(description="数量，至少为 1", ge=1)
+
+
+def create_server(
+    db_path: Path = DEFAULT_DB,
+    *,
+    include_writes: bool = False,
+    policy_resolver: PolicyResolver | None = None,
+    session_id: str | None = None,
+    replenishment_at: datetime | None = None,
+) -> FastMCP:
+    """构建 MCP server 实例（库内集成与独立进程共用）。
+
+    include_writes=True 才注册写工具（ADR-0005：写工具默认不存在；
+    agent 侧的审批门由 bridge 装配，本层不做审批）。
+    policy_resolver 注入政策检索的 (索引, 嵌入器)；缺省惰性走默认装配，
+    测试可注入 fake 嵌入器避免触网。
+    """
+    engine = make_engine(Path(db_path))
+    repo = ErpRepository(engine)
+    mutations = ErpMutations(engine)
+    mcp = FastMCP(
+        name="erpilot-erp",
+        instructions=(
+            "Erpilot mini-ERP 工具集（商品/库存/订单/报价）。"
+            '查不到时返回 {"error": {"code", "message", "hint"}}——按 hint 换工具'
+            "或向用户要更多信息；列表类返回 {\"total\", \"items\"}。"
+            + (
+                "写操作工具（建单/取消/改库存/上下架）需人工审批后才会真正执行；"
+                "审批拒绝时返回 approval=denied，如实向用户说明未执行。"
+                if include_writes
+                else "下单/改库存等写操作当前未开放。"
+            )
+        ),
+    )
+
+    # ---- 订单 ----
+
+    @mcp.tool
+    def get_order(
+        order_id: Annotated[
+            str, Field(description="订单号，格式 SO+日期+序号，如 SO20260301-0001")
+        ],
+    ) -> dict[str, Any]:
+        """按订单号查询订单：状态、客户、明细与金额（金额按下单快照价）。"""
+        order = repo.get_order(order_id)
+        if order is None:
+            return _not_found(
+                "订单", order_id,
+                "订单号为 SO+日期+序号 格式；可用 list_orders 浏览现有订单，"
+                "或请用户提供完整单号",
+            )
+        return order.model_dump(mode="json")
+
+    @mcp.tool
+    def list_orders(
+        status: Annotated[
+            str | None, Field(description=f"按状态过滤，可选：{_ORDER_STATUS_HELP}")
+        ] = None,
+        customer: Annotated[str | None, Field(description="按客户名精确过滤")] = None,
+        limit: Annotated[int, Field(description="每页条数（1~50）")] = 20,
+        offset: Annotated[int, Field(description="跳过条数（翻页用）")] = 0,
+        detail: Annotated[
+            bool,
+            Field(description="是否带每单明细行；默认 False（订单头+件数+金额，省上下文）"),
+        ] = False,
+    ) -> dict[str, Any]:
+        """按时间倒序列订单（带 total，供翻页判断）。逐单浏览用；
+        按客户统计"买了什么/总共多少钱/各状态分布"请改用
+        get_customer_purchases（一次聚合，结果小得多）。"""
+        if not 1 <= limit <= 50 or offset < 0:
+            return _err("invalid_argument", "limit 须在 1~50，offset 须 ≥ 0")
+        parsed, err = (None, None)
+        if status:
+            parsed, err = _parse_status(status, OrderStatus, _ORDER_STATUS_HELP)
+            if err:
+                return err
+        clamped = detail and limit > 20
+        if clamped:
+            limit = 20  # 带明细时收紧页大小：明细行是上下文的大头
+        orders = repo.list_orders(status=parsed, customer=customer, limit=limit, offset=offset)
+        items = [_order_brief(o) if not detail else o.model_dump(mode="json") for o in orders]
+        if detail:
+            note = "已带每单明细" + ("，页大小已收紧到 20" if clamped else "")
+            note += "；按客户聚合统计请用 get_customer_purchases"
+        else:
+            note = "列表不含明细；单笔明细用 get_order，按客户聚合用 get_customer_purchases"
+        return {
+            "total": repo.count_orders(status=parsed, customer=customer),
+            "items": items,
+            "note": note,
+        }
+
+    @mcp.tool
+    def get_orders_by_sku(
+        sku: Annotated[str, Field(description="商品 SKU")],
+        limit: Annotated[int, Field(description="最多返回条数（1~50）")] = 20,
+        detail: Annotated[
+            bool, Field(description="是否带每单明细行；默认 False（订单头摘要）")
+        ] = False,
+    ) -> dict[str, Any]:
+        """反查某 SKU 出现在哪些订单里（含全部状态，按下单时间倒序）——
+        "这个商品都卖给谁了 / 进了哪些单"场景。"""
+        if not 1 <= limit <= 50:
+            return _err("invalid_argument", "limit 须在 1~50")
+        clamped = detail and limit > 20
+        if clamped:
+            limit = 20
+        orders = repo.get_orders_by_sku(sku, limit=limit)
+        items = [_order_brief(o) if not detail else o.model_dump(mode="json") for o in orders]
+        if detail:
+            note = "已带每单明细" + ("，页大小已收紧到 20" if clamped else "")
+        else:
+            note = "列表不含明细；单笔明细用 get_order"
+        return {
+            "total": repo.count_orders_by_sku(sku),
+            "items": items,
+            "note": note,
+        }
+
+    @mcp.tool
+    def get_customer_purchases(
+        customer: Annotated[
+            str, Field(description="客户名，精确匹配；不确定写法时先用 list_orders 试")
+        ],
+    ) -> dict[str, Any]:
+        """聚合某客户的购物汇总：买过什么（按商品聚合件数/金额）、各状态多少单
+        多少钱、总花费（有效口径 = 待发货/已发货/已签收）。回答"某人买了些什么 /
+        总共多少钱 / 哪些已发货哪些未付款"用本工具——一次调用代替逐单翻页。"""
+        if not customer.strip():
+            return _err(
+                "invalid_argument",
+                "客户名不能为空",
+                "客户名为精确匹配，可先用 list_orders 翻几页确认写法",
+            )
+        result = repo.customer_purchases(customer.strip())
+        if result is None:
+            return _not_found(
+                "客户订单", customer,
+                "客户名为精确匹配；可先用 list_orders 翻几页确认写法，或请用户确认全名",
+            )
+        data = result.model_dump(mode="json")
+        if len(data["items"]) > 40:
+            data["items"] = data["items"][:40]
+            data["note"] = "仅展示金额最高的 40 种商品"
+        return data
+
+    # ---- 商品 ----
+
+    @mcp.tool
+    def get_product(
+        sku: Annotated[str, Field(description="商品 SKU，如 A1001")],
+    ) -> dict[str, Any]:
+        """按 SKU 查商品：名称、品类、现价、在售状态。"""
+        product = repo.get_product(sku)
+        if product is None:
+            return _not_found(
+                "商品", sku, "可用 search_products 按名称/品类关键词查找 SKU"
+            )
+        return product.model_dump(mode="json")
+
+    @mcp.tool
+    def search_products(
+        keyword: Annotated[str, Field(description="名称/品类的关键词，如 青瓷")],
+        limit: Annotated[int, Field(description="最多返回条数（1~100）")] = 20,
+    ) -> dict[str, Any]:
+        """按关键词搜商品，返回 {"total", "items"}。"""
+        if not 1 <= limit <= 100:
+            return _err("invalid_argument", "limit 须在 1~100")
+        kw = keyword.strip()
+        if not kw:
+            return _err("invalid_argument", "关键词不能为空", "例如：青瓷、宣纸、香道")
+        hits = repo.search_products(kw, limit=limit)
+        return {
+            "total": repo.count_products(kw),
+            "items": [p.model_dump(mode="json") for p in hits],
+        }
+
+    @mcp.tool
+    def list_products(
+        status: Annotated[
+            str | None, Field(description=f"按状态过滤，可选：{_PRODUCT_STATUS_HELP}")
+        ] = None,
+        category: Annotated[
+            str | None, Field(description="按品类精确过滤，可先调 list_categories")
+        ] = None,
+        limit: Annotated[int, Field(description="每页条数（1~100）")] = 20,
+        offset: Annotated[int, Field(description="跳过条数（翻页用）")] = 0,
+    ) -> dict[str, Any]:
+        """商品列表：按状态/品类组合过滤（不带关键词的浏览入口）。"""
+        if not 1 <= limit <= 100 or offset < 0:
+            return _err("invalid_argument", "limit 须在 1~100，offset 须 ≥ 0")
+        parsed, err = (None, None)
+        if status:
+            parsed, err = _parse_status(status, ProductStatus, _PRODUCT_STATUS_HELP)
+            if err:
+                return err
+        products = repo.list_products(
+            status=parsed, category=category, limit=limit, offset=offset
+        )
+        return {
+            "total": repo.count_products(status=parsed, category=category),
+            "items": [p.model_dump(mode="json") for p in products],
+        }
+
+    # ---- 库存 / 报价 ----
+
+    @mcp.tool
+    def get_stock(
+        sku: Annotated[str, Field(description="商品 SKU")],
+    ) -> dict[str, Any]:
+        """按 SKU 查当前库存数量与仓库。"""
+        stock = repo.get_stock(sku)
+        if stock is None:
+            return _not_found("库存记录", sku, "先用 search_products 确认 SKU 是否存在")
+        return stock.model_dump(mode="json")
+
+    @mcp.tool
+    def compute_quote(
+        sku: Annotated[str, Field(description="商品 SKU")],
+        quantity: Annotated[int, Field(description="数量；≥10/50/200 件有梯度折扣，至少为 1")],
+    ) -> dict[str, Any]:
+        """按现价与数量梯度折扣报价；附带当前库存（为 0 时报价仅参考）。"""
+        if quantity < 1:
+            return _err("invalid_argument", f"数量至少为 1（收到 {quantity}）")
+        try:
+            quote = repo.compute_quote(sku, quantity)
+        except PricingError as exc:
+            return _err(
+                "invalid_argument", f"商品 {sku} 无法计价：{exc}", "请检查商品现价与数量折扣",
+            )
+        if quote is None:
+            return _not_found(
+                "可报价商品（不存在或已下架）", sku,
+                "已下架商品不可报价；可用 search_products 换在售商品",
+            )
+        return quote.model_dump(mode="json")
+
+    @mcp.tool
+    def compare_quotes(
+        skus: Annotated[list[str], Field(description="SKU 列表（2~10 个，同数量比价）")],
+        quantity: Annotated[int, Field(description="统一数量；≥10/50/200 件有梯度折扣")],
+    ) -> dict[str, Any]:
+        """批量报价并按总价升序——多商品比价场景。"""
+        if not 2 <= len(skus) <= 10:
+            return _err("invalid_argument", "skus 须为 2~10 个")
+        if quantity < 1:
+            return _err("invalid_argument", f"数量至少为 1（收到 {quantity}）")
+        quotes, unavailable = [], []
+        for sku in dict.fromkeys(skus):  # 去重且保序
+            try:
+                quote = repo.compute_quote(sku, quantity)
+            except PricingError as exc:
+                return _err(
+                    "invalid_argument", f"商品 {sku} 无法计价：{exc}", "请检查商品现价与数量折扣",
+                )
+            if quote is None:
+                unavailable.append(sku)
+            else:
+                quotes.append(quote.model_dump(mode="json"))
+        quotes.sort(key=lambda q: q["total"])
+        return {"quantity": quantity, "quotes": quotes, "unavailable": unavailable}
+
+    @mcp.tool
+    def list_low_stock(
+        threshold: Annotated[int, Field(description="库存预警线（≤ 该值算低库存）")] = 10,
+        limit: Annotated[int, Field(description="最多返回条数（1~100）")] = 20,
+    ) -> dict[str, Any]:
+        """列出低库存商品（按库存升序）——盘库存、补货建议场景。"""
+        if not 0 <= threshold <= 10_000 or not 1 <= limit <= 100:
+            return _err("invalid_argument", "threshold 须在 0~10000，limit 须在 1~100")
+        rows = repo.list_low_stock(threshold=threshold, limit=limit)
+        items = [i.model_dump(mode="json") for i in rows]
+        return {"returned": len(items), "items": items}
+
+    # ---- 运营视图 ----
+
+    @mcp.tool
+    def sales_summary(
+        days: Annotated[int, Field(description="统计最近 N 天（1~365）")] = 30,
+    ) -> dict[str, Any]:
+        """近 N 天销量汇总：有效订单数（待发货/已发货/已签收）与总金额。"""
+        if not 1 <= days <= 365:
+            return _err("invalid_argument", "days 须在 1~365")
+        return repo.sales_summary(days=days).model_dump(mode="json")
+
+    @mcp.tool
+    def top_products(
+        days: Annotated[int, Field(description="统计最近 N 天（1~365）")] = 30,
+        limit: Annotated[int, Field(description="榜单长度（1~50）")] = 10,
+    ) -> dict[str, Any]:
+        """近 N 天畅销榜（按销量降序），只统计有效订单。"""
+        if not 1 <= days <= 365 or not 1 <= limit <= 50:
+            return _err("invalid_argument", "days 须在 1~365，limit 须在 1~50")
+        items = [p.model_dump(mode="json") for p in repo.top_products(days=days, limit=limit)]
+        return {"returned": len(items), "items": items}
+
+    @mcp.tool
+    def daily_sales(
+        days: Annotated[int, Field(description="统计最近 N 天（1~90）")] = 14,
+    ) -> dict[str, Any]:
+        """近 N 天逐日销量点（有效口径）——看趋势、找异常日。"""
+        if not 1 <= days <= 90:
+            return _err("invalid_argument", "days 须在 1~90")
+        items = [p.model_dump(mode="json") for p in repo.daily_sales(days=days)]
+        return {"returned": len(items), "items": items}
+
+    @mcp.tool
+    def stock_valuation() -> dict[str, Any]:
+        """库存估值：按品类的库存数量与金额（现价口径），掌柜算家底。"""
+        lines = repo.stock_valuation()
+        return {
+            "grand_total_value": round(sum(line.total_value for line in lines), 2),
+            "categories": [line.model_dump(mode="json") for line in lines],
+        }
+
+    @mcp.tool
+    def list_categories() -> dict[str, Any]:
+        """列出全部品类与在售商品数——探索库存时的第一步。"""
+        cats = repo.list_categories()
+        return {"total": len(cats), "items": [c.model_dump(mode="json") for c in cats]}
+
+    from mcp_erp.policy_tools import register_policy_tools
+    from mcp_erp.replenishment_tools import register_replenishment_tools
+
+    register_replenishment_tools(mcp, repo, as_of=replenishment_at)
+    register_policy_tools(mcp, repo, policy_resolver or _default_policy_resolver,
+                          POLICY_SCORE_THRESHOLD)
+
+    # ---- 写操作（include_writes=True 才注册；执行受 agent 侧审批门拦截） ----
+
+    if include_writes:
+
+        @mcp.tool
+        def create_order(
+            customer: Annotated[str, Field(description="下单客户全名，精确匹配")],
+            items: Annotated[
+                list[OrderItemInput], Field(description="订单行列表（SKU + 数量）")
+            ],
+            note: Annotated[str | None, Field(description="订单备注（可选）")] = None,
+            client_token: Annotated[
+                str | None, Field(description="幂等键；重试同一请求须保留，新操作用新键")
+            ] = None,
+        ) -> dict[str, Any]:
+            """创建订单（需人工审批后执行）：同 SKU 合并数量后按现价与数量折扣
+            保存成交价，和 compute_quote 同口径；单价四舍五入到两位后乘数量。
+            校验在售与库存，新订单从「待付款」起步。报价不锁价，执行时按现价。"""
+            try:
+                order = mutations.create_order(
+                    customer,
+                    [(i.sku, i.quantity) for i in items],
+                    note=note,
+                    client_token=client_token,
+                )
+            except MutationError as exc:
+                return _err(exc.code, exc.message, exc.hint)
+            data = order.model_dump(mode="json")
+            data["result_note"] = "订单已创建，当前状态「待付款」；金额按下单折扣成交快照价"
+            return data
+
+        @mcp.tool
+        def cancel_order(
+            order_id: Annotated[str, Field(description="订单号，如 SO20260301-0001")],
+            client_token: Annotated[
+                str | None, Field(description="幂等键；重试同一请求须保留，新操作用新键")
+            ] = None,
+        ) -> dict[str, Any]:
+            """取消订单（需人工审批后执行）：仅待付款/待发货可取消，取消后
+            回补库存；已发货/已签收的订单不可取消。"""
+            try:
+                order = mutations.cancel_order(order_id, client_token=client_token)
+            except MutationError as exc:
+                return _err(exc.code, exc.message, exc.hint)
+            data = order.model_dump(mode="json")
+            data["result_note"] = "订单已取消，库存已回补"
+            return data
+
+        @mcp.tool
+        def adjust_stock(
+            sku: Annotated[str, Field(description="商品 SKU")],
+            delta: Annotated[
+                int, Field(description="调整量：正数入库、负数出库，不能为 0")
+            ],
+            client_token: Annotated[
+                str | None, Field(description="幂等键；重试同一请求须保留，新操作用新键")
+            ] = None,
+        ) -> dict[str, Any]:
+            """调整库存（需人工审批后执行）：按 delta 增减，库存不能减为负数。"""
+            if delta == 0:
+                return _err("invalid_argument", "调整量不能为 0（正数入库，负数出库）")
+            try:
+                sku, quantity = mutations.adjust_stock(sku, delta, client_token=client_token)
+            except MutationError as exc:
+                return _err(exc.code, exc.message, exc.hint)
+            return {
+                "sku": sku,
+                "quantity": quantity,
+                "note": f"库存已调整（{'+' if delta > 0 else ''}{delta}），"
+                "当前数量见 quantity",
+            }
+
+        @mcp.tool
+        def set_product_status(
+            sku: Annotated[str, Field(description="商品 SKU")],
+            status: Annotated[
+                str, Field(description=f"目标状态，可选：{_PRODUCT_STATUS_HELP}")
+            ],
+            client_token: Annotated[
+                str | None, Field(description="幂等键；重试同一请求须保留，新操作用新键")
+            ] = None,
+        ) -> dict[str, Any]:
+            """商品上架/下架（需人工审批后执行）；已是目标状态时报
+            invalid_transition 而不是空转成功。"""
+            parsed, err = _parse_status(status, ProductStatus, _PRODUCT_STATUS_HELP)
+            if err:
+                return err
+            try:
+                sku = mutations.set_product_status(sku, parsed, client_token=client_token)
+            except MutationError as exc:
+                return _err(exc.code, exc.message, exc.hint)
+            return {"sku": sku, "status": parsed.value, "note": "商品状态已更新"}
+
+    if session_id is not None:
+        from mcp_erp.draft_tools import register_draft_tools
+        from mcp_erp.operation_tools import register_operation_tools
+
+        if include_writes:
+            mcp.local_provider.remove_tool("create_order")
+            mcp.local_provider.remove_tool("cancel_order")
+            mcp.local_provider.remove_tool("adjust_stock")
+        register_draft_tools(mcp, engine, session_id, include_writes)
+        register_operation_tools(mcp, engine, session_id, include_writes)
+    return mcp

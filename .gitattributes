@@ -1,0 +1,2 @@
+# Evidence snapshots retain their original bytes so published SHA-256 stays valid.
+site/public/erpilot/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

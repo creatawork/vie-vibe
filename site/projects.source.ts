@@ -315,33 +315,43 @@ export const projectsSource: Project[] = [
     slug: 'erpilot',
     status: 'building',
     description:
-      '会请示的 ERP 智能体：agent 应用开发求职作品集项目。运行在 mini-ERP（商品 / 库存 / 订单）上，FastMCP 工具层 + 分级人工审批（HITL）+ 全程评测驱动。',
+      '运行在 mini-ERP 上的业务智能体：FastMCP 查询与写工具、LangGraph 持久化审批、版本化订单草稿、政策证据与只读补货建议，配套可复核的真实模型评测和本地演示。',
     proposition:
-      '只读操作自动执行，低风险操作批量确认，资金相关操作单笔审批——动账动货的事，必须请示东家。',
-    updatedAt: '2026-10-15',
-    tags: ['Python 3.12', 'FastAPI', 'FastMCP', 'LangGraph', 'React'],
+      '查询交给工具，订单与库存变更先固定草稿和业务预览，再请人确认；执行后以业务记录核对结果。',
+    updatedAt: '2026-10-20',
+    tags: ['Python 3.12', 'FastAPI', 'FastMCP', 'LangGraph', 'SQLite', 'PostgreSQL', 'React'],
     featured: false,
     github: 'https://github.com/creatawork/Erpilot',
     capabilities: [
       {
-        title: '手写 agent loop',
+        title: '固定版本的订单审批',
         description:
-          '流式事件模型 + 工具循环 + 防护（max_steps / 超时 / 错误回填）+ 上下文压缩，不依赖框架，44 项单测覆盖。',
+          '多商品草稿逐版保存，批准绑定指定版本；提交前复核价格与库存，条件变化需重新确认。取消订单和库存调整先展示业务预览。',
       },
       {
-        title: '并行工具调用',
+        title: '持久化中断与写入对账',
         description:
-          '同一轮多个工具并发执行：完成序转发、调用序回填，前端时间线靠 call_id 精确配对。',
+          'LangGraph interrupt 保存待审批参数，API 用 PostgreSQL checkpoint 恢复；稳定 mutation token 与业务变更同事务记账，结果不明时先查提交事实。',
       },
       {
-        title: '可回放 trace',
+        title: '政策证据与明确缺口',
         description:
-          'JSONL 六类记录逐行落盘，异常也留痕；erpilot replay 把 trace 还原成可读对话。',
+          '检索核对政策范围、版本与原文哈希；模型逐问选证，程序渲染原文和缺口。最新两模型均为 11/13，严格质量门槛仍未达成。',
       },
       {
-        title: '三条入口一个协议',
+        title: '多轮任务与可选上下文视图',
         description:
-          'CLI（rich 渲染）、FastAPI SSE、React 流式页挂同一条事件流，前后端类型镜像同步维护。',
+          '从持久化草稿恢复任务，按版本与行号修改并校验 SKU；候选视图保留用户原话与任务摘要，超估算预算时停止，尚未切换为默认策略。',
+      },
+      {
+        title: '只读补货建议',
+        description:
+          '按销量、库存、采购周期和覆盖天数计算建议，说明零销量、下架与异常数据的限制；不执行采购或库存调整。',
+      },
+      {
+        title: '评测与可复现演示',
+        description:
+          '报告分别保存调用尝试、执行结果、业务状态与原币种计量；gate 检查质量，strict 检查可比性。无密钥本地演示与真实模型验收分开记录。',
       },
     ],
     overview: [
@@ -351,41 +361,129 @@ export const projectsSource: Project[] = [
       },
       {
         term: '对象',
-        text: 'agent 应用开发岗位的求职作品集；演示场景是 mini-ERP（商品 / 库存 / 订单）的掌柜助手。',
+        text: 'Agent 应用与后端工程求职作品；演示场景是 mini-ERP 的订单、库存、政策查询与补货分析。',
       },
       {
         term: '范围',
-        text: '单主管 agent + 15~20 个 MCP 工具、分级 HITL 审批、评测体系、React 前端；多 agent 与 RAG 延后决策。',
+        text: '本机可信单用户、单 API 进程。已提供无密钥演示、源码交付和七篇开发实录；尚未部署，身份认证、租户隔离与多 worker 执行权需要独立设计。',
       },
     ],
     flows: [
       {
-        title: '对话流程',
+        title: '草稿到建单',
         steps: [
-          '用一句业务问题提问（订单 / 库存 / 报价）',
-          'agent 拆解为多步工具调用，文本流式输出',
-          '工具时间线逐个点亮，并行动作如实呈现',
-          '答复收口，展示 token 与成本',
+          '查询商品与报价，保存多商品订单草稿，暂不扣库存',
+          '按当前版本和商品行修改，保留旧版快照',
+          '提交指定版本，核对客户、金额与库存影响后批准或拒绝',
+          '批准后重新校验业务条件，以幂等记录核对建单结果',
         ],
       },
       {
-        title: '过程回放',
+        title: '查政策与看补货',
         steps: [
-          '每次运行 trace 自动落盘 traces/*.jsonl',
-          '上游故障与异常一并留痕（run_error）',
-          'erpilot replay 把 trace 还原成可读对话',
+          '政策检索返回原文、版本、生效信息和引用标识',
+          '逐问展示证据或明确缺口，不补写没有依据的政策',
+          '补货建议列出统计窗口、采购周期与假设，不触发采购',
+        ],
+      },
+      {
+        title: '恢复与复核',
+        steps: [
+          '历史会话找回持久化任务，多份草稿先澄清目标',
+          '页面断连后读取 checkpoint 状态，恢复待审批操作',
+          '本地 JSONL 保存过程，评测核对工具、答复与数据库变化',
         ],
       },
     ],
     architecture:
-      'Python 3.12 承载全部 agent 逻辑：agent_core 手写事件驱动的 agent loop（M6 起以 LangGraph 重构编排），FastMCP 把 ERP 能力暴露为工具，FastAPI + SSE 对接前端；React + TypeScript 提供流式对话、工具时间线与审批卡片；评测 runner 独立成包，PostgreSQL + pgvector 与 Langfuse 按里程碑接入。',
+      'Python 3.12 + LangGraph 承载模型、工具和审批节点，FastMCP 对接 ERP 领域层；ERP 业务数据与 API RunStore 使用 SQLite，PostgreSQL 仅保存 API graph checkpoint。FastAPI SSE 连接 React + TypeScript 工作台，CLI 与评测显式使用内存 saver。政策检索与原文渲染独立适配，本地 JSONL 保留 trace，Langfuse 双写可选；结构化上下文视图仍需显式启用。',
     validation: [
-      '2026-09-29：M1 第 1–3 周真实链路验收通过——单工具任务 2 步收口，多步任务 3 步完成（第 2 轮模型自发并行调用两工具），成本约 ¥0.0003。',
-      '44 项单元测试走传输层 mock，不消耗 token；ruff / pytest / tsc + vite build 进 CI 门禁。',
-      'trace 覆盖成功与异常路径：上游端点故障（APIError / 502 upstream_error）均被 run_error 完整留痕。',
-      '2026-10-08：崩溃恢复矩阵 R01–R06 在隔离 PostgreSQL 库全部通过；写可靠性 live 基线 35 条记录 34 通过、write/approval 6/6（edge-08 失败如实保留）。',
+      '2026-10-19：B4 指代最终专项，两模型各 3/3 场景、7/7 轮；B6 补货专项，两模型各 7/7，gate 与 strict 分别通过。固定批次结果不合成为通用成功率。',
+      '政策结构化答复专项：GLM 与 DeepSeek 均完整执行 13 例、严格通过 11 例；结束协议和背景条件拆分仍有失败，可比性通过不等于质量门槛通过。',
+      '冻结检索集 36 问，dev 12 / test 24；当前向量策略 test Recall@3 为 96.9%，语料外空返回 87.5%。RRF 未全面超过现有策略，未替换默认检索。该结果不代表模型回答成功率。',
+      '连续任务候选：DeepSeek 3/3 场景、17/17 轮通过；GLM 1/3 场景，执行 7/17 轮、其中 5 轮通过，客户全称缩写失败保留。未执行轮不计通过，候选保持可选。',
+      '2026-10-19 工程记录：后端离线 1062 passed / 21 skipped / 47 deselected，其后交付包两项测试另行通过；前端 84 项、TypeScript / Vite 构建与三项浏览器离线断言通过。离线演示不计作真实模型成绩。',
+      '历史恢复证据：2026-10-08 硬退出进程测试 19 项通过；R01–R06 为进程测试，R07–R10 为当时组件覆盖，未扩写成后续全部业务路径已重验。ADR-0010 仍待评审。',
     ],
     log: [
+      {
+        date: '2026-10-20',
+        title: '开发实录第 7 篇：多轮状态与上下文实验',
+        detail: '发布固定历史快照与真实连续任务对照，区分字段保留、模型用对信息与业务保护参数；保留两模型未共同通过的结果，候选策略不切默认。',
+        type: 'milestone',
+        tech: ['Python', 'LangGraph', '上下文工程'],
+        article: '/articles/ai/context-and-multi-turn-state',
+      },
+      {
+        date: '2026-10-20',
+        title: '开发实录第 6 篇：政策 RAG 的检索与回答',
+        detail: '分别说明 36 问冻结检索对照与 13 例结构化答复，介绍本轮引用绑定、程序原文渲染和安全降级；两模型 11/13 的严格失败如实保留。',
+        type: 'milestone',
+        tech: ['Python', 'RAG', '评测'],
+        article: '/articles/ai/rag-evidence-and-answers',
+      },
+      {
+        date: '2026-10-20',
+        title: '开发实录第 5 篇：从工具名到业务状态的评测',
+        detail: '发布工具执行证据、禁止调用、数据库状态、评分器修正、质量门槛与原币种计量的复盘，不把定点重跑拼成一次全量成功率。',
+        type: 'milestone',
+        tech: ['Python', '评测'],
+        article: '/articles/ai/agent-evaluation',
+      },
+      {
+        date: '2026-10-20',
+        title: '开发实录第 4 篇：幂等与崩溃对账',
+        detail: '说明稳定 token、业务变更与结果同事务记账、SQLite 写锁及原 token 对账；附临时库复现脚本，并明确历史硬退出矩阵的验证范围。',
+        type: 'milestone',
+        tech: ['Python', 'SQLite', 'LangGraph'],
+        article: '/articles/ai/idempotency-and-recovery',
+      },
+      {
+        date: '2026-10-20',
+        title: '开发实录第 3 篇：LangGraph 中断与固定版本审批',
+        detail: '从进程内审批门讲到持久化 interrupt，核对 pending、规范化参数、期限与草稿版本，说明 PostgreSQL checkpoint 和业务 SQLite 的分工。',
+        type: 'milestone',
+        tech: ['LangGraph', 'PostgreSQL', 'HITL'],
+        article: '/articles/ai/langgraph-approval',
+      },
+      {
+        date: '2026-10-20',
+        title: '开发实录第 2 篇：MCP 工具契约与错误恢复',
+        detail: '承接首篇预告，发布 ERP 查询接入、工具描述、错误 hint、摘要与聚合返回及桥接限制；六篇新文均附可校验的随文源码与报告快照。',
+        type: 'milestone',
+        tech: ['Python', 'FastMCP'],
+        article: '/articles/ai/mcp-server-tool-contracts',
+      },
+      {
+        date: '2026-10-19',
+        title: '连续业务上下文验证与作品交付',
+        detail: '三场景共计划 17 轮，真实模型经 LangGraph → MCP → 临时 SQLite 连续执行。候选 DeepSeek 全部通过，GLM 客户全称缩写等失败保留；110 请求均有 usage，两个币种独立审计。完成统一投递材料与可校验源码、字幕录屏交付，本阶段仍未部署。',
+        type: 'milestone',
+        tech: ['LangGraph', 'FastMCP', 'SQLite', '评测'],
+        article: '/articles/ai/context-and-multi-turn-state',
+      },
+      {
+        date: '2026-10-19',
+        title: '政策检索对照与结构化回答验收',
+        detail: '36 问冻结检索集完成向量、BM25、RRF 对照，保留现有向量默认值；compose_policy_answer 绑定本轮原文、版本与哈希，程序渲染回答。两模型完整十三例均为严格 11/13，质量 gate 未通过，结束协议与条件拆分继续待办。',
+        type: 'feature',
+        tech: ['Python', 'RAG', '评测'],
+        article: '/articles/ai/rag-evidence-and-answers',
+      },
+      {
+        date: '2026-10-19',
+        title: 'B4 指代与 B6 补货完成最终专项验收',
+        detail: 'B4 最终指代专项两模型各 3/3 场景、7/7 轮，B6 最终补货专项两模型各 7/7，均通过质量门槛和同源码可比性检查；旧失败、未知 usage 与冻结预算独立保留。',
+        type: 'milestone',
+        tech: ['Python', 'FastMCP', '评测'],
+      },
+      {
+        date: '2026-10-17',
+        title: '只读补货与无密钥演示落地，强化草稿指代',
+        detail: '补货工具按销量、库存、采购周期与覆盖天数给出建议，不执行采购或调库存；加入临时库、脚本模型的十个本地演示场景和浏览器入口。草稿修改强化版本、行号与 expected_sku 校验，评测补充危险工具请求和逐轮业务状态。',
+        type: 'feature',
+        tech: ['Python', 'FastMCP', 'React', '评测'],
+      },
       {
         date: '2026-10-15',
         title: 'M4 写审批链与崩溃恢复收口，政策 RAG 接入并通过真实验收',

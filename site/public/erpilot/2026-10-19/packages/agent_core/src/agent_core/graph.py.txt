@@ -1,0 +1,519 @@
+"""LangGraph orchestration using the existing OpenAI-compatible client."""
+
+import asyncio
+import json
+import time
+from dataclasses import asdict
+from datetime import UTC, datetime
+
+from langgraph.config import get_stream_writer
+from langgraph.graph import END, START, StateGraph
+from langgraph.types import interrupt
+
+from agent_core.approval import ApprovalDecision, _denial_payload
+from agent_core.context import compress_messages
+from agent_core.display import build_display
+from agent_core.events import (
+    ApprovalResolved,
+    StepEnd,
+    StepStarted,
+    ToolCallFinished,
+    ToolCallStarted,
+    ToolExecuting,
+)
+from agent_core.events import (
+    ReasoningDelta as ReasoningDeltaEvent,
+)
+from agent_core.graph_approval import (
+    ReconciliationDecision,
+    ResumeDecision,
+    make_approval_payload,
+)
+from agent_core.graph_helpers import assistant_toolcall_message, merge_usage
+from agent_core.graph_state import AgentState
+from agent_core.graph_tools import (
+    call_arguments_fingerprint,
+    execute_tool_call,
+    prepare_tool_calls,
+    tool_schema_version,
+)
+from agent_core.llm import ReasoningDelta, StreamEnd, TextDelta, ToolCall, Usage
+
+
+def build_graph(
+    client,
+    tools,
+    config,
+    checkpointer,
+    *,
+    approval_enabled=False,
+    approval_ttl_seconds=1800,
+    clock=None,
+    mutation_reconciler=None,
+):
+    registry = {tool.name: tool for tool in tools}
+    if len(registry) != len(tools):
+        raise ValueError("工具重名")
+    if any(t.risk is not None for t in tools) and not approval_enabled:
+        raise ValueError("write tools require approval runtime")
+    contracts = {}
+    for tool in tools:
+        contract = tool.response_contract
+        if contract is None:
+            continue
+        if contract.key in contracts and contracts[contract.key] is not contract:
+            raise ValueError("response contract identifiers must be unique")
+        contracts[contract.key] = contract
+        for name in (contract.evidence_tool, contract.finalize_tool):
+            if name not in registry or registry[name].risk is not None:
+                raise ValueError("response contract tools must be registered read-only tools")
+
+    def render_response(contract, proposal, state):
+        response = contract.render(proposal, state["tool_history"], state["messages"])
+        if not isinstance(response, dict) or not isinstance(response.get("text"), str):
+            raise ValueError("response renderer must return a text field")
+        # Checkpoint callbacks cannot introduce non-JSON runtime objects.
+        json.dumps(response, ensure_ascii=False, allow_nan=False)
+        return response
+
+    async def model(state):
+        writer = get_stream_writer()
+        step = state["step"] + 1
+        writer(StepStarted(step))
+        started = time.perf_counter()
+        messages = list(state["messages"])
+        if config.context_view is None:
+            compress_messages(messages, config.context)
+            request_messages = messages
+        else:
+            request_messages = config.context_view(messages, config.context)
+        parts, calls, usage = [], [], None
+        async for event in client.stream_chat(
+            request_messages,
+            tools=[t.openai_schema() for t in tools] or None,
+        ):
+            if isinstance(event, TextDelta):
+                parts.append(event.text)
+                if not contracts:
+                    writer(event)
+            elif isinstance(event, ReasoningDelta):
+                # 思考独立转发，不并入正文；无思考字段的端点不产出
+                writer(ReasoningDeltaEvent(step, event.text))
+            elif isinstance(event, ToolCall):
+                calls.append(event)
+            elif isinstance(event, StreamEnd):
+                usage = event.usage
+        text = "".join(parts)
+        contract_id = state.get("response_contract")
+        activated = {
+            t.response_contract.key
+            for call in calls
+            if (t := registry.get(call.name)) is not None and t.response_contract is not None
+        }
+        if len(activated | ({contract_id} if contract_id else set())) > 1:
+            raise ValueError("one response contract is allowed per turn")
+        contract_id = contract_id or next(iter(activated), None)
+        suppressed = list(state.get("suppressed_drafts", []))
+        if contract_id:
+            if text:
+                suppressed.append({"step": step, "text": text})
+            text = ""
+            if not calls:
+                text = render_response(contracts[contract_id], None, state)["text"]
+                writer(TextDelta(text))
+        elif contracts and text:
+            writer(TextDelta(text))
+        writer(StepEnd(step, usage, round((time.perf_counter() - started) * 1000, 1)))
+        messages.append(
+            assistant_toolcall_message(text, calls)
+            if calls
+            else {
+                "role": "assistant",
+                "content": text,
+            }
+        )
+        total = merge_usage(Usage(**state["usage"]) if state["usage"] else None, usage)
+        return {
+            "messages": messages,
+            "step": step,
+            "usage": asdict(total) if total else None,
+            "pending_calls": [asdict(call) for call in calls],
+            "tool_results": [],
+            "completed": not calls,
+            "final_answer": text if not calls else "",
+            "response_contract": contract_id,
+            "suppressed_drafts": suppressed,
+        }
+
+    def prepare(state):
+        calls = [ToolCall(**call) for call in state["pending_calls"]]
+        writer = get_stream_writer()
+        for call in calls:
+            writer(ToolCallStarted(call))
+        now = (clock or (lambda: datetime.now(UTC)))()
+        return {
+            "pending_calls": prepare_tool_calls(
+                calls,
+                registry,
+                now=now,
+                approval_ttl_seconds=approval_ttl_seconds,
+            )
+        }
+
+    async def reads(state):
+        writer = get_stream_writer()
+
+        async def execute(call):
+            # 带 content 的调用是校验失败/未知工具的占位结果，不实际执行，不发 executing。
+            if "content" not in call:
+                writer(ToolExecuting(call["call_id"], call["name"]))
+            contract = contracts.get(state.get("response_contract"))
+            if contract and call["name"] == contract.finalize_tool and "content" not in call:
+                result = dict(call)
+                try:
+                    if len(state["pending_calls"]) != 1:
+                        raise ValueError("final response must be requested in a separate tool step")
+                    response = render_response(contract, call["arguments"], state)
+                    result.update(
+                        content=json.dumps(response, ensure_ascii=False), ok=True,
+                        rendered_response=response,
+                    )
+                except ValueError as exc:
+                    result.update(content=json.dumps({"error": {
+                        "code": "response_validation", "message": str(exc),
+                    }}, ensure_ascii=False), ok=False)
+            else:
+                result = await execute_tool_call(call, registry, config)
+            writer(
+                ToolCallFinished(
+                    result["call_id"],
+                    result["name"],
+                    result["content"],
+                    result["ok"],
+                    result.get("display"),
+                )
+            )
+            return result
+
+        results = await asyncio.gather(
+            *(
+                execute(call)
+                for call in state["pending_calls"]
+                if call["risk"] is None or "content" in call
+            )
+        )
+        return {"tool_results": results}
+
+    def next_write(state):
+        done = {r["call_id"] for r in state["tool_results"]}
+        return next((c for c in state["pending_calls"] if c["call_id"] not in done), None)
+
+    async def write(state):
+        call = next_write(state)
+        decision = ResumeDecision.model_validate(interrupt(make_approval_payload(call)))
+        if decision.pending_id != call["pending_id"]:
+            raise ValueError("stale approval pending_id")
+        outcome = decision.resolved_outcome
+        if outcome == "approved" and call.get("approval_expires_at"):
+            now = (clock or (lambda: datetime.now(UTC)))()
+            if now.tzinfo is None or now.utcoffset() is None:
+                raise ValueError("approval clock must include a timezone")
+            if now >= datetime.fromisoformat(call["approval_expires_at"]):
+                outcome = "expired"
+        writer = get_stream_writer()
+        writer(
+            ApprovalResolved(
+                call["call_id"],
+                call["pending_id"],
+                call["name"],
+                outcome == "approved",
+                decision.reason,
+            )
+        )
+        if outcome == "approved":
+            result = None
+            recovery_required = False
+            if mutation_reconciler is not None:
+                tool = registry.get(call["name"])
+                current_schema = tool_schema_version(tool) if tool else None
+                current_fingerprint = (
+                    call_arguments_fingerprint(
+                        call["name"], current_schema, call["arguments"]
+                    )
+                    if current_schema
+                    else None
+                )
+                if (
+                    current_schema != call.get("tool_schema_version")
+                    or current_fingerprint != call.get("arguments_fingerprint")
+                ):
+                    result = _unknown_result(
+                        call, "checkpoint_incompatible", "工具参数或版本已变化"
+                    )
+                else:
+                    business_arguments = {
+                        key: value for key, value in call["arguments"].items()
+                        if key != "client_token"
+                    }
+                    try:
+                        lookup = await mutation_reconciler.lookup(
+                            call["name"], business_arguments, call["client_token"]
+                        )
+                    except Exception:
+                        lookup = None
+                    if lookup is None:
+                        result = _unknown_result(
+                            call, "reconciliation_unavailable", "业务结果暂时无法核对"
+                        )
+                    elif lookup.status == "conflict":
+                        result = _unknown_result(
+                            call, "idempotency_conflict", "幂等键已绑定其他请求"
+                        )
+                    elif lookup.status == "found":
+                        content = json.dumps(lookup.result, ensure_ascii=False, default=str)
+                        result = {
+                            **call,
+                            "ok": True,
+                            "content": content,
+                            "display": build_display(
+                                call["name"], call["arguments"], content, True
+                            ),
+                            "approval_status": "approved",
+                            "invocation_status": "succeeded",
+                        }
+                    elif lookup.status == "absent":
+                        writer(ToolExecuting(call["call_id"], call["name"]))
+                        result = await execute_tool_call(
+                            call, registry, config, allow_retries=False
+                        )
+                        if result["ok"]:
+                            result.update(
+                                approval_status="approved", invocation_status="succeeded"
+                            )
+                        else:
+                            result = _unknown_result(
+                                call, "mutation_result_unknown", "写入响应不确定，需再次核对"
+                            )
+                    else:
+                        result = _unknown_result(
+                            call, "reconciliation_unavailable", "对账器返回了无效状态"
+                        )
+            else:
+                writer(ToolExecuting(call["call_id"], call["name"]))
+                result = await execute_tool_call(call, registry, config)
+                result.update(
+                    approval_status="approved",
+                    invocation_status="succeeded" if result["ok"] else "failed",
+                )
+            recovery_required = result["invocation_status"] == "unknown"
+        else:
+            content = (
+                _denial_payload(ApprovalDecision(False, decision.reason))
+                if outcome == "denied"
+                else json.dumps(
+                    {"approval": outcome, "reason": decision.reason},
+                    ensure_ascii=False,
+                )
+            )
+            result = {
+                **call,
+                "ok": True,
+                "content": content,
+                "display": build_display(call["name"], call["arguments"], content, True),
+                "approval_status": outcome,
+                "invocation_status": outcome,
+            }
+        writer(
+            ToolCallFinished(
+                result["call_id"], result["name"], result["content"], result["ok"],
+                result.get("display"),
+            )
+        )
+        return {
+            "tool_results": [*state["tool_results"], result],
+            "recovery_required": recovery_required if outcome == "approved" else False,
+        }
+
+    def _unknown_result(call, code, message):
+        content = json.dumps(
+            {"error": {"code": code, "message": message}}, ensure_ascii=False
+        )
+        return {
+            **call,
+            "ok": False,
+            "content": content,
+            "display": build_display(call["name"], call["arguments"], content, False),
+            "approval_status": "approved",
+            "invocation_status": "unknown",
+        }
+
+    async def reconcile_unknown(state):
+        call = next(
+            result for result in state["tool_results"]
+            if result.get("invocation_status") == "unknown"
+        )
+        decision = ReconciliationDecision.model_validate(
+            interrupt({
+                "kind": "reconciliation_required",
+                "call_id": call["call_id"],
+                "client_token": call["client_token"],
+                "code": json.loads(call["content"])["error"]["code"],
+                "message": json.loads(call["content"])["error"]["message"],
+            })
+        )
+        if decision.call_id != call["call_id"] or not decision.retry:
+            return {"recovery_required": False}
+
+        tool = registry.get(call["name"])
+        schema_version = tool_schema_version(tool) if tool else None
+        if (
+            schema_version != call.get("tool_schema_version")
+            or call_arguments_fingerprint(call["name"], schema_version, call["arguments"])
+            != call.get("arguments_fingerprint")
+        ):
+            updated = _unknown_result(call, "checkpoint_incompatible", "工具参数或版本已变化")
+        else:
+            args = {
+                key: value for key, value in call["arguments"].items()
+                if key != "client_token"
+            }
+            try:
+                lookup = await mutation_reconciler.lookup(
+                    call["name"], args, call["client_token"]
+                )
+            except Exception:
+                lookup = None
+            if lookup is not None and lookup.status == "found":
+                content = json.dumps(lookup.result, ensure_ascii=False, default=str)
+                updated = {
+                    **call,
+                    "ok": True,
+                    "content": content,
+                    "display": build_display(call["name"], call["arguments"], content, True),
+                    "approval_status": "approved",
+                    "invocation_status": "succeeded",
+                }
+            elif lookup is not None and lookup.status == "absent":
+                writer = get_stream_writer()
+                writer(ToolExecuting(call["call_id"], call["name"]))
+                updated = await execute_tool_call(
+                    call, registry, config, allow_retries=False
+                )
+                updated.update(
+                    approval_status="approved",
+                    invocation_status="succeeded" if updated["ok"] else "unknown",
+                )
+                if not updated["ok"]:
+                    updated = _unknown_result(
+                        call, "mutation_result_unknown", "写入响应不确定，需再次核对"
+                    )
+            else:
+                code = (
+                    "idempotency_conflict"
+                    if lookup is not None and lookup.status == "conflict"
+                    else "reconciliation_unavailable"
+                )
+                message = (
+                    "幂等键已绑定其他请求"
+                    if code == "idempotency_conflict"
+                    else "业务结果暂时无法核对"
+                )
+                updated = _unknown_result(call, code, message)
+        results = [
+            updated if result["call_id"] == call["call_id"] else result
+            for result in state["tool_results"]
+        ]
+        get_stream_writer()(
+            ToolCallFinished(
+                updated["call_id"], updated["name"], updated["content"],
+                updated["ok"], updated.get("display"),
+            )
+        )
+        return {
+            "tool_results": results,
+            "recovery_required": updated["invocation_status"] == "unknown",
+        }
+
+    def collect(state):
+        results = {r["call_id"]: r for r in state["tool_results"]}
+        calls = {c["call_id"]: c for c in state["pending_calls"]}
+        update = {
+            "messages": [
+                *state["messages"],
+                *[
+                    {
+                        "role": "tool",
+                        "tool_call_id": call["call_id"],
+                        "content": results[call["call_id"]]["content"],
+                    }
+                    for call in state["pending_calls"]
+                ],
+            ],
+            "tool_history": [
+                *state["tool_history"],
+                *[
+                    {
+                        "call_id": result["call_id"],
+                        "name": result["name"],
+                        "arguments": calls[result["call_id"]]["arguments"],
+                        "content": result["content"],
+                        "ok": result["ok"],
+                        "display": result.get("display"),
+                        "approval_status": result.get("approval_status"),
+                        "invocation_status": result.get("invocation_status"),
+                        "rendered_response": result.get("rendered_response"),
+                    }
+                    for result in state["tool_results"]
+                ],
+            ],
+            "pending_calls": [],
+            "completed": any(
+                result.get("invocation_status") == "unknown"
+                for result in state["tool_results"]
+            ),
+        }
+        contract = contracts.get(state.get("response_contract"))
+        rendered = next(
+            (r["rendered_response"] for r in state["tool_results"] if r.get("rendered_response")),
+            None,
+        )
+        if contract and not update["completed"]:
+            if rendered is None and state["step"] >= config.max_steps:
+                rendered = contract.render(None, update["tool_history"], update["messages"])
+            if rendered is not None:
+                text = rendered["text"]
+                get_stream_writer()(TextDelta(text))
+                update["messages"].append({"role": "assistant", "content": text})
+                update.update(completed=True, final_answer=text)
+        return update
+
+    graph = StateGraph(AgentState)
+    graph.add_node("model", model)
+    graph.add_node("prepare", prepare)
+    graph.add_node("reads", reads)
+    graph.add_node("write", write)
+    graph.add_node("reconcile_unknown", reconcile_unknown)
+    graph.add_node("collect", collect)
+    graph.add_edge(START, "model")
+    graph.add_conditional_edges("model", lambda s: END if s["completed"] else "prepare")
+    graph.add_edge("prepare", "reads")
+    graph.add_conditional_edges("reads", lambda s: "write" if next_write(s) else "collect")
+    graph.add_conditional_edges(
+        "write",
+        lambda s: "reconcile_unknown"
+        if s.get("recovery_required")
+        else ("write" if next_write(s) else "collect"),
+    )
+    graph.add_conditional_edges(
+        "reconcile_unknown",
+        lambda s: "reconcile_unknown" if s.get("recovery_required") else "collect",
+    )
+    graph.add_conditional_edges(
+        "collect",
+        lambda s: END
+        if s["completed"] or s.get("recovery_required")
+        or any(result.get("invocation_status") == "unknown" for result in s["tool_results"])
+        or s["step"] >= config.max_steps
+        else "model",
+    )
+    return graph.compile(checkpointer=checkpointer)

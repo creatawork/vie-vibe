@@ -1,0 +1,62 @@
+# ADR-0010：崩溃恢复与写入对账范围
+
+- 状态：提案，待评审
+- 日期：2026-10-08
+- 关联：[ADR-0008：运行持久化与断点恢复](0008-persistent-run-recovery.md)、[ADR-0009：LangGraph 与 PostgreSQL checkpoint](0009-langgraph-runtime.md)、[设计说明](../superpowers/specs/2026-10-08-crash-recovery-reconciliation-design.md)、[实施计划](../superpowers/plans/2026-10-08-crash-recovery-reconciliation.md)
+
+## 背景
+
+ADR-0008 为手写 loop 提出了五表运行协议和 R01–R10 完整验收范围；ADR-0009 随后将生产执行状态迁至 LangGraph/PostgreSQL，并明确暂不交付完整崩溃恢复。当前运行状态由 PostgreSQL graph checkpoint 保存，SQLite `RunStore` 保存历史与展示投影，ERP SQLite 的 `MutationRequestRow` 记录写入幂等结果。写调用在审批前已有稳定 `client_token`，但尚无统一的 token 查询/对账入口、审批 TTL 生命周期、`unknown` 状态、恢复与取消竞争契约、可补发的运行事件 API，也没有四种写工具的 R01–R10 硬崩溃矩阵。
+
+原 ADR-0008 的运行表不是当前执行权威源；若照搬五表，会产生第二套调用状态机，并可能与 graph checkpoint 分歧。本提案保留旧 ADR 的目标和历史，不把旧存储设计直接迁入当前架构。
+
+## 决策提案
+
+### 范围
+
+将 R01–R10 定为完整恢复验收目标，按独立阶段交付。范围覆盖 `create_order`、`cancel_order`、`adjust_stock`、`set_product_status` 四种写工具，并覆盖待审批、获批未执行、执行中、业务提交但 graph 结果未 checkpoint、结果已保存但答复未完成、并发恢复/取消、快照与事件订阅交界等中断窗口。
+
+恢复协议只支持本机、可信单用户、单 API 执行进程。明确排除多 worker/分布式租约、登录和多租户、自动补偿/撤销业务、公共部署、真实模型通过率门槛，以及跨数据库原子事务。
+
+### 权威状态与职责
+
+1. LangGraph PostgreSQL checkpoint 是 graph 执行状态的权威来源。写调用进入审批前，checkpoint 必须包含规范化参数、参数指纹、工具 schema 版本、稳定 `client_token`、`pending_id` 及审批期限；Future、闭包、连接和其他执行体不得持久化。
+2. ERP SQLite 的 mutation 幂等记录是“该 token 是否提交、提交结果是什么”的唯一事实来源。对账只接受原 token 与原参数；不得在恢复中生成替代 token。
+3. API 恢复协调层读取 checkpoint 并调用显式的只读 mutation 查询接口。查询命中时回填首次结果；查询明确未命中时，只有原审批仍有效、参数与工具版本一致且写工具幂等契约有效，才可用原 token 尝试一次；查询失败或结果矛盾时进入 `unknown`，停止业务写重试。
+4. SQLite `RunStore` 继续作为历史/展示投影，不新增与 graph checkpoint 重复的 invocation 执行事实表。展示事件按运行和递增序号持久化，支持恢复读取与去重。
+
+### 生命周期与并发
+
+- 待审批 TTL 默认 30 分钟，配置值按 UTC 计算并在审批首次展示前 checkpoint。刷新、断连、进程重启不重置期限。过期决定必须落为 `expired`，绝不能进入写 handler；需要再次执行时必须生成新的调用和审批。
+- 已持久化的批准不因待审批 TTL 到期而撤销。恢复仍先按原 token 对账；没有业务记录时只允许执行原批准绑定的原参数。
+- 同一 API 进程内，所有新建、恢复、批准续跑和取消入口共用会话级执行权保护。竞争失败返回当前状态/`409`，不能并行进入工具 handler。恢复写入完成后，取消流程按原 token 对账；取消不是业务补偿。
+- SSE 断开只停止订阅，不等同用户取消。取消只阻止尚未开始的副作用；对已开始/结果不明的写调用必须对账，不能宣称已撤销或必然未执行。
+- 首版不承诺跨进程执行互斥。启动多 API worker 前，必须另行设计和验收数据库级执行租约。
+
+### API 与验收
+
+保留现有 chat、state、approval/resume SSE 兼容语义；新增显式取消和按 `after_seq` 补发运行事件的接口。状态快照包含运行状态、逐调用状态、审批期限、结构化结果与 `last_seq`。冲突、过期、未知和不兼容 schema 均返回可区分的错误，不得静默转为新调用。
+
+R01–R10 均须通过确定性测试；提交前/后的崩溃必须用独立子进程硬终止验证，不能用普通异常替代。R03–R06 的关键窗口对四种写工具逐一覆盖；至少一条 `create_order`、`cancel_order`、`adjust_stock`、`set_product_status` 场景分别证明幂等结果和业务前后状态。未经批准写入、重复业务变更、执行失败却报告成功均为零容忍门槛。具体窗口映射、接口和证据格式见配套设计说明。
+
+## 备选方案
+
+### 复用 ADR-0008 五表 RunStore
+
+优点是沿用旧设计字段；缺点是与当前 graph checkpoint 重复保存审批、调用和运行状态，恢复时需要跨两个状态机仲裁。拒绝直接复用，避免展示投影意外成为执行事实源。
+
+### 只依赖同 token 重放，不做查询和 unknown
+
+业务幂等可避免相同 token 的重复提交，但不能清楚区分数据库不可用、token 参数冲突和明确未提交，也无法向用户呈现“结果待核对”。不满足 R04/R05/R09 的诊断和安全契约。
+
+### 延期全部恢复验收
+
+实现量最小，但待批准/已提交/结果未 checkpoint 等状态仍需人工猜测。与清单中的完整恢复和对账目标不符。
+
+## 后果
+
+- 可利用现有 PostgreSQL checkpoint 和业务幂等表，新增工作集中于对账接口、审批生命周期、API 协调、运行事件补发和确定性故障验收。
+- 两个 SQLite/PostgreSQL 存储之间没有分布式事务；正确性依赖先 checkpoint、原 token 幂等和恢复时先查询业务提交事实。
+- 事件和 checkpoint 数据继续需要本机容量/备份管理；本提案不引入自动清理或保留期变更。
+- 提案接受后应按实施计划分阶段落地；各阶段分别通过本地确定性门槛，最终以 R01–R10 全矩阵和四工具提交窗口覆盖作为完成条件。
+- 2026-10-08 实现状态：Task 1–7 已提交。隔离 PostgreSQL 上 R01–R06 进程矩阵 19/19 通过，四种写工具的 R03–R06 均有同次证据；R07–R10 按计划由 API、RunStore、graph 与 web 确定性用例覆盖，并在同日全量测试中通过。全量 pytest 仍失败于工作区里一条无关的评测版本断言，本 ADR 保持提案、待评审。逐项证据见[验收报告](../../reports/acceptance/2026-10-08-crash-recovery.md)。

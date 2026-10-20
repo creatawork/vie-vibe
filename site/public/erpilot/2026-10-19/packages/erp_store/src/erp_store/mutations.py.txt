@@ -1,0 +1,366 @@
+"""写操作 API：M4 写工具（mcp_erp）的唯一写入口（ADR-0005 决策 1）。
+
+与只读 repository 刻意分层——写入口显式、可枚举、可审计。领域规则在这里
+执行，错误以 MutationError（code/message/hint，错误契约 v1 的写路径延伸）
+抛出，MCP 工具层负责转成 {"error": {...}} 回填给模型：
+
+- create_order：商品须在售、库存须足量；按现价与数量折扣保存成交价，扣库存与建单同事务
+- cancel_order：仅待付款/待发货可取消（状态机），取消回补库存
+- adjust_stock：库存不为负
+- set_product_status：目标状态与现状一致返回 invalid_transition——空操作
+  报成功是在训练模型说谎（ADR-0005）
+"""
+
+import json
+from contextlib import contextmanager
+from datetime import datetime
+
+from sqlalchemy import inspect, select
+from sqlalchemy.engine import Engine
+from sqlalchemy.orm import Session
+
+from erp_store.db import MutationRequestRow, OrderItemRow, OrderRow, ProductRow, StockRow
+from erp_store.models import Order, OrderStatus, ProductStatus
+from erp_store.pricing import PricingError, price_for_quantity
+
+
+class MutationError(Exception):
+    """写操作的业务错误：code 供模型分类，hint 给可操作的下一步。"""
+
+    def __init__(self, code: str, message: str, hint: str = "") -> None:
+        super().__init__(message)
+        self.code = code
+        self.message = message
+        self.hint = hint
+
+
+# 允许取消的状态（状态机 v1：已发货/已签收走退款流程，不在本工具范围）
+CANCELLABLE_STATUSES = (OrderStatus.PENDING_PAYMENT, OrderStatus.PENDING_SHIPMENT)
+
+
+class ErpMutations:
+    def __init__(self, engine: Engine) -> None:
+        self._engine = engine
+
+    def lookup_result(
+        self, tool_name: str, arguments: dict[str, object], client_token: str
+    ) -> tuple[str, object | None]:
+        """Read the first committed result for a token without changing ERP data."""
+        token = self._validate_token(client_token)
+        request = self._request_from_arguments(tool_name, arguments)
+        with Session(self._engine) as session:
+            connection = session.connection()
+            if not inspect(connection).has_table(MutationRequestRow.__tablename__):
+                return "absent", None
+            row = session.get(MutationRequestRow, token)
+        if row is None:
+            return "absent", None
+        if row.request != self._request_json(request):
+            return "conflict", None
+        return "found", json.loads(row.result)
+
+    def create_order(
+        self,
+        customer: str,
+        items: list[tuple[str, int]],
+        *,
+        note: str | None = None,
+        client_token: str | None = None,
+    ) -> Order:
+        """建单：按现价与合并数量折扣保存成交价，扣减与建单同事务。
+
+        items 为 (sku, quantity) 列表，同 SKU 自动合并数量；新订单从
+        待付款起步（收款确认后走发货，本工具面不管收款）。
+        """
+        customer, merged, request = self._create_order_request(customer, items, note)
+        with self._write_session() as s:
+            result = self._create_order_in_session(s, customer, merged, note, client_token, request)
+            s.commit()
+            return result
+
+    def _create_order_in_session(self, s, customer, merged, note, client_token, request):
+        """Caller owns the write lock and commits all associated domain changes."""
+        prior = self._prior(s, client_token, request)
+        if prior is not None:
+            return Order.model_validate(prior)
+        products = {
+            p.sku: p for p in s.scalars(select(ProductRow).where(ProductRow.sku.in_(merged)))
+        }
+        missing = [sku for sku in merged if sku not in products]
+        if missing:
+            raise MutationError(
+                "not_found",
+                f"商品不存在：{'、'.join(missing)}",
+                "可用 search_products 按名称/品类确认 SKU",
+            )
+        off_sale = [sku for sku, p in products.items() if p.status != ProductStatus.ON_SALE.value]
+        if off_sale:
+            raise MutationError(
+                "invalid_transition",
+                f"商品已下架，不可下单：{'、'.join(off_sale)}",
+                "已下架商品需先上架（set_product_status）或换在售商品",
+            )
+        stocks = {st.sku: st for st in s.scalars(select(StockRow).where(StockRow.sku.in_(merged)))}
+        for sku, quantity in merged.items():
+            have = stocks[sku].quantity if sku in stocks else 0
+            if have < quantity:
+                raise MutationError(
+                    "insufficient_stock",
+                    f"商品 {products[sku].name}（{sku}）库存不足：需 {quantity}，当前 {have}",
+                    "可减少数量或改报其他在售商品；库存数据可用 get_stock 复核",
+                )
+        unit_prices = {}
+        for sku, quantity in merged.items():
+            try:
+                unit_prices[sku] = price_for_quantity(products[sku].price, quantity)[1]
+            except PricingError as exc:
+                raise MutationError(
+                    "invalid_argument",
+                    f"商品 {sku} 无法计价：{exc}",
+                    "请检查商品现价与数量折扣；成交单价不能为零",
+                ) from exc
+        now = datetime.now()
+        order = OrderRow(
+            order_id=self._next_order_id(s, now),
+            customer=customer,
+            note=note,
+            status=OrderStatus.PENDING_PAYMENT.value,
+            created_at=now,
+            items=[
+                OrderItemRow(
+                    sku=sku, name=products[sku].name, quantity=quantity, unit_price=unit_prices[sku]
+                )
+                for sku, quantity in merged.items()
+            ],
+        )
+        for sku, quantity in merged.items():
+            stocks[sku].quantity -= quantity
+        s.add(order)
+        s.flush()
+        result = self._load_order(s, order.order_id)
+        self._remember(s, client_token, request, result.model_dump(mode="json"))
+        return result
+
+    def cancel_order(self, order_id: str, *, client_token: str | None = None) -> Order:
+        """取消订单：仅待付款/待发货可取消（状态机），取消回补库存。"""
+        request = self._cancel_order_request(order_id)
+        with self._write_session() as s:
+            result = self._cancel_order_in_session(s, order_id, client_token, request)
+            s.commit()
+            return result
+
+    def _cancel_order_in_session(self, s, order_id, client_token, request):
+        prior = self._prior(s, client_token, request)
+        if prior is not None:
+            return Order.model_validate(prior)
+        order = s.get(OrderRow, order_id)
+        if order is None:
+            raise MutationError(
+                "not_found",
+                f"订单不存在：{order_id}",
+                "订单号为 SO+日期+序号 格式；可用 list_orders 浏览现有订单",
+            )
+        status = OrderStatus(order.status)
+        if status not in CANCELLABLE_STATUSES:
+            raise MutationError(
+                "invalid_transition",
+                f"订单 {order_id} 当前状态为「{status.value}」，不可取消",
+                "仅待付款/待发货可取消；已发货/已签收走退款流程（工具面未开放）",
+            )
+        order.status = OrderStatus.CANCELLED.value
+        for item in order.items:  # 回补库存；商品可能已被删，逐行容错
+            stock = s.get(StockRow, item.sku)
+            if stock is not None:
+                stock.quantity += item.quantity
+        s.flush()
+        result = self._load_order(s, order_id)
+        self._remember(s, client_token, request, result.model_dump(mode="json"))
+        return result
+
+    def adjust_stock(
+        self, sku: str, delta: int, *, client_token: str | None = None
+    ) -> tuple[str, int]:
+        """库存增减（delta 正入负出），返回 (sku, 调整后数量)。库存不为负。"""
+        request = self._adjust_stock_request(sku, delta)
+        with self._write_session() as s:
+            result = self._adjust_stock_in_session(s, sku, delta, client_token, request)
+            s.commit()
+            return result
+
+    def _adjust_stock_in_session(self, s, sku, delta, client_token, request):
+        prior = self._prior(s, client_token, request)
+        if prior is not None:
+            return tuple(prior)
+        product = s.get(ProductRow, sku)
+        if product is None:
+            raise MutationError(
+                "not_found",
+                f"商品不存在：{sku}",
+                "可用 search_products 按名称/品类确认 SKU",
+            )
+        stock = s.get(StockRow, sku)
+        current = stock.quantity if stock else 0
+        new_quantity = current + delta
+        if new_quantity < 0:
+            raise MutationError(
+                "insufficient_stock",
+                f"商品 {product.name}（{sku}）当前库存 {current}，"
+                f"不能减 {abs(delta)}（会变为负数）",
+                "出库量不能超过当前库存；可先用 get_stock 复核",
+            )
+        if stock is None:
+            stock = StockRow(sku=sku, quantity=new_quantity)
+            s.add(stock)
+        else:
+            stock.quantity = new_quantity
+        self._remember(s, client_token, request, [sku, new_quantity])
+        return sku, new_quantity
+
+    def set_product_status(
+        self, sku: str, status: ProductStatus, *, client_token: str | None = None
+    ) -> str:
+        """商品上下架；目标状态与现状一致返回 invalid_transition。"""
+        request = self._set_product_status_request(sku, status)
+        with self._write_session() as s:
+            prior = self._prior(s, client_token, request)
+            if prior is not None:
+                return prior
+            product = s.get(ProductRow, sku)
+            if product is None:
+                raise MutationError(
+                    "not_found",
+                    f"商品不存在：{sku}",
+                    "可用 search_products 按名称/品类确认 SKU",
+                )
+            if product.status == status.value:
+                raise MutationError(
+                    "invalid_transition",
+                    f"商品 {product.name}（{sku}）已是「{status.value}」状态，无需变更",
+                    "空操作不执行；可用 get_product 复核当前状态",
+                )
+            product.status = status.value
+            self._remember(s, client_token, request, sku)
+            s.commit()
+            return sku
+
+    @contextmanager
+    def _write_session(self):
+        # SQLite 单写者：在首次读取前抢写锁，避免库存/状态/单号的读改写竞争。
+        # 新表在写锁内按需创建，旧种子库无需重建；DDL 与写结果一起提交。
+        with Session(self._engine) as session:
+            session.connection().exec_driver_sql("BEGIN IMMEDIATE")
+            MutationRequestRow.__table__.create(session.connection(), checkfirst=True)
+            yield session
+
+    def _prior(self, session: Session, token: str | None, request: list):
+        if token is None:
+            return None
+        token = self._validate_token(token)
+        row = session.get(MutationRequestRow, token)
+        if row is None:
+            return None
+        if row.request != self._request_json(request):
+            raise MutationError(
+                "idempotency_conflict",
+                "幂等键已用于不同写请求",
+                "重试原请求须保留原参数；新操作请使用新的 client_token",
+            )
+        return json.loads(row.result)
+
+    @staticmethod
+    def _validate_token(token: str) -> str:
+        if not token.strip() or len(token) > 128:
+            raise MutationError("invalid_argument", "幂等键须为 1~128 个非空字符")
+        return token
+
+    @staticmethod
+    def _create_order_request(customer, items, note):
+        if not customer.strip():
+            raise MutationError("invalid_argument", "客户名不能为空", "请提供下单客户的全名")
+        if not items:
+            raise MutationError(
+                "invalid_argument", "订单至少要有一行商品", "请提供 (SKU, 数量) 列表"
+            )
+        merged: dict[str, int] = {}
+        for item in items:
+            if isinstance(item, dict):
+                sku, quantity = item["sku"], item["quantity"]
+            else:
+                sku, quantity = item
+            if quantity < 1:
+                raise MutationError(
+                    "invalid_argument",
+                    f"商品 {sku} 的数量至少为 1（收到 {quantity}）",
+                )
+            merged[sku] = merged.get(sku, 0) + quantity
+        normalized_customer = customer.strip()
+        request = ["create_order", normalized_customer, sorted(merged.items()), note]
+        return normalized_customer, merged, request
+
+    @staticmethod
+    def _cancel_order_request(order_id: str) -> list:
+        return ["cancel_order", order_id]
+
+    @staticmethod
+    def _adjust_stock_request(sku: str, delta: int) -> list:
+        if delta == 0:
+            raise MutationError("invalid_argument", "调整量不能为 0")
+        return ["adjust_stock", sku, delta]
+
+    @staticmethod
+    def _set_product_status_request(sku: str, status: ProductStatus | str) -> list:
+        if not isinstance(status, ProductStatus):
+            try:
+                status = ProductStatus(status)
+            except ValueError as exc:
+                raise MutationError("invalid_argument", f"无效商品状态：{status}") from exc
+        return ["set_product_status", sku, status.value]
+
+    @classmethod
+    def _request_from_arguments(cls, tool_name: str, arguments: dict[str, object]) -> list:
+        if tool_name == "create_order":
+            _customer, _merged, request = cls._create_order_request(
+                arguments["customer"], arguments["items"], arguments.get("note")
+            )
+            return request
+        if tool_name == "cancel_order":
+            return cls._cancel_order_request(arguments["order_id"])
+        if tool_name == "adjust_stock":
+            return cls._adjust_stock_request(arguments["sku"], arguments["delta"])
+        if tool_name == "set_product_status":
+            return cls._set_product_status_request(arguments["sku"], arguments["status"])
+        raise ValueError(f"unsupported mutation tool: {tool_name}")
+
+    def _remember(self, session: Session, token: str | None, request: list, result) -> None:
+        if token is not None:
+            session.add(
+                MutationRequestRow(
+                    client_token=token,
+                    request=self._request_json(request),
+                    result=json.dumps(result, ensure_ascii=False, sort_keys=True),
+                )
+            )
+
+    @staticmethod
+    def _request_json(request: list) -> str:
+        return json.dumps(request, ensure_ascii=False, sort_keys=True)
+
+    def _next_order_id(self, s: Session, now: datetime) -> str:
+        """SO+日期+序号：取当日最大序号 +1（与种子数据的单号格式一致）。"""
+        prefix = f"SO{now:%Y%m%d}-"
+        rows = s.scalars(select(OrderRow.order_id).where(OrderRow.order_id.like(prefix + "%")))
+        max_seq = 0
+        for order_id in rows:
+            try:
+                max_seq = max(max_seq, int(order_id.removeprefix(prefix)))
+            except ValueError:
+                continue
+        return f"{prefix}{max_seq + 1:04d}"
+
+    def _load_order(self, s: Session, order_id: str) -> Order:
+        """提交后重查再转模型（commit 会过期 ORM 对象）。"""
+        from erp_store.repository import _order
+
+        row = s.get(OrderRow, order_id)
+        assert row is not None
+        return _order(row)

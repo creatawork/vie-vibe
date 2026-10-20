@@ -1,0 +1,287 @@
+{
+  "project": "Erpilot",
+  "publishedAt": "2026-10-20",
+  "evidenceAsOf": "2026-10-19",
+  "repository": "https://github.com/creatawork/Erpilot",
+  "publicHead": "e2236d2c6cb946c7533bfe73f3370d915d9200de",
+  "localHead": "0111150f081b687331a6b88d2f80c42b0e80e874",
+  "scope": "Selected article sources and synthetic evaluation evidence from the local working tree, including uncommitted files; not a complete runnable release or a claim that the local working tree is publicly committed.",
+  "files": [
+    {
+      "path": "docs/adr/0006-suspending-approval-events.md",
+      "url": "/erpilot/2026-10-19/docs/adr/0006-suspending-approval-events.md.txt",
+      "bytes": 4658,
+      "sha256": "be08277c389fb116ec8a2e4c431c134164cfe0c6ce10969b80772751fc1b6183"
+    },
+    {
+      "path": "docs/adr/0009-langgraph-runtime.md",
+      "url": "/erpilot/2026-10-19/docs/adr/0009-langgraph-runtime.md.txt",
+      "bytes": 3162,
+      "sha256": "a67a1b793bf1f92f6af2f6d0950908f6d907d0361b80a82240efcbf830f5117e"
+    },
+    {
+      "path": "docs/adr/0010-crash-recovery-reconciliation-scope.md",
+      "url": "/erpilot/2026-10-19/docs/adr/0010-crash-recovery-reconciliation-scope.md.txt",
+      "bytes": 6847,
+      "sha256": "47f8545a4981556ab64939c83f8ee8f6ec75d9ccf59d57dce3b24cbce074975f"
+    },
+    {
+      "path": "docs/articles/reviews/02-mcp-server-review.md",
+      "url": "/erpilot/2026-10-19/docs/articles/reviews/02-mcp-server-review.md.txt",
+      "bytes": 5645,
+      "sha256": "5a88da2f5e0a83240f253b0be9ed0a164047d54380fea51ba01be627a4cb65dd"
+    },
+    {
+      "path": "docs/articles/reviews/03-07-evidence.json",
+      "url": "/erpilot/2026-10-19/docs/articles/reviews/03-07-evidence.json",
+      "bytes": 9670,
+      "sha256": "0ca6bf62aedf9c43bdd95f93fd0844051ed3fe3a287c15b33338ad699633b8bf"
+    },
+    {
+      "path": "docs/articles/reviews/03-07-series-review.md",
+      "url": "/erpilot/2026-10-19/docs/articles/reviews/03-07-series-review.md.txt",
+      "bytes": 5671,
+      "sha256": "9af65010e8aed340a171a1334fc7d1b3d8bc687f84ea7ee32b5c33db14357088"
+    },
+    {
+      "path": "docs/articles/writing-rules.md",
+      "url": "/erpilot/2026-10-19/docs/articles/writing-rules.md.txt",
+      "bytes": 3811,
+      "sha256": "610a909afdaecc1797f9ea94f8ccc6febe6c2bf98d1e65b5a9b94b930f7db41b"
+    },
+    {
+      "path": "docs/error-recovery-log.md",
+      "url": "/erpilot/2026-10-19/docs/error-recovery-log.md.txt",
+      "bytes": 11367,
+      "sha256": "474c5477447beb902f5a3c85dd79422d49d7c7dd2dd87e797b66c653064ed319"
+    },
+    {
+      "path": "docs/eval-annotation-guide.md",
+      "url": "/erpilot/2026-10-19/docs/eval-annotation-guide.md.txt",
+      "bytes": 19227,
+      "sha256": "5290d05381f5219732cb8ec41079c94001a5ffa0a18b7fdacde45affface4ebc"
+    },
+    {
+      "path": "docs/eval-quality-gates.md",
+      "url": "/erpilot/2026-10-19/docs/eval-quality-gates.md.txt",
+      "bytes": 7226,
+      "sha256": "fccff258fdc76e6a4d494a7a81d059212ab944e29847010cae6203a9bc76e0d0"
+    },
+    {
+      "path": "docs/project-status.md",
+      "url": "/erpilot/2026-10-19/docs/project-status.md.txt",
+      "bytes": 2863,
+      "sha256": "747a385907def406d6050973ab27a468e3599587703334f309c3473d861acf33"
+    },
+    {
+      "path": "docs/resumable-grounding-evaluation.md",
+      "url": "/erpilot/2026-10-19/docs/resumable-grounding-evaluation.md.txt",
+      "bytes": 5035,
+      "sha256": "d52d7184cdca988135dd64270b14eb2e01d321c74acf772a552d3f814c9213b3"
+    },
+    {
+      "path": "docs/retrieval-experiment.md",
+      "url": "/erpilot/2026-10-19/docs/retrieval-experiment.md.txt",
+      "bytes": 10276,
+      "sha256": "1ed1b0662467d18972907c4372c88f4030cf9c9c05f0bd669446035bbdf574a8"
+    },
+    {
+      "path": "docs/write-reliability.md",
+      "url": "/erpilot/2026-10-19/docs/write-reliability.md.txt",
+      "bytes": 4738,
+      "sha256": "88f60fb66ccbeab02565b7154c06fb5a819122d43b893e4f8b4c3005bb04849c"
+    },
+    {
+      "path": "examples/articles/02_mcp_server.py",
+      "url": "/erpilot/2026-10-19/examples/articles/02_mcp_server.py.txt",
+      "bytes": 707,
+      "sha256": "494aac7a7f67772dc8631500676d04d65119d332969cc8d08f931b49e4e0282d"
+    },
+    {
+      "path": "examples/articles/04_idempotency.py",
+      "url": "/erpilot/2026-10-19/examples/articles/04_idempotency.py.txt",
+      "bytes": 1626,
+      "sha256": "b03953d98de0e32eb90d311158154136e11c9fa07f85cf2be5f8e0be62592bbc"
+    },
+    {
+      "path": "packages/agent_core/src/agent_core/context_view.py",
+      "url": "/erpilot/2026-10-19/packages/agent_core/src/agent_core/context_view.py.txt",
+      "bytes": 4505,
+      "sha256": "99d0bf77086feb5278bc213b724f3577e31e8ced339a37f50691da52f22c2d6f"
+    },
+    {
+      "path": "packages/agent_core/src/agent_core/graph_approval.py",
+      "url": "/erpilot/2026-10-19/packages/agent_core/src/agent_core/graph_approval.py.txt",
+      "bytes": 1253,
+      "sha256": "9705aa427f4ece9916857339d7e03fb12e2649f99e6dd3352c224fd4fbd4dadc"
+    },
+    {
+      "path": "packages/agent_core/src/agent_core/graph.py",
+      "url": "/erpilot/2026-10-19/packages/agent_core/src/agent_core/graph.py.txt",
+      "bytes": 21952,
+      "sha256": "385fbb6b3d99a0665f97b122c4ce02046d8371f495c250343ab0d2d5f63fd71e"
+    },
+    {
+      "path": "packages/erp_store/src/erp_store/drafts.py",
+      "url": "/erpilot/2026-10-19/packages/erp_store/src/erp_store/drafts.py.txt",
+      "bytes": 16206,
+      "sha256": "b4748414a67b14786406b6cbd876ee89c37012ebf706eb41ba021d19984b920d"
+    },
+    {
+      "path": "packages/erp_store/src/erp_store/mutations.py",
+      "url": "/erpilot/2026-10-19/packages/erp_store/src/erp_store/mutations.py.txt",
+      "bytes": 16395,
+      "sha256": "2ff6fbe2dc93ad1ac5955a5d973543a06090215425ea317bf5f1718df6db3fad"
+    },
+    {
+      "path": "packages/erp_store/src/erp_store/operations.py",
+      "url": "/erpilot/2026-10-19/packages/erp_store/src/erp_store/operations.py.txt",
+      "bytes": 9367,
+      "sha256": "53d572230e640c5cacffa1e8fd80ad00959071a47acaa7e6423dd42d40512620"
+    },
+    {
+      "path": "packages/mcp_erp/src/mcp_erp/bridge.py",
+      "url": "/erpilot/2026-10-19/packages/mcp_erp/src/mcp_erp/bridge.py.txt",
+      "bytes": 11599,
+      "sha256": "0cb4ee25be5b61d0fea08d52d4c8037de9c53e7b7b47f788593e105f052e06a0"
+    },
+    {
+      "path": "packages/mcp_erp/src/mcp_erp/context_view.py",
+      "url": "/erpilot/2026-10-19/packages/mcp_erp/src/mcp_erp/context_view.py.txt",
+      "bytes": 2037,
+      "sha256": "7899cb31a0d65c106108eb7dd5856317b8278dc27dadcb8c314949f6c2a76dbc"
+    },
+    {
+      "path": "packages/mcp_erp/src/mcp_erp/policy_answer.py",
+      "url": "/erpilot/2026-10-19/packages/mcp_erp/src/mcp_erp/policy_answer.py.txt",
+      "bytes": 6950,
+      "sha256": "34757747812640dbc80af287fbf2724d377013167a9a79ebf9147007edd291ce"
+    },
+    {
+      "path": "packages/mcp_erp/src/mcp_erp/server.py",
+      "url": "/erpilot/2026-10-19/packages/mcp_erp/src/mcp_erp/server.py.txt",
+      "bytes": 24844,
+      "sha256": "a95c9e1310fa0721b61623434dc1d6e99e1e365bad1b2e5fc0e89948f4d309e1"
+    },
+    {
+      "path": "packages/rag/src/rag/lexical.py",
+      "url": "/erpilot/2026-10-19/packages/rag/src/rag/lexical.py.txt",
+      "bytes": 4482,
+      "sha256": "cea6ff7e332042e5c6429872e6e745ccd248047d96ec32a5efdb74375c81143a"
+    },
+    {
+      "path": "reports/acceptance/2026-10-08-crash-recovery.md",
+      "url": "/erpilot/2026-10-19/reports/acceptance/2026-10-08-crash-recovery.md.txt",
+      "bytes": 5174,
+      "sha256": "a9062dfe4021f5c70a995bad3efad590b928d45afe6c6ca0d710f94b168a9d42"
+    },
+    {
+      "path": "reports/acceptance/2026-10-08-process-recovery.xml",
+      "url": "/erpilot/2026-10-19/reports/acceptance/2026-10-08-process-recovery.xml",
+      "bytes": 3138,
+      "sha256": "d5ffaa89222dab03ddc422e2c8aa76bd9810deb56f994fa2c5419cb98be6f658"
+    },
+    {
+      "path": "reports/acceptance/2026-10-19-b4-final-validation.md",
+      "url": "/erpilot/2026-10-19/reports/acceptance/2026-10-19-b4-final-validation.md.txt",
+      "bytes": 6283,
+      "sha256": "2d18775ee6eb7e584c9fe9c126132d772b664ec6004d78707071b2a3716c516d"
+    },
+    {
+      "path": "reports/acceptance/2026-10-19-context-and-portfolio.md",
+      "url": "/erpilot/2026-10-19/reports/acceptance/2026-10-19-context-and-portfolio.md.txt",
+      "bytes": 6634,
+      "sha256": "f64ef005a56a65ed78e951d86115311fb9382bb33f2baaf1bdc549cadfb0c833"
+    },
+    {
+      "path": "reports/acceptance/2026-10-19-continuous-context-and-delivery.md",
+      "url": "/erpilot/2026-10-19/reports/acceptance/2026-10-19-continuous-context-and-delivery.md.txt",
+      "bytes": 6460,
+      "sha256": "876cfa11203d43805f428c67d84001cd2b08138ef3531c41eebf0f5cd9a8d951"
+    },
+    {
+      "path": "reports/acceptance/2026-10-19-live-model-validation.md",
+      "url": "/erpilot/2026-10-19/reports/acceptance/2026-10-19-live-model-validation.md.txt",
+      "bytes": 6930,
+      "sha256": "9dfc843a4568ad64db034edc38380082fa6065191ac779c69e5d35eb80c750c3"
+    },
+    {
+      "path": "reports/acceptance/2026-10-19-structured-policy-and-resume.md",
+      "url": "/erpilot/2026-10-19/reports/acceptance/2026-10-19-structured-policy-and-resume.md.txt",
+      "bytes": 6468,
+      "sha256": "964d1a9736f34de2dd8ace41b2186fed0b38b4a3fc9a4c8aad225b2b2599663a"
+    },
+    {
+      "path": "reports/acceptance/20261019-structured-deepseek-campaign-01-summary.json",
+      "url": "/erpilot/2026-10-19/reports/acceptance/20261019-structured-deepseek-campaign-01-summary.json",
+      "bytes": 85830,
+      "sha256": "98d876cdc5df8a86f0e026590d74c5bb39072619b813ae69d379d7eb4355a36e"
+    },
+    {
+      "path": "reports/acceptance/20261019-structured-glm-campaign-03-summary.json",
+      "url": "/erpilot/2026-10-19/reports/acceptance/20261019-structured-glm-campaign-03-summary.json",
+      "bytes": 85564,
+      "sha256": "fdb378b565926f584748fb36f74388b7db2bf0196ceef6d886fb07349ac2a926"
+    },
+    {
+      "path": "reports/context/20261019-context-deepseek-live-02.json",
+      "url": "/erpilot/2026-10-19/reports/context/20261019-context-deepseek-live-02.json",
+      "bytes": 41270,
+      "sha256": "e736091dd5961e52cadeeabc6885f8a33175470309aaaf12f4a8620d6ff60a7c"
+    },
+    {
+      "path": "reports/context/20261019-context-glm-live-02.json",
+      "url": "/erpilot/2026-10-19/reports/context/20261019-context-glm-live-02.json",
+      "bytes": 41813,
+      "sha256": "7a3222dd9a0cb15e1ba92ec88f3acb0bcd011aa3ecbe58ba2771d138a75cb72f"
+    },
+    {
+      "path": "reports/context/20261019-workflow-audit.json",
+      "url": "/erpilot/2026-10-19/reports/context/20261019-workflow-audit.json",
+      "bytes": 11848,
+      "sha256": "4b9f620afb0dedf7dc8f4a8e376be094c60374d02f08384efba8c4d3117118b4"
+    },
+    {
+      "path": "reports/context/20261019-workflow-deepseek-01.json",
+      "url": "/erpilot/2026-10-19/reports/context/20261019-workflow-deepseek-01.json",
+      "bytes": 1801671,
+      "sha256": "5a6230e8ee31fc22e97b4410205977c8cfb4b8982a59c106285f1ebab7af3b21"
+    },
+    {
+      "path": "reports/context/20261019-workflow-glm-01.json",
+      "url": "/erpilot/2026-10-19/reports/context/20261019-workflow-glm-01.json",
+      "bytes": 1287061,
+      "sha256": "530d3a026c7f0c66fb224564869958a100257eaa3b21b7b7647c563d09bfcfab"
+    },
+    {
+      "path": "reports/evals/20261008-104243-fdd8ba.json",
+      "url": "/erpilot/2026-10-19/reports/evals/20261008-104243-fdd8ba.json",
+      "bytes": 115894,
+      "sha256": "5a5c2616bed5303cca9481d353124855fb5c9f66328261f304ea347a76d6e0e5"
+    },
+    {
+      "path": "reports/evals/20261008-110631-3b5f1f.json",
+      "url": "/erpilot/2026-10-19/reports/evals/20261008-110631-3b5f1f.json",
+      "bytes": 14620,
+      "sha256": "2a59148b3d8ec3bebc9027cb62c2717c66889a4a1a184f6867157d46e0d1b186"
+    },
+    {
+      "path": "reports/evals/20261008-110815-1a9599.json",
+      "url": "/erpilot/2026-10-19/reports/evals/20261008-110815-1a9599.json",
+      "bytes": 1231,
+      "sha256": "3fd142c6e71083e3d214004e415f44a7391018f8867006152c326de06a59c309"
+    },
+    {
+      "path": "reports/rag/20261019-retrieval-v1-real.json",
+      "url": "/erpilot/2026-10-19/reports/rag/20261019-retrieval-v1-real.json",
+      "bytes": 292621,
+      "sha256": "a8082cd7b229792b8847e66c6e3c0a7676634ee23cc58ddfc3e5b26eb3976eb5"
+    },
+    {
+      "path": "reports/security/20261009-prompt-injection-v26-rescore.md",
+      "url": "/erpilot/2026-10-19/reports/security/20261009-prompt-injection-v26-rescore.md.txt",
+      "bytes": 2687,
+      "sha256": "b144230e2841b210907f701ad7ee71e892e06727b722b901532fde9eb78d2b40"
+    }
+  ]
+}

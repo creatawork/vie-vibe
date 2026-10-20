@@ -1,6 +1,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+import matter from 'gray-matter'
 import { toPost, groupBySeries, type Post } from '../.vitepress/posts'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -30,26 +31,7 @@ function loadPosts(): Post[] {
           .relative(srcDir, file)
           .replace(/\\/g, '/')
           .replace(/\.md$/, '')
-      const frontmatterMatch = src.match(/^---\r?\n([\s\S]*?)\r?\n---/)
-      const frontmatter: Record<string, unknown> = {}
-      if (frontmatterMatch) {
-        for (const line of frontmatterMatch[1].split('\n')) {
-          const trimmed = line.replace(/\r$/, '').trim()
-          if (!trimmed) continue
-          const m = trimmed.match(/^(\w+):\s*(.+)$/)
-          if (m) {
-            const [, key, raw] = m
-            if (raw.startsWith('[')) {
-              frontmatter[key] = raw
-                .slice(1, -1)
-                .split(',')
-                .map((s) => s.trim())
-            } else {
-              frontmatter[key] = raw.trim()
-            }
-          }
-        }
-      }
+      const { data: frontmatter } = matter(src)
       return toPost({ src, frontmatter, url })
     })
     .filter((p): p is Post => p !== null)
