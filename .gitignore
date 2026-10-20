@@ -15,3 +15,6 @@ deploy/gh-deploy.pub
 
 # superpowers worktrees
 .worktrees/
+
+# Local design review output
+.taste-skill/

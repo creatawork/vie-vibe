@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { data as projects } from '../../../projects.data'
+import type { LogEntryType } from '../../../projects.source'
 import ProjectStatus from './ProjectStatus.vue'
 import ProjectMediaStrip from './ProjectMediaStrip.vue'
 import ProjectCapabilityList from './ProjectCapabilityList.vue'
@@ -11,6 +12,8 @@ const props = defineProps<{ slug: string }>()
 
 const project = computed(() => projects.find((p) => p.slug === props.slug))
 const entries = computed(() => project.value?.log ?? [])
+const logFilter = ref<LogEntryType | 'all'>('all')
+const nextProject = computed(() => projects.find((p) => p.slug && p.slug !== props.slug))
 
 const tocSections: { id: string; label: string }[] = [
   { id: 'overview', label: '项目概览' },
@@ -23,13 +26,13 @@ const tocSections: { id: string; label: string }[] = [
 </script>
 
 <template>
-  <div class="vie-page">
-    <p v-if="!project" class="vie-empty vie-mono">// project not found</p>
+  <div class="vie-page vie-project-page">
+    <p v-if="!project" class="vie-empty">未找到这个项目。<a href="/projects">返回项目列表</a></p>
     <div v-else class="vie-project-layout">
-      <ProjectToc :sections="tocSections" :entries="entries" />
+      <ProjectToc :sections="tocSections" :entries="entries" :filter="logFilter" @select-log="logFilter = 'all'" />
       <article class="vie-project-detail">
-        <nav class="vie-detail-crumb vie-mono" aria-label="面包屑">
-          <a href="/projects">项目</a>
+        <nav class="vie-detail-crumb" aria-label="面包屑">
+          <a href="/projects">← 全部项目</a>
           <span aria-hidden="true">/</span>
           <span aria-current="page">{{ project.name }}</span>
         </nav>
@@ -37,10 +40,13 @@ const tocSections: { id: string; label: string }[] = [
         <header class="vie-detail-hero">
           <div class="vie-detail-title">
             <h1>{{ project.name }}</h1>
-            <ProjectStatus :status="project.status" />
           </div>
           <p class="vie-detail-desc">{{ project.proposition }}</p>
-          <p class="vie-detail-summary">{{ project.description }}</p>
+          <div class="vie-detail-meta">
+            <ProjectStatus :status="project.status" />
+            <span>更新于 <time :datetime="project.updatedAt">{{ project.updatedAt }}</time></span>
+            <a href="#devlog">{{ entries.length }} 篇开发记录 ↓</a>
+          </div>
           <div class="vie-detail-actions">
             <a class="vie-cta vie-cta--primary" href="#experience">查看产品体验</a>
             <a
@@ -49,8 +55,7 @@ const tocSections: { id: string; label: string }[] = [
               :href="project.github"
               target="_blank"
               rel="noopener"
-            >GitHub 仓库</a>
-            <a class="vie-cta vie-cta--ghost" href="#devlog">跳到开发日志</a>
+            >GitHub 仓库 ↗</a>
           </div>
         </header>
 
@@ -64,13 +69,14 @@ const tocSections: { id: string; label: string }[] = [
 
         <section id="overview" class="vie-detail-section">
           <h2>项目概览</h2>
+          <p class="vie-detail-summary">{{ project.description }}</p>
           <dl v-if="project.overview?.length" class="vie-facts">
             <div v-for="fact in project.overview" :key="fact.term">
               <dt>{{ fact.term }}</dt>
               <dd>{{ fact.text }}</dd>
             </div>
           </dl>
-          <p v-else class="vie-empty vie-mono">// 概览待补</p>
+          <p v-else class="vie-empty">项目概览正在整理中。</p>
         </section>
 
         <section id="experience" class="vie-detail-section">
@@ -83,7 +89,7 @@ const tocSections: { id: string; label: string }[] = [
               </ol>
             </div>
           </div>
-          <p v-else class="vie-empty vie-mono">// 产品体验待补</p>
+          <p v-else class="vie-empty">产品体验正在整理中。</p>
         </section>
 
         <section id="capabilities" class="vie-detail-section">
@@ -93,13 +99,13 @@ const tocSections: { id: string; label: string }[] = [
             :capabilities="project.capabilities"
             show-images
           />
-          <p v-else class="vie-empty vie-mono">// 能力清单待补</p>
+          <p v-else class="vie-empty">能力清单正在整理中。</p>
         </section>
 
         <section id="architecture" class="vie-detail-section">
           <h2>系统实现</h2>
           <p v-if="project.architecture" class="vie-detail-arch">{{ project.architecture }}</p>
-          <p v-else class="vie-empty vie-mono">// 架构说明待补</p>
+          <p v-else class="vie-empty">系统实现正在整理中。</p>
           <div class="vie-chip-row">
             <span v-for="t in project.tags" :key="t" class="vie-chip vie-chip--accent">{{ t }}</span>
           </div>
@@ -110,14 +116,21 @@ const tocSections: { id: string; label: string }[] = [
           <ul v-if="project.validation?.length" class="vie-validation">
             <li v-for="item in project.validation" :key="item">{{ item }}</li>
           </ul>
-          <p v-else class="vie-empty vie-mono">// 验证记录待补</p>
+          <p v-else class="vie-empty">验证记录正在整理中。</p>
         </section>
 
-        <section id="devlog" class="vie-detail-section">
-          <h2>开发日志</h2>
-          <ProjectMilestoneList v-if="entries.length" :entries="entries" />
-          <p v-else class="vie-empty vie-mono">// log empty — 开发继续，记录待补</p>
+        <section id="devlog" class="vie-detail-section vie-devlog">
+          <div class="vie-devlog-heading">
+            <h2>开发日志</h2>
+            <p>每一步推进，都有迹可循。</p>
+          </div>
+          <ProjectMilestoneList v-if="entries.length" v-model:filter="logFilter" :entries="entries" />
+          <p v-else class="vie-empty">开发继续，记录待补。</p>
         </section>
+        <footer class="vie-project-end">
+          <a href="/projects">← 返回项目列表</a>
+          <a v-if="nextProject" :href="`/projects/${nextProject.slug}`">继续探索 <strong>{{ nextProject.name }}</strong><span aria-hidden="true">↗</span></a>
+        </footer>
       </article>
     </div>
   </div>
