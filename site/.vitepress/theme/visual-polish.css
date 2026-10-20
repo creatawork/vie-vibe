@@ -23,8 +23,6 @@ body { background: var(--vie-paper); text-rendering: optimizeLegibility; }
 .vie-global-nav__links a { font-size: 15px; color: var(--vie-ink-soft); }
 .vie-global-nav__links a.is-active::after { height: 3px; background: var(--vie-green-action); }
 .vie-global-nav__actions { gap: 16px; }
-.vie-global-nav__search { height: 44px; min-width: 146px; padding: 0 12px; color: var(--vie-ink-soft); border-radius: 4px; background: #f1f4f0; }
-.vie-global-nav__search kbd { margin-left: auto; font: 12px/1 var(--vie-font-body); color: #647269; white-space: nowrap; }
 .vie-global-nav__github { width: auto; height: 44px; min-width: 44px; color: var(--vie-ink); background: transparent; border: 0; border-radius: 4px; font: 600 14px/1 var(--vie-font-body); }
 .vie-global-nav__github svg { display: block; }
 .vie-global-nav__github:hover { color: var(--vie-green-action); background: #edf4ee; transform: none; }
@@ -52,15 +50,12 @@ body { background: var(--vie-paper); text-rendering: optimizeLegibility; }
 @media (max-width: 1000px) {
   .vie-global-nav__inner { gap: 22px; }
   .vie-global-nav__links { gap: 24px; }
-  .vie-global-nav__search { min-width: 110px; }
-  .vie-global-nav__search kbd { display: none; }
   .vie-global-nav__actions { gap: 10px; }
 }
 @media (max-width: 760px) {
   .vie-global-nav__inner { width: calc(100% - 40px); grid-template-columns: 1fr auto; min-height: 64px; gap: 16px; }
   .vie-global-nav__links { display: none; }
-  .vie-global-nav__search { width: 44px; min-width: 44px; padding: 0; justify-content: center; }
-  .vie-global-nav__search span, .vie-global-nav__github { display: none; }
+  .vie-global-nav__github { display: none; }
   .vie-global-nav__menu { display: inline-flex; width: 44px; height: 44px; justify-content: center; align-items: center; }
   .vie-global-nav__mobile { position: absolute; top: 100%; left: 0; width: 100%; display: grid; gap: 4px; padding: 12px 20px 20px; margin: 0; background: #fff; box-shadow: 0 16px 24px rgb(21 43 30 / 10%); border: 0; } /* taste-skill-ignore: real floating navigation overlay */
   .vie-global-nav__mobile a, .vie-global-nav__mobile button { display: flex; min-height: 48px; align-items: center; gap: 8px; padding: 10px 14px; border: 0; border-radius: 4px; background: #fff; color: var(--vie-ink); text-align: left; font: 500 16px/1.5 var(--vie-font-body); text-decoration: none; }

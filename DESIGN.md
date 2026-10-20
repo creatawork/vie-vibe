@@ -46,12 +46,19 @@ are `none`. Floating mobile navigation keeps an overlay shadow.
 ## Navigation and layout
 
 - One shared sticky navigation: 首页、文章、项目、工具、系列. Active routes
-  receive `aria-current`. Search opens VitePress local search. GitHub has an
+  receive `aria-current`. Search expands in place within the navigation. GitHub has an
   explicit label. On phones the menu closes after navigation, outside click,
   or Escape; Escape returns focus to the trigger.
 - Local search includes article titles and descriptions from frontmatter,
   matching the visible Layout heading. Section results show their parent article
   and title-only results link to the real `#post-title` anchor.
+- Navigation search reuses the VitePress full-text index, loaded on demand.
+  The field grows leftward from its existing position; live suggestions remain
+  attached below it, with recent articles, safe text highlighting, and one hit
+  per article. There is no modal, backdrop, or page scroll lock. Ctrl/Cmd+K or
+  `/` opens search; arrows select, Enter follows the result, and Escape restores
+  the trigger. Phone layouts retain the V mark and fit the suggestions within
+  the viewport. IME composition and stale asynchronous results are handled.
 - Main home and navigation align on a 1240px canvas with 32px outer gutters,
   reduced to 20px on phones. Homepage sections have distinct compositions:
   statement / project with screenshot gallery / article rows / split tools /

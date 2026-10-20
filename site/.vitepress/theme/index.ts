@@ -28,6 +28,7 @@ import './project-log.css'
 import './project-flagship.css'
 import './visual-polish.css'
 import './content-polish.css'
+import './nav-search.css'
 
 export default {
   extends: DefaultTheme,
