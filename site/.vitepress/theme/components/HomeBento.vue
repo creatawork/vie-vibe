@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { ArrowDown, ArrowRight, ArrowUpRight } from '@lucide/vue'
+import { ArrowRight, ArrowUpRight } from '@lucide/vue'
 import { computed } from 'vue'
 import { data as posts } from '../../../articles.data'
 import { data as projects } from '../../../projects.data'
 import { tools } from '../../../tools.registry'
 import ProjectMediaStrip from './ProjectMediaStrip.vue'
-import VieWordmark from './VieWordmark.vue'
 
 const categoryLabels: Record<string, string> = {
   backend: '后端开发', frontend: '前端', devops: '部署运维',
@@ -15,22 +14,27 @@ const latestPosts = computed(() => posts.slice(0, 3))
 const featuredProject = computed(() => projects.find((p) => p.featured) ?? projects[0])
 const otherProjects = computed(() => projects.filter((p) => p !== featuredProject.value))
 const projectHref = computed(() => featuredProject.value?.slug ? `/projects/${featuredProject.value.slug}` : '/projects')
+const projectOverview = computed(() => featuredProject.value?.capabilities?.find((item) => item.title === '发布、分享与工作区协作'))
 </script>
 
 <template>
   <div class="dn-page">
     <div class="dn-home-content">
       <section class="dn-hero" aria-labelledby="dn-title">
-        <h1 id="dn-title" aria-label="写清楚每一个技术决策"><span>写清楚每一个</span><span>技术决策</span></h1>
-        <div class="dn-hero-bottom">
+        <div class="dn-hero-copy">
+          <h1 id="dn-title" aria-label="写清楚每一个技术决策"><span>写清楚每一个</span><span>技术决策</span></h1>
           <div class="dn-hero-intro">
             <p>我是 Vie，全栈开发者。</p>
-            <p>把项目做出来，把实现讲清楚。这里记录产品实践、工程取舍，以及每一次迭代背后的思考。</p>
+            <p>把项目做出来，把实现讲清楚。<br>在这里，记录产品实践与每一次工程取舍。</p>
           </div>
           <div class="dn-hero-actions">
             <a class="dn-primary-btn" href="/projects">查看项目 <ArrowUpRight :size="19" aria-hidden="true" /></a>
             <a class="dn-text-link" href="/articles/">阅读文章 <ArrowRight :size="18" aria-hidden="true" /></a>
           </div>
+        </div>
+        <div v-if="featuredProject?.media?.length" class="dn-hero-media" data-ui>
+          <ProjectMediaStrip :media="featuredProject.media" variant="flagship" eager />
+          <a class="dn-hero-project" :href="projectHref"><span>{{ featuredProject.name }}<small>从一组照片，到一场属于你的展览。</small></span><ArrowUpRight :size="22" aria-hidden="true" /></a>
         </div>
         <div class="dn-hero-foot">
           <dl class="dn-counts" aria-label="站点内容">
@@ -38,7 +42,7 @@ const projectHref = computed(() => featuredProject.value?.slug ? `/projects/${fe
             <div><dt>实践项目</dt><dd>{{ projects.length }} <span>个</span></dd></div>
             <div><dt>开发工具</dt><dd>{{ tools.length }} <span>个</span></dd></div>
           </dl>
-          <a class="dn-scroll-link" href="#selected-work">向下探索 <ArrowDown :size="16" aria-hidden="true" /></a>
+          <a class="dn-text-link" href="#selected-work">从项目开始了解 <ArrowRight :size="16" aria-hidden="true" /></a>
         </div>
       </section>
 
@@ -59,8 +63,10 @@ const projectHref = computed(() => featuredProject.value?.slug ? `/projects/${fe
               <p>{{ project.proposition }}</p>
             </div>
           </div>
-          <ProjectMediaStrip v-if="featuredProject.media?.length" :media="featuredProject.media" variant="flagship" />
-          <a v-else-if="featuredProject.image" :href="projectHref" class="dn-project-image"><img :src="featuredProject.image" :alt="featuredProject.name + ' 项目界面'" width="1101" height="892" loading="lazy" /></a>
+          <figure v-if="projectOverview?.image || featuredProject.image" class="dn-project-evidence">
+            <a :href="projectHref" class="dn-project-image"><img :src="projectOverview?.image || featuredProject.image" :alt="projectOverview ? '阳光明媚创作者的空间概览，展示相册封面、作品整理与发布状态' : featuredProject.name + ' 项目界面'" width="1270" height="882" loading="lazy" decoding="async" /></a>
+            <figcaption>创作者空间 · 从整理作品到发布分享（本地示例）</figcaption>
+          </figure>
         </div>
       </section>
 
@@ -88,10 +94,5 @@ const projectHref = computed(() => featuredProject.value?.slug ? `/projects/${fe
       </section>
     </div>
 
-    <footer id="about" class="dn-footer">
-      <div class="dn-footer-top"><VieWordmark to="/" size="nav" /><a href="#dn-title">回到顶部 ↑</a></div>
-      <p class="dn-footer-statement">让实现，<br>经得起追问。</p>
-      <div class="dn-footer-bottom"><p>全栈开发 · 技术实现细节与思路<br><small>© {{ new Date().getFullYear() }} Vie</small></p><nav aria-label="底部导航"><a href="https://github.com/creatawork" target="_blank" rel="noopener noreferrer">GitHub <ArrowUpRight :size="16" aria-hidden="true" /></a><a href="/feed.xml">RSS 订阅</a><a href="/articles/meta/how-this-site-works">站点说明</a></nav></div>
-    </footer>
   </div>
 </template>

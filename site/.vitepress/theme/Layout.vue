@@ -5,6 +5,7 @@ import { computed, onMounted, watch, nextTick } from 'vue'
 import SeriesNav from './components/SeriesNav.vue'
 import VieWordmark from './components/VieWordmark.vue'
 import VieGlobalNav from './components/VieGlobalNav.vue'
+import VieFooter from './components/VieFooter.vue'
 import { renderMermaidBlocks } from './mermaid'
 import { sendTrack } from './track'
 import { data as posts } from '../../articles.data'
@@ -102,37 +103,7 @@ onMounted(() => {
       </div>
     </template>
     <template #layout-bottom>
-      <footer v-if="!isHome && !isHub" class="vie-site-footer">
-        <div class="vie-footer-inner">
-          <div class="vie-footer-brand">
-            <VieWordmark to="/" size="nav" />
-            <p>记录技术、分享经验、创造价值</p>
-            <small>© 2026 Vie. All rights reserved.</small>
-          </div>
-          <nav aria-label="底部导航">
-            <strong>导航</strong>
-            <a href="/">首页</a>
-            <a href="/articles/">文章</a>
-            <a href="/projects">项目</a>
-            <a href="/series/">系列</a>
-          </nav>
-          <nav aria-label="分类">
-            <strong>分类</strong>
-            <a href="/articles/#backend">后端开发</a>
-            <a href="/articles/#frontend">前端</a>
-            <a href="/articles/#devops">部署运维</a>
-            <a href="/articles/#ai">AI 工程</a>
-            <a href="/articles/#meta">建站</a>
-            <a href="/articles/#notes">笔记</a>
-          </nav>
-          <nav aria-label="联系">
-            <strong>联系</strong>
-            <a href="https://github.com/creatawork" target="_blank" rel="noopener">GitHub</a>
-            <a href="/articles/meta/how-this-site-works">站点说明</a>
-          </nav>
-        </div>
-        <a class="vie-back-top" href="#" aria-label="回到顶部">↑</a>
-      </footer>
+      <VieFooter />
     </template>
   </Layout>
   </div>

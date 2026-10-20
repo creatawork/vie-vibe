@@ -1,33 +1,47 @@
 /* Shared presentation tokens; component workbenches keep their own semantics. */
 :root {
   color-scheme: light;
-  --vie-ink: #1a2923;
-  --vie-ink-soft: #53635b;
-  --vie-paper: #f5f7f4;
-  --vie-panel-soft: #f8faf7;
+  --vie-ink: #203c32;
+  --vie-ink-soft: #536c60;
+  --vie-paper: #f8faf7;
+  --vie-paper-2: #ffffff;
+  --vie-panel: #ffffff;
+  --vie-panel-soft: #f2f7f1;
+  --vie-line: #e0e9e1;
+  --vie-line-strong: #bed1c3;
   --vie-shadow: none;
   --vie-shadow-soft: none;
-  --vie-green: #15734f;
-  --vie-green-soft: #e3efe7;
-  --vie-green-action: #0b6547;
+  --vie-green: #1a6147;
+  --vie-green-soft: #e9f5ee;
+  --vie-green-action: #237556;
+  --vie-focus: #237556;
   --vie-font-display: 'Noto Sans SC', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --vie-font-sans: var(--vie-font-body);
   --vp-c-bg: var(--vie-paper);
-  --vp-c-text-3: #63716a;
+  --vp-c-bg-alt: var(--vie-panel-soft);
+  --vp-c-bg-soft: var(--vie-panel);
+  --vp-c-text-3: var(--vie-ink-soft);
+  --vp-c-brand-2: var(--vie-green);
+  --vp-c-brand-3: var(--vie-green-action);
+  --vp-c-brand-soft: var(--vie-green-soft);
+  --vp-button-brand-hover-bg: var(--vie-green);
+  --vp-button-brand-active-bg: var(--vie-green);
 }
 body { background: var(--vie-paper); text-rendering: optimizeLegibility; }
 .vie-mono { font-family: var(--vie-font-body); font-variant-numeric: tabular-nums; }
-.vie-global-nav { background: #fff; border: 0; box-shadow: none; backdrop-filter: none; } /* taste-skill-ignore: removes inherited shadow and glass */
+.vie-global-nav { background: var(--vie-paper); border: 0; box-shadow: none; backdrop-filter: none; } /* taste-skill-ignore: removes inherited shadow and glass */
 .vie-global-nav__inner { width: min(1240px, calc(100% - 64px)); grid-template-columns: auto minmax(0, 1fr) auto; gap: 32px; }
-.vie-global-nav__links { gap: 30px; }
-.vie-global-nav__links a { font-size: 15px; color: var(--vie-ink-soft); }
-.vie-global-nav__links a.is-active::after { height: 3px; background: var(--vie-green-action); }
+.vie-global-nav__links { align-items: center; gap: 10px; }
+.vie-global-nav__links a { min-height: 42px; padding: 9px 17px; border-radius: 999px; font-size: 15px; color: var(--vie-ink-soft); }
+.vie-global-nav__links a:hover, .vie-global-nav__links a.is-active { background: var(--vie-green-soft); color: var(--vie-green-action); }
+.vie-global-nav__links a.is-active { font-weight: 600; }
+.vie-global-nav__links a.is-active::after { display: none; }
 .vie-global-nav__actions { gap: 16px; }
 .vie-global-nav__github { width: auto; height: 44px; min-width: 44px; color: var(--vie-ink); background: transparent; border: 0; border-radius: 4px; font: 600 14px/1 var(--vie-font-body); }
 .vie-global-nav__github svg { display: block; }
-.vie-global-nav__github:hover { color: var(--vie-green-action); background: #edf4ee; transform: none; }
+.vie-global-nav__github:hover { color: var(--vie-green-action); background: var(--vie-green-soft); transform: none; }
 .vie-wordmark { gap: 7px; }
-.vie-wordmark-mark { background: var(--vie-green-action); border: 0; box-shadow: none; border-radius: 4px; font-family: var(--vie-font-body); } /* taste-skill-ignore: removes inherited shadow */
+.vie-wordmark-mark { background: var(--vie-green-soft); color: var(--vie-green-action); border: 0; box-shadow: none; border-radius: 10px; font-family: var(--vie-font-body); } /* taste-skill-ignore: removes inherited shadow */
 .vie-wordmark-name { letter-spacing: -0.06em; }
 .vie-page-header { gap: 12px; margin-bottom: 28px; }
 .vie-page-header h1 { font-size: clamp(28px, 3.4vw, 42px); line-height: 1.4; }
@@ -45,11 +59,25 @@ body { background: var(--vie-paper); text-rendering: optimizeLegibility; }
 .vp-doc .header-anchor:focus-visible { opacity: 1; }
 .vp-doc .vie-mermaid { max-width: 100%; overflow: auto; }
 .VPSkipLink a { z-index: 100; }
+.vie-fresh-footer { background: var(--vie-green-soft); color: var(--vie-ink); }
+.vie-fresh-footer__inner { display: grid; grid-template-columns: 1fr auto; gap: 48px; width: min(1240px, calc(100% - 64px)); margin-inline: auto; padding-block: 52px 24px; }
+.vie-fresh-footer__intro > p { margin: 24px 0 10px; font: 500 clamp(25px, 3vw, 38px)/1.5 var(--vie-font-body); letter-spacing: -.035em; }
+.vie-fresh-footer__intro > span { color: var(--vie-ink-soft); font-size: 14px; line-height: 1.8; }
+.vie-fresh-footer .vie-wordmark-mark { background: var(--vie-panel); }
+.vie-fresh-footer__links { display: grid; grid-template-columns: auto auto; align-content: center; gap: 6px 36px; }
+.vie-fresh-footer a { text-decoration: none; }
+.vie-fresh-footer__links > a { display: inline-flex; align-items: center; min-height: 44px; color: var(--vie-ink); font-size: 15px; }
+.vie-fresh-footer a:hover { color: var(--vie-green-action); }
+.vie-fresh-footer__bottom { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: center; gap: 24px; color: var(--vie-ink-soft); }
+.vie-fresh-footer__bottom small { font-size: 13px; }
+.vie-fresh-footer__bottom > div { display: flex; flex-wrap: wrap; gap: 8px 28px; }
+.vie-fresh-footer__bottom a { display: inline-flex; align-items: center; gap: 5px; min-height: 44px; color: var(--vie-ink-soft); font-size: 13px; }
 /* Content stays readable when a browser throttles animation frames. */
 @keyframes vie-rise { from { transform: translateY(10px); } to { transform: none; } }
 @media (max-width: 1000px) {
   .vie-global-nav__inner { gap: 22px; }
-  .vie-global-nav__links { gap: 24px; }
+  .vie-global-nav__links { gap: 2px; }
+  .vie-global-nav__links a { padding-inline: 13px; }
   .vie-global-nav__actions { gap: 10px; }
 }
 @media (max-width: 760px) {
@@ -57,11 +85,15 @@ body { background: var(--vie-paper); text-rendering: optimizeLegibility; }
   .vie-global-nav__links { display: none; }
   .vie-global-nav__github { display: none; }
   .vie-global-nav__menu { display: inline-flex; width: 44px; height: 44px; justify-content: center; align-items: center; }
-  .vie-global-nav__mobile { position: absolute; top: 100%; left: 0; width: 100%; display: grid; gap: 4px; padding: 12px 20px 20px; margin: 0; background: #fff; box-shadow: 0 16px 24px rgb(21 43 30 / 10%); border: 0; } /* taste-skill-ignore: real floating navigation overlay */
+  .vie-global-nav__mobile { position: absolute; top: 100%; left: 0; width: 100%; display: grid; gap: 4px; padding: 12px 20px 20px; margin: 0; background: var(--vie-panel); box-shadow: 0 16px 24px rgb(21 43 30 / 10%); border: 0; } /* taste-skill-ignore: real floating navigation overlay */
   .vie-global-nav__mobile a, .vie-global-nav__mobile button { display: flex; min-height: 48px; align-items: center; gap: 8px; padding: 10px 14px; border: 0; border-radius: 4px; background: #fff; color: var(--vie-ink); text-align: left; font: 500 16px/1.5 var(--vie-font-body); text-decoration: none; }
-  .vie-global-nav__mobile a.is-active, .vie-global-nav__mobile a:hover { background: #e7f0e9; color: var(--vie-green-action); }
+  .vie-global-nav__mobile a.is-active, .vie-global-nav__mobile a:hover { background: var(--vie-green-soft); color: var(--vie-green-action); }
   .vie-page-header { margin-bottom: 22px; }
   .vie-page-crumb { font-size: 12px; }
   .vie-page-header p { font-size: 15px; }
+  .vie-fresh-footer__inner { width: calc(100% - 40px); grid-template-columns: 1fr; gap: 28px; padding-top: 36px; }
+  .vie-fresh-footer__links { justify-content: start; gap: 4px 36px; }
+  .vie-fresh-footer__bottom { display: block; }
+  .vie-fresh-footer__bottom > div { margin-top: 12px; gap: 6px 20px; }
   html { scroll-padding-top: 84px; }
 }

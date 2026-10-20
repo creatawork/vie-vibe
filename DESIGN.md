@@ -4,29 +4,31 @@
 
 ## Direction
 
-An editorial engineering portfolio: large, direct type introduces the author’s
-point of view; actual project interfaces provide the visual evidence; articles
-explain the decisions behind the work. The current UI is light. Older dark
-terminal and illustrated desktop directions have been superseded.
+A fresh, light engineering portfolio: warm white, pale mint surfaces, and calm
+green type pair technical writing with actual project interfaces. Articles
+explain the decisions behind the work. Older dark terminal and illustrated
+desktop directions have been superseded.
 
-The homepage follows **Type and nothing else**, seed `1637983323`, adapted to
-the existing Vie identity and real content. Its opening statement is
-“写清楚每一个技术决策”. It continues with project evidence, recent writing,
-browser tools, and a forest-green closing field. The existing global navigation
-is retained so every content area remains reachable.
+The homepage uses a **split stage**, seed `1062927142`, adapted to Vie's real
+portfolio: “写清楚每一个技术决策” and the working product gallery share the
+first screen. Project evidence, recent writing and browser tools follow, with
+one shared pale-mint footer across every page. The gallery is interactive and
+keeps each full screenshot visible. The existing global navigation is retained.
 
 ## Tokens
 
 | Role | Value |
 |---|---|
-| Ground | `#F5F7F4` |
+| Ground | `#F8FAF7` |
 | Content surface | `#FFFFFF` |
-| Primary ink | `#1A2923` |
-| Secondary ink | `#53635B` |
-| Action green | `#0B6547` |
-| Soft green | `#E3EFE7` |
-| Footer field | `#133D30` |
-| Keyboard focus | `#1D5FD0` |
+| Primary ink | `#203C32` |
+| Secondary ink | `#536C60` |
+| Action green | `#237556` |
+| Hover green | `#1A6147` |
+| Soft green / footer | `#E9F5EE` |
+| Boundary | `#E0E9E1` |
+| Strong boundary | `#BED1C3` |
+| Keyboard focus | `#237556` |
 
 Shared tokens and final navigation styles live in `visual-polish.css`, imported
 after the base component styles. Content-specific refinements follow in
@@ -38,8 +40,8 @@ are `none`. Floating mobile navigation keeps an overlay shadow.
 - Titles and body: Noto Sans SC, then system UI fonts. No new font dependency.
 - Code, structured tool output, and input: JetBrains Mono, then system monospace.
 - Metadata: the body face with tabular numerals.
-- Home display: two authored lines, fluid 38–104px; the first line stays intact
-  at phone widths. Section headings are 25–38px.
+- Home display: two authored lines, fluid 36–68px; the first line stays intact
+  at phone widths. Section headings are 25–36px.
 - Main reading text: 16–17px with generous line height. Long code and tables
   scroll inside their own region; long URLs and identifiers wrap where needed.
 
@@ -61,14 +63,15 @@ are `none`. Floating mobile navigation keeps an overlay shadow.
   the viewport. IME composition and stale asynchronous results are handled.
 - Main home and navigation align on a 1240px canvas with 32px outer gutters,
   reduced to 20px on phones. Homepage sections have distinct compositions:
-  statement / project with screenshot gallery / article rows / split tools /
-  green footer.
+  split statement and gallery / project with sticky interface evidence /
+  article rows / mint tools panel / shared mint footer.
 - Site content counts come from the actual articles, projects, and tool
   registry. Reading times and word counts share the build-time article source;
   both article and series loaders include Markdown source.
 - Articles: combined title/summary/tag search and category filtering; category
   hashes remain linkable. Visible results and empty-state recovery are clear.
-  Article bodies keep their white reading panel and dark syntax-highlighted code.
+  Categories wrap instead of scrolling sideways; their mobile controls stay in
+  document flow. Article bodies keep their white reading panel and dark code.
 - Series: whole-card entries, reading-order directory, one H1, and accessible
   previous/next article controls.
 - Projects: actual images with captions, thumbnails, previous/next controls,
@@ -92,8 +95,8 @@ alt text; decorative icons are hidden from assistive technology.
 ## Imagery provenance
 
 All homepage imagery is existing project evidence under `site/public/images/projects/`:
-the 2026-10-17 visitor and creator interfaces and the 2026-10-16 photo-effects
-comparison. They remain captioned as local examples. No stock imagery, fabricated
+the 2026-10-17 visitor, creator workspace and space overview, and the
+2026-10-16 photo-effects comparison. They remain captioned as local examples. No stock imagery, fabricated
 customer proof, generated product screenshots, or sample project data was added.
 
 ## History
@@ -104,3 +107,5 @@ customer proof, generated product screenshots, or sample project data was added.
 - 2026-10-05: article reading panel and category-filtered index.
 - 2026-10-20: coordinated home, navigation, article/series, project, and tools
   display pass; reading-time data consistency and mobile interaction fixes.
+- 2026-10-20: fresh mint theme; real gallery moved into the opening split;
+  unified footer and content surfaces; complete-image display and wrapping filters.

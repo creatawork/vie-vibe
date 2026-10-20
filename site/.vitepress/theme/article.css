@@ -1,5 +1,5 @@
-/* Article reading pages (frontmatter.date): a white notebook panel on the
-   site canvas, IDE-dark code surfaces, and a tuned long-form measure.
+/* Article reading pages (frontmatter.date): a bright reading panel on the
+   fresh site canvas, IDE-dark code surfaces, and a tuned long-form measure.
    Scoped under .vie-vibe.vie-page-post so hubs / project pages keep their own look. */
 
 /* ------------------------------------------------------------------ */
@@ -18,10 +18,10 @@
 .vie-vibe.vie-page-post .VPDoc .content-container {
   margin-bottom: 8px;
   padding: clamp(30px, 4vw, 46px) clamp(20px, 4.2vw, 46px) clamp(20px, 3vw, 28px);
-  background: var(--vie-paper-2);
+  background: var(--vie-panel);
   border: 1px solid var(--vie-line);
-  border-radius: 20px;
-  box-shadow: var(--vie-shadow-soft);
+  border-radius: var(--vie-radius);
+  box-shadow: none;
 }
 
 /* ------------------------------------------------------------------ */
@@ -46,11 +46,11 @@
 .post-kicker__series {
   display: inline-flex;
   align-items: center;
-  padding: 4px 12px;
-  border-radius: 999px;
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
+  min-height: 30px;
+  padding: 4px 10px;
+  border-radius: var(--vie-radius-sm);
+  font-size: 0.8rem;
+  font-weight: 600;
   text-decoration: none;
 }
 
@@ -60,31 +60,31 @@
 }
 
 .post-kicker__series {
-  background: var(--vie-blue-soft);
-  color: #2f55ad;
+  background: var(--vie-paper);
+  color: var(--vie-green-action);
   font-weight: 600;
   transition: background-color 160ms ease, color 160ms ease;
 }
 
 .post-kicker__series:hover {
-  background: #dfe8ff;
-  color: #244592;
+  background: var(--vie-green-soft);
+  color: var(--vie-green-action);
 }
 
 .post-title {
   margin: 0 0 14px;
   font-family: var(--vie-font-display);
   font-size: clamp(1.65rem, 3.4vw, 2.25rem);
-  line-height: 1.28;
+  line-height: 1.4;
   letter-spacing: -0.015em;
-  color: #17222e;
+  color: var(--vie-ink);
   text-wrap: balance;
   overflow-wrap: anywhere;
 }
 
 .post-lede {
   margin: 0 0 18px;
-  color: #5a6b7b;
+  color: var(--vie-ink-soft);
   font-size: 1.02rem;
   line-height: 1.75;
   text-wrap: pretty;
@@ -97,22 +97,22 @@
   align-items: center;
   gap: 6px 12px;
   margin: 0;
-  color: #5a6b7b;
-  font-size: 0.8rem;
+  color: var(--vie-ink-soft);
+  font-size: 0.82rem;
 }
 
 .post-meta__dot {
-  color: #bcc7d1;
+  color: var(--vie-line-strong);
 }
 
 .post-tag {
   max-width: 100%;
   padding: 2px 10px;
-  border-radius: 999px;
-  background: #f3f7f5;
-  border: 1px solid #e4ece8;
-  color: #5c7466;
-  font-size: 0.74rem;
+  border-radius: 5px;
+  background: var(--vie-paper);
+  border: 1px solid var(--vie-line);
+  color: var(--vie-ink-soft);
+  font-size: 0.78rem;
   overflow-wrap: anywhere;
 }
 
@@ -125,9 +125,9 @@
   gap: 14px;
   margin: 0 0 30px;
   padding: 18px;
-  background: #f7faf8;
-  border: 1px solid #e4eee8;
-  border-radius: 12px;
+  background: var(--vie-green-soft);
+  border: 1px solid var(--vie-line);
+  border-radius: var(--vie-radius-sm);
   box-shadow: none;
 }
 
@@ -139,7 +139,7 @@
   margin: 0;
   font-size: 0.84rem;
   line-height: 1.7;
-  color: #526170;
+  color: var(--vie-ink-soft);
 }
 
 .vie-vibe.vie-page-post .vie-series-nav__meta a {
@@ -164,7 +164,7 @@
   min-height: 44px;
   padding: 12px;
   border-radius: 8px;
-  background: #fff;
+  background: var(--vie-panel);
   color: var(--vie-ink);
   font-size: 0.88rem;
   line-height: 1.65;
@@ -193,7 +193,7 @@
 }
 
 .vie-vibe.vie-page-post .vie-series-nav__link:hover {
-  background: #eaf4ee;
+  background: var(--vie-paper);
 }
 
 .vie-vibe.vie-page-post .vie-series-nav__link:focus-visible,
@@ -213,7 +213,7 @@
 
 .vie-vibe.vie-page-post .vp-doc p {
   margin: 0 0 1.3em;
-  color: #3e4c5b;
+  color: var(--vie-ink);
   line-height: 1.85;
   text-wrap: pretty;
 }
@@ -225,7 +225,7 @@
 
 .vie-vibe.vie-page-post .vp-doc li {
   margin: 0.4em 0;
-  color: #3e4c5b;
+  color: var(--vie-ink);
   line-height: 1.85;
 }
 
@@ -235,20 +235,20 @@
 }
 
 .vie-vibe.vie-page-post .vp-doc strong {
-  color: #1b2734;
+  color: var(--vie-ink);
   font-weight: 600;
 }
 
 .vie-vibe.vie-page-post .vp-doc a {
   color: var(--vie-green-action);
   text-decoration: underline;
-  text-decoration-color: rgba(11, 107, 75, 0.34);
+  text-decoration-color: color-mix(in srgb, var(--vie-green-action) 35%, transparent);
   text-decoration-thickness: 1px;
   text-underline-offset: 3px;
 }
 
 .vie-vibe.vie-page-post .vp-doc a:hover {
-  color: #08553b;
+  color: var(--vie-green-action);
   text-decoration-color: currentColor;
 }
 
@@ -257,7 +257,7 @@
   padding-top: 0;
   padding-bottom: 0.42em;
   border-top: 0;
-  border-bottom: 1px solid #eaf0f5;
+  border-bottom: 1px solid var(--vie-line);
   font-size: 1.44rem;
   letter-spacing: -0.01em;
 }
@@ -274,10 +274,10 @@
 
 .vie-vibe.vie-page-post .vp-doc :not(pre) > code {
   padding: 2px 6px;
-  background: #f3f7f5;
-  border: 1px solid #e2ece7;
+  background: var(--vie-green-soft);
+  border: 1px solid var(--vie-line);
   border-radius: 6px;
-  color: #0d5b3f;
+  color: var(--vie-green-action);
   font-size: 0.875em;
   overflow-wrap: anywhere;
 }
@@ -286,9 +286,9 @@
   margin: 1.5em 0;
   padding: 12px 20px;
   border-left: 3px solid var(--vie-green);
-  border-radius: 0 12px 12px 0;
-  background: linear-gradient(180deg, #f6fbf8, #fdfefe);
-  color: #4a5a68;
+  border-radius: 0 var(--vie-radius-sm) var(--vie-radius-sm) 0;
+  background: var(--vie-panel-soft);
+  color: var(--vie-ink-soft);
 }
 
 .vie-vibe.vie-page-post .vp-doc blockquote p {
@@ -303,9 +303,9 @@
 }
 
 .vie-vibe.vie-page-post .vp-doc img {
-  border-radius: 14px;
+  border-radius: var(--vie-radius-sm);
   border: 1px solid var(--vie-line);
-  box-shadow: var(--vie-shadow-soft);
+  box-shadow: none;
 }
 
 .vie-vibe.vie-page-post .vp-doc table {
@@ -319,8 +319,8 @@
 }
 
 .vie-vibe.vie-page-post .vp-doc th {
-  background: #f7fafc;
-  color: #55677a;
+  background: var(--vie-green-soft);
+  color: var(--vie-ink-soft);
   font-size: 0.85rem;
 }
 
@@ -332,13 +332,21 @@
   overflow-wrap: normal;
 }
 
+.vie-vibe.vie-page-post .vp-doc tr {
+  background: var(--vie-panel);
+}
+
+.vie-vibe.vie-page-post .vp-doc tr:nth-child(2n) {
+  background: var(--vie-panel-soft);
+}
+
 /* ------------------------------------------------------------------ */
 /* Code surfaces: dark IDE panels on the bright notebook page          */
 /* ------------------------------------------------------------------ */
 
 .vie-vibe.vie-page-post .vp-doc {
   --vp-code-block-bg: #0f1722;
-  --vp-code-lang-color: rgba(223, 230, 238, 0.4);
+  --vp-code-lang-color: rgba(223, 230, 238, 0.68);
   --vp-icon-copy: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='rgba(213,221,230,0.9)' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' viewBox='0 0 24 24'%3E%3Crect width='8' height='4' x='8' y='2' rx='1' ry='1'/%3E%3Cpath d='M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2'/%3E%3C/svg%3E");
   --vp-icon-copied: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='rgba(125,211,168,0.95)' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath d='M20 6L9 17l-5-5'/%3E%3C/svg%3E");
 }
@@ -348,8 +356,8 @@
   max-width: 100%;
   margin: 1.5em 0;
   border: 1px solid #1b2734;
-  border-radius: 14px;
-  box-shadow: 0 14px 34px rgba(15, 23, 34, 0.16);
+  border-radius: var(--vie-radius-sm);
+  box-shadow: none;
 }
 
 .vie-vibe.vie-page-post .vp-doc div[class*='language-'] pre {
@@ -407,15 +415,15 @@
 /* ------------------------------------------------------------------ */
 
 .vie-vibe.vie-page-post .VPDocAsideOutline .outline-title {
-  font-family: var(--vie-font-mono);
-  font-size: 0.74rem;
+  font-family: var(--vie-font-body);
+  font-size: 0.8rem;
   font-weight: 600;
-  letter-spacing: 0.3em;
-  color: #8a97a5;
+  letter-spacing: 0;
+  color: var(--vie-ink-soft);
 }
 
 .vie-vibe.vie-page-post .VPDocAsideOutline .outline-item a {
-  color: #526170;
+  color: var(--vie-ink-soft);
   transition: color 140ms ease;
 }
 
@@ -439,7 +447,7 @@
 }
 
 .vie-vibe.vie-page-post footer.VPDocFooter .last-updated {
-  color: #8a97a5;
+  color: var(--vie-ink-soft);
   font-size: 0.78rem;
 }
 
@@ -458,16 +466,15 @@
   height: 26px;
   border-radius: 7px;
   background: var(--vie-green);
-  color: #fff;
-  font: 700 0.72rem var(--vie-font-mono);
-  box-shadow: 0 4px 10px rgba(32, 165, 111, 0.26);
+  color: var(--vie-panel);
+  font: 700 0.72rem var(--vie-font-body);
 }
 
 .post-end__text {
   margin: 0;
-  color: #94a2af;
+  color: var(--vie-ink-soft);
   font-size: 0.78rem;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.04em;
 }
 
 /* ------------------------------------------------------------------ */
@@ -493,7 +500,7 @@
   }
 
   .vie-vibe.vie-page-post .VPDoc .content-container {
-    border-radius: 14px;
+    border-radius: var(--vie-radius-sm);
     padding: 24px 20px 20px;
   }
 

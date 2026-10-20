@@ -1,5 +1,35 @@
-/* Content indexes: keep the notebook palette, give browsing controls and
-   editorial content a clear hierarchy, and keep every grid shrinkable. */
+/* Content pages share the fresh site palette while keeping a quiet reading
+   hierarchy, clear browsing controls, and shrinkable grids. */
+.vp-doc .vie-page-crumb {
+  justify-content: flex-start;
+  gap: 10px;
+  color: var(--vie-ink-soft);
+  font-size: 13px;
+}
+
+.vp-doc .vie-page-crumb a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--vie-green-action);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.vp-doc .vie-page-crumb a:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.vp-doc .vie-page-crumb > span[aria-hidden] {
+  color: var(--vie-line-strong);
+}
+
+.vp-doc .hub-index :is(.hub-chip, .hub-card, .hub-cathead) {
+  --tone: var(--vie-green-action);
+  --tone-soft: var(--vie-green-soft);
+}
+
 .vp-doc .hub-index,
 .vp-doc .hub-view,
 .vp-doc .hub-grid,
@@ -38,7 +68,7 @@
   grid-template-columns: minmax(0, 1fr) minmax(220px, 280px);
   align-items: center;
   column-gap: 24px;
-  padding: 12px 0;
+  padding: 14px 0;
   margin-bottom: 22px;
   background: var(--vie-paper);
 }
@@ -67,7 +97,7 @@
   min-height: 46px;
   padding: 10px 14px;
   border: 1px solid var(--vie-line-strong);
-  border-radius: 9px;
+  border-radius: var(--vie-radius-sm);
   background: var(--vie-panel);
   color: var(--vie-ink);
   font: 400 1rem/1.5 var(--vie-font-body);
@@ -93,6 +123,8 @@
   margin: 0;
   padding: 4px;
   background: transparent;
+  flex-wrap: wrap;
+  overflow: visible;
   scrollbar-width: thin;
   scrollbar-color: var(--vie-line-strong) transparent;
 }
@@ -106,20 +138,22 @@
   min-height: 44px;
   padding: 10px 13px;
   border-color: transparent;
-  border-radius: 8px;
+  border-radius: var(--vie-radius-sm);
   background: transparent;
   font-size: 0.875rem;
   line-height: 1.3;
 }
 
 .vp-doc .hub-chip:hover {
-  background: var(--vie-panel);
+  background: var(--vie-green-soft);
+  border-color: var(--vie-line);
   transform: none;
 }
 
 .vp-doc .hub-chip[aria-pressed='true'] {
-  border-color: var(--vie-green-action);
-  background: var(--vie-green-action);
+  border-color: var(--vie-line-strong);
+  background: var(--vie-green-soft);
+  color: var(--vie-green-action);
 }
 
 .vp-doc .hub-chip__count {
@@ -130,7 +164,7 @@
 }
 
 .vp-doc .hub-chip[aria-pressed='true'] .hub-chip__count {
-  color: #fff;
+  color: var(--vie-green-action);
 }
 
 .vp-doc .hub-cathead {
@@ -158,15 +192,19 @@
 }
 
 .vp-doc .hub-card {
-  border-color: transparent;
-  border-radius: 12px;
+  border-color: var(--vie-line);
+  border-radius: var(--vie-radius);
+  background: var(--vie-panel);
   box-shadow: none;
+  transition: border-color 160ms ease, background-color 160ms ease;
 }
 
 .vp-doc .hub-card:hover,
 .vp-doc .hub-card:focus-within {
   border-color: var(--vie-line-strong);
+  background: var(--vie-panel-soft);
   box-shadow: none;
+  transform: none;
 }
 
 .vp-doc .hub-card__link {
@@ -227,7 +265,7 @@
   max-width: 100%;
   padding: 2px 8px;
   border-radius: 4px;
-  background: var(--vie-paper);
+  background: var(--vie-green-soft);
 }
 
 .vp-doc .hub-card__len {
@@ -242,7 +280,8 @@
 }
 
 .vp-doc .hub-card--featured {
-  background: #edf6f2;
+  background: var(--vie-green-soft);
+  border-color: var(--vie-line);
 }
 
 .vp-doc .hub-card--featured .hub-card__link {
@@ -261,7 +300,7 @@
 }
 
 .vp-doc .hub-card--featured .hub-card__tag {
-  background: #fff;
+  background: var(--vie-panel);
 }
 
 .vp-doc .hub-empty {
@@ -269,7 +308,8 @@
   justify-items: start;
   gap: 12px;
   padding: clamp(24px, 5vw, 48px);
-  border-radius: 12px;
+  border: 1px solid var(--vie-line);
+  border-radius: var(--vie-radius);
   background: var(--vie-panel);
 }
 
@@ -286,9 +326,9 @@
   min-height: 44px;
   margin-top: 8px;
   padding: 10px 16px;
-  border-radius: 8px;
+  border-radius: var(--vie-radius-sm);
   background: var(--vie-green-action);
-  color: #fff;
+  color: var(--vie-panel);
   font-weight: 600;
 }
 
@@ -352,16 +392,18 @@
   flex-direction: column;
   height: 100%;
   padding: 28px;
-  border-radius: 12px;
+  border: 1px solid var(--vie-line);
+  border-radius: var(--vie-radius);
   background: var(--vie-panel);
   color: var(--vie-ink);
   text-decoration: none;
   overflow-wrap: anywhere;
-  transition: background-color 160ms ease;
+  transition: background-color 160ms ease, border-color 160ms ease;
 }
 
 .vp-doc a.series-collection:hover {
-  background: #edf6f2;
+  background: var(--vie-green-soft);
+  border-color: var(--vie-line-strong);
 }
 
 .vp-doc .series-collection__meta,
@@ -431,15 +473,17 @@
   align-items: baseline;
   gap: 20px;
   padding: 26px 28px;
-  border-radius: 12px;
+  border: 1px solid var(--vie-line);
+  border-radius: var(--vie-radius);
   background: var(--vie-panel);
   color: var(--vie-ink);
   text-decoration: none;
-  transition: background-color 160ms ease;
+  transition: background-color 160ms ease, border-color 160ms ease;
 }
 
 .vp-doc a.series-chapter:hover {
-  background: #edf6f2;
+  background: var(--vie-green-soft);
+  border-color: var(--vie-line-strong);
 }
 
 .vp-doc .series-chapter__number {
@@ -478,6 +522,72 @@
   color: var(--vie-green-action);
 }
 
+/* Project evidence uses the same white panels and soft mint surfaces as
+   writing, without changing gallery, TOC, or journal behavior. */
+.vp-doc :is(.vie-projects, .vie-project-page) {
+  --project-surface: var(--vie-green-soft);
+  --project-muted: var(--vie-ink-soft);
+}
+
+.vp-doc .vie-projects-heading h1 {
+  font-size: clamp(30px, 3.4vw, 42px);
+  line-height: 1.4;
+}
+
+.vp-doc :is(.vie-flagship, .vie-project-row, .vie-facts, .vie-validation, .vie-timeline-card) {
+  border: 1px solid var(--vie-line);
+  border-radius: var(--vie-radius);
+  background: var(--vie-panel);
+}
+
+.vp-doc :is(.vie-flows, .vie-project-end, .vie-project-row__journal, .vie-flagship__milestone) {
+  border-radius: var(--vie-radius-sm);
+  background: var(--vie-green-soft);
+}
+
+.vp-doc :is(.vie-spotlight__name, .vie-detail-title h1) {
+  line-height: 1.3;
+}
+
+.vp-doc .vie-projects .vie-flagship .vie-spotlight__name {
+  font-size: clamp(32px, 3.6vw, 46px);
+}
+
+.vp-doc :is(.vie-projects, .vie-project-page) :is(.vie-media-stage, .vie-capability__media) {
+  border: 1px solid var(--vie-line);
+  border-radius: var(--vie-radius-sm);
+}
+
+.vp-doc :is(.vie-projects, .vie-project-page) .vie-media-select button {
+  border: 1px solid var(--vie-line);
+  border-radius: var(--vie-radius-sm);
+  background: var(--vie-panel);
+  transition: border-color 160ms ease, background-color 160ms ease;
+}
+
+.vp-doc :is(.vie-projects, .vie-project-page) .vie-media-select button:is(:hover, [aria-pressed='true']) {
+  border-color: var(--vie-line-strong);
+  background: var(--vie-green-soft);
+  color: var(--vie-green-action);
+  transform: none;
+}
+
+.vp-doc .vie-log-controls button {
+  border: 1px solid var(--vie-line);
+  border-radius: var(--vie-radius-sm);
+}
+
+.vp-doc .vie-log-controls button[aria-pressed='true'] {
+  border-color: var(--vie-line-strong);
+  background: var(--vie-green-soft);
+  color: var(--vie-green-action);
+}
+
+.vp-doc .vie-timeline-anchor {
+  width: 44px;
+  height: 44px;
+}
+
 @media (max-width: 1080px) {
   .vp-doc .hub-controls {
     grid-template-columns: minmax(0, 1fr);
@@ -507,9 +617,13 @@
   }
 
   .vp-doc .hub-controls {
-    top: 64px;
+    position: static;
     margin-bottom: 20px;
   }
+
+  .vp-doc .hub-filter { gap: 6px; padding-inline: 0; }
+  .vp-doc .hub-chip { padding-inline: 10px; }
+  .vp-doc .hub-chip__dot { display: none; }
 
   .vp-doc .hub-cathead {
     align-items: flex-start;

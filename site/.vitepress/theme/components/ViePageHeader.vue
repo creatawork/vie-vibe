@@ -9,7 +9,8 @@ const props = defineProps<{
 const title = computed(() => {
   if (props.path.startsWith('articles')) return '文章'
   if (props.path.startsWith('projects')) return '项目'
-  if (props.path.startsWith('series/')) return props.path === 'series/' ? '系列' : '系列文章'
+  if (props.path.startsWith('series')) return props.path === 'series/' ? '系列' : '系列文章'
+  if (props.path.startsWith('tools')) return '工具'
   if (props.path.startsWith('stats')) return '访问统计'
   return props.path
 })
@@ -26,10 +27,11 @@ const subtitle = computed(() => {
 
 <template>
   <header class="vie-page-header">
-    <div class="vie-page-crumb vie-mono" aria-hidden="true">
-      <span>&lt; VieNotes /&gt;</span>
-      <span>{{ path }}</span>
-    </div>
+    <nav class="vie-page-crumb" aria-label="面包屑导航">
+      <a href="/" aria-label="Vie 首页">Vie</a>
+      <span aria-hidden="true">/</span>
+      <span aria-current="page">{{ title }}</span>
+    </nav>
     <h1>{{ title }}</h1>
     <p>{{ subtitle }}</p>
   </header>
